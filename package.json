@@ -1,0 +1,35 @@
+{
+  "name": "component-ctk",
+  "version": "0.0.1",
+  "description": "ODA Component Compliance Test Kit CTK",
+  "main": "index.js",
+  "scripts": {
+    "start": "node staticValidationRunner.js",
+    "test": "node staticValidationRunner.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmforum-rand/oda-component-definitions.git"
+  },
+  "keywords": [
+    "ODA",
+    "Component",
+    "CTK"
+  ],
+  "author": "Lester Thomas",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tmforum-rand/oda-component-definitions/issues"
+  },
+  "homepage": "https://github.com/tmforum-rand/oda-component-definitions#readme",
+  "dependencies": {
+    "@kubernetes/client-node": "^0.12.1",
+    "chai": "^4.2.0",
+    "colors": "^1.4.0",
+    "fs": "0.0.1-security",
+    "mocha": "^8.2.1",
+    "path": "^0.12.7",
+    "stream-buffers": "^3.0.2",
+    "yaml": "^1.10.0"
+  }
+}
