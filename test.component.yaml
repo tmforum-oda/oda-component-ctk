@@ -1,0 +1,154 @@
+---
+# Source: productcatalog/templates/persistentVolumeClaim-mongodb.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-mongodb-pv-claim
+  labels:
+    oda.tmforum.org/componentName: test-productcatalog
+spec:
+  storageClassName: default-st1
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: productcatalog/templates/service-mongodb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-mongodb
+  labels:
+    oda.tmforum.org/componentName: test-productcatalog
+    app: test-mongodb
+spec:
+  ports:
+  - port: 27017
+    targetPort: test-mongodb
+    name: test-mongodb
+  type: NodePort
+  selector:
+    app: test-mongodb
+---
+# Source: productcatalog/templates/service-productcatalogapi.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-prodcatapi
+  labels:
+    app: test-prodcatapi
+    oda.tmforum.org/componentName: test-productcatalog
+spec:
+  ports:
+  - port: 8080
+    targetPort: test-prodcatapi
+    name: test-prodcatapi
+  type: NodePort
+  selector:
+    app: test-prodcatapi
+---
+# Source: productcatalog/templates/deployment-mongodb.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-mongodb
+  labels:
+    oda.tmforum.org/componentName: test-productcatalog
+    app: test-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-mongodb
+  template:
+    metadata:
+      labels:
+        app: test-mongodb
+    spec:
+      containers:
+      - name: test-mongodb
+        image: mongo:latest
+        ports:
+        - name: test-mongodb
+          containerPort: 27017
+        volumeMounts:
+        - name: test-mongodb-pv-storage
+          mountPath: "/data/db"
+      volumes:
+      - name: test-mongodb-pv-storage
+        persistentVolumeClaim:
+          claimName: test-mongodb-pv-claim
+---
+# Source: productcatalog/templates/deployment-productcatalogapi.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-prodcatapi
+  labels:
+    oda.tmforum.org/componentName: test-productcatalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-prodcatapi
+  template:
+    metadata:
+      labels:
+        app: test-prodcatapi
+    spec:
+      containers:
+      - name: test-prodcatapi
+        image: lesterthomas/productcatalogapi:latest
+        env:
+        - name: RELEASE_NAME
+          value: test           
+        - name: COMPONENT_NAME
+          value: test-productcatalog           
+        imagePullPolicy: Always
+        ports:
+        - name: test-prodcatapi
+          containerPort: 8080
+---
+# Source: productcatalog/templates/component-productcatalog.yaml
+apiVersion: oda.tmforum.org/v1alpha1
+kind: component
+metadata:
+  name: test-productcatalog
+  labels:
+    oda.tmforum.org/componentName: test-productcatalog
+spec:
+  type: productcatalog
+  selector:
+    matchLabels:
+     oda.tmforum.org/componentName: test-productcatalog
+  componentKinds:
+    - group: core
+      kind: Service    
+    - group: core
+      kind: PersistentVolumeClaim
+    - group: apps
+      kind: Deployment  
+  version: "0.0.1"
+  description: "Simple Product Catalog ODA-Component from Open-API reference implementation." 
+  maintainers:
+    - name: Lester Thomas
+      email: lester.thomas@vodafone.com
+  owners:
+    - name: Lester Thomas
+      email: lester.thomas@vodafone.com     
+  coreFunction:
+    exposedAPIs: 
+    - name: productcatalogmanagement
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-productcatalog-v4.0.0.swagger.json
+      implementation: test-prodcatapi
+      path: /test-productcatalog/tmf-api/productCatalogManagement/v4
+      developerUI: /test-productcatalog/tmf-api/productCatalogManagement/v4/docs
+      port: 8080
+    dependantAPIs: []
+  eventNotification:
+    publishedEvents: []
+    subscribedEvents: []
+  management: []
+  security:
+    securitySchemes: []

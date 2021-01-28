@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node staticValidationRunner.js",
+    "static": "node staticValidationRunner.js",
+    "dynamic": "node dynamicValidationRunner.js",
     "test": "node staticValidationRunner.js"
   },
   "repository": {
@@ -25,6 +27,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.12.1",
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "colors": "^1.4.0",
     "fs": "0.0.1-security",
     "mocha": "^8.2.1",

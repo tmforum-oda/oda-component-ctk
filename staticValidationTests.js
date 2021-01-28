@@ -5,7 +5,7 @@ const process = require('process')
 const COMPONENT = 'component';
 
 console.log("***************************************************************************");
-console.log("Open Digital Architecture - Component Test Kit CTK");
+console.log("Open Digital Architecture - Component Test Kit CTK Static Tests");
 console.log("***************************************************************************");
 console.log();
 var components = process.env.components.split(',');
