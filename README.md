@@ -29,6 +29,12 @@ or
 npm dynamic <filename.component.yaml>
 ```
 
+Typically you create the <filename.component.yaml> from your helm chart with the command
+
+```
+helm template <releasename> <chartfolder> > <filename.component.yaml>
+```
+
 Note: For the dynamic tests, the script reuses the `kubectl` configuration to connect to the associated kubernetes cluster. You have to deploy the component to this cluster before running the test.
 
 
