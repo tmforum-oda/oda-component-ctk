@@ -1,6 +1,6 @@
 # ODA Component Compliance Test Kit (CTK)
 
-This folder contains the test runner that executes the CTK tests for each component.
+This folder contains the test runner that executes  CTK tests for each component.
 
 The CTKs allow components to be promoted from the Stage 1 (Sandbox) to Stage 2 (Validation that components conform to the Component Design Guidelines). In a future sprint we will define additional CTKs to promote to stage 3  (conforming to design guidelines and implemeting a standard functional footprint).
 
@@ -17,15 +17,30 @@ Install the dependencies with the command:
 npm install
 ```
 
-Execute the validation tests with the command:
+Execute the validation tests with either:
+
 ```
-npm start
+npm static <filename.component.yaml>
 ```
 
-The test runner executes the following steps:
+or
 
-* If started with a command-line arguement then use that as component envelope filename; Otherwise check for 'components' directory (`at ../components/`).
+```
+npm dynamic <filename.component.yaml>
+```
 
-Sample output:
+Note: For the dynamic tests, the script reuses the `kubectl` configuration to connect to the associated kubernetes cluster. You have to deploy the component to this cluster before running the test.
 
-![Sample output](sampleOutput.png)
+
+Sample output for static validation:
+
+![Sample output](sampleOutput-static.png)
+
+
+Sample output for dynamic validation:
+
+![Sample output](sampleOutput-dynamic.png)
+
+
+
+I would recommend running the static validation as part of every git commit into the component charts repository, and running the dynamic validation as part of the pull request process to propote a component to the stage 2.
