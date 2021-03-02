@@ -15,7 +15,6 @@ for (const index in components) {
   const componentEnvelopeName = components[index]
   let documentArray = []
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
-
   describe('Step 0: Basic file tests for component ' + componentEnvelopeName, function () {
     it('File naming convention', function (done) {
       const nameArray = componentEnvelopeName.split('.')
