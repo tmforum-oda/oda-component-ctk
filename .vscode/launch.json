@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "program": "C:\\Program Files\\nodejs\\node_modules\\npm",
-            "args": ["run", "static","test.component.yaml"]
+            "args": ["run", "static","v1alpha1.component.yaml"]
         }
     ]
 }

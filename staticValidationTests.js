@@ -45,8 +45,11 @@ for (const index in components) {
       done()
     })
 
-    it('Component has apiVersion', function (done) {
+    it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
+      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2']
+
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
+      expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
       done()
     })
 
@@ -108,6 +111,22 @@ for (const index in components) {
       expect(security, 'Spec has a security field of type object').to.be.a('object')
       done()
     })
+    const versionsWithRole = ['oda.tmforum.org/v1alpha2']
+    if (versionsWithRole.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Security has partyrole', function (done) {
+        const spec = componentDoc.get('spec')
+        const security = spec.get('security')
+        const partyrole = security.get('partyrole')
+        expect(partyrole, 'Security property includes a partyrole field of type object').to.be.a('object')
+        const specification = partyrole.get('specification')
+        expect(specification, 'partyrole property includes a specification field of type string').to.be.a('string')
+        const implementation = partyrole.get('implementation')
+        expect(implementation, 'partyrole property includes an implementation field of type string').to.be.a('string')
+        const path = partyrole.get('path')
+        expect(path, 'partyrole property includes a path field of type string').to.be.a('string')
+        done()
+      })
+    }
   })
 
   describe('Step 2: Check any standard kubernetes resources are labelled for component ' + componentEnvelopeName, function () {
