@@ -4,15 +4,46 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "dynamic test v1alpha1",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "C:\\Program Files\\nodejs\\node_modules\\npm",
+            "args": ["run", "dynamic","v1alpha1.component.yaml"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "static test v1alpha1",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "C:\\Program Files\\nodejs\\node_modules\\npm",
             "args": ["run", "static","v1alpha1.component.yaml"]
-        }
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "dynamic test v1alpha2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "C:\\Program Files\\nodejs\\node_modules\\npm",
+            "args": ["run", "dynamic","v1alpha2.component.yaml"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "static test v1alpha2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "C:\\Program Files\\nodejs\\node_modules\\npm",
+            "args": ["run", "static","v1alpha2.component.yaml"]
+        }        
     ]
 }
