@@ -126,6 +126,13 @@ spec:
         ports:
         - name: r1-prapi
           containerPort: 8080
+        startupProbe:
+          httpGet:
+            path: /r1-productcatalog/tmf-api/partyRoleManagement/v4/partyRole 
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5          
+          failureThreshold: 30
 ---
 # Source: productcatalog/templates/deployment-productcatalogapi.yaml
 apiVersion: apps/v1
@@ -157,8 +164,33 @@ spec:
         - name: r1-pcapi
           containerPort: 8080
 ---
+# Source: productcatalog/templates/cronjob-roleinitialization.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: r1-roleinitialization
+  labels:
+    oda.tmforum.org/componentName: r1-productcatalog
+spec:
+  template:
+    metadata:
+      labels:
+        app: r1-roleinitialization
+    spec:
+      containers:
+      - name: r1-roleinitialization
+        image: lesterthomas/roleinitialization:latest
+        env:
+        - name: RELEASE_NAME
+          value: r1           
+        - name: COMPONENT_NAME
+          value: r1-productcatalog           
+        imagePullPolicy: Always
+      restartPolicy: OnFailure
+  backoffLimit: 10
+---
 # Source: productcatalog/templates/component-productcatalog.yaml
-apiVersion: oda.tmforum.org/v1alpha2
+apiVersion: oda.tmforum.org/v1alpha3
 kind: component
 metadata:
   name: r1-productcatalog
@@ -192,14 +224,15 @@ spec:
       path: /r1-productcatalog/tmf-api/productCatalogManagement/v4
       developerUI: /r1-productcatalog/tmf-api/productCatalogManagement/v4/docs
       port: 8080
-    dependantAPIs: 
+    dependentAPIs: 
     - name: party      
-      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json 
+      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json  
   eventNotification:
     publishedEvents: []
     subscribedEvents: []
   management: []
   security:
+    controllerRole: Admin
     securitySchemes:
       bearerAuth:
         type: http
@@ -210,4 +243,4 @@ spec:
       implementation: r1-partyroleapi
       path: /r1-productcatalog/tmf-api/partyRoleManagement/v4
       developerUI: /r1-productcatalog/tmf-api/partyRoleManagement/v4/docs
-      port: 8080
+      port: 8080 

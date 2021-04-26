@@ -46,7 +46,7 @@ for (const index in components) {
     })
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2']
+      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -80,14 +80,26 @@ for (const index in components) {
       done()
     })
 
-    it('Spec has coreFunction with exposedAPIs and dependantAPIs', function (done) {
-      const spec = componentDoc.get('spec')
-      const coreFunction = spec.get('coreFunction')
-      expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
-      expect(coreFunction.get('exposedAPIs'), "coreFunction should have a 'exposedAPIs' field of type object").to.be.a('object')
-      expect(coreFunction.get('dependantAPIs'), "coreFunction should have a 'dependantAPIs' field of type object").to.be.a('object')
-      done()
-    })
+    const versionsWithDependant = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2']
+    if (versionsWithDependant.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Spec has coreFunction with exposedAPIs and dependantAPIs', function (done) {
+        const spec = componentDoc.get('spec')
+        const coreFunction = spec.get('coreFunction')
+        expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
+        expect(coreFunction.get('exposedAPIs'), "coreFunction should have a 'exposedAPIs' field of type object").to.be.a('object')
+        expect(coreFunction.get('dependantAPIs'), "coreFunction should have a 'dependantAPIs' field of type object").to.be.a('object')
+        done()
+      })
+    } else {
+      it('Spec has coreFunction with exposedAPIs and dependentAPIs', function (done) {
+        const spec = componentDoc.get('spec')
+        const coreFunction = spec.get('coreFunction')
+        expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
+        expect(coreFunction.get('exposedAPIs'), "coreFunction should have a 'exposedAPIs' field of type object").to.be.a('object')
+        expect(coreFunction.get('dependentAPIs'), "coreFunction should have a 'dependentAPIs' field of type object").to.be.a('object')
+        done()
+      })
+    }
 
     it('Spec has eventNotification with publishedEvents and subscribedEvents', function (done) {
       const spec = componentDoc.get('spec')
@@ -111,7 +123,7 @@ for (const index in components) {
       expect(security, 'Spec has a security field of type object').to.be.a('object')
       done()
     })
-    const versionsWithRole = ['oda.tmforum.org/v1alpha2']
+    const versionsWithRole = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
     if (versionsWithRole.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has partyrole', function (done) {
         const spec = componentDoc.get('spec')
@@ -124,6 +136,17 @@ for (const index in components) {
         expect(implementation, 'partyrole property includes an implementation field of type string').to.be.a('string')
         const path = partyrole.get('path')
         expect(path, 'partyrole property includes a path field of type string').to.be.a('string')
+        done()
+      })
+    }
+
+    const versionsWithControllerRole = ['oda.tmforum.org/v1alpha3']
+    if (versionsWithControllerRole.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Security has controllerRole', function (done) {
+        const spec = componentDoc.get('spec')
+        const security = spec.get('security')
+        const controllerRole = security.get('controllerRole')
+        expect(controllerRole, 'security object includes a controllerRole property of type string').to.be.a('string')
         done()
       })
     }
