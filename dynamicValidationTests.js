@@ -32,7 +32,7 @@ for (const index in components) {
   const componentName = metadata.get('name')
   const k8sCoreApi = kc.makeApiClient(k8s.CoreV1Api)
   const k8sCustomApi = kc.makeApiClient(k8s.CustomObjectsApi)
-  console.log({componentAPIVersion: componentAPIVersion})
+  console.log({ componentAPIVersion: componentAPIVersion })
   describe('Step 0: Basic environment connectivity tests', function () {
     it('Kubectl configured correctly', function (done) {
       k8sCoreApi.listNamespacedPod('components').then((res) => {
@@ -89,16 +89,16 @@ for (const index in components) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
-          expect(securityAPIs['partyrole'].url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
-          const httpScheme = securityAPIs['partyrole'].url.split('://')[0] + '://'
-          const server = securityAPIs['partyrole'].url.split('://')[1].split('/')[0]
-          const apiPath = '/' + securityAPIs['partyrole'].url.split('://')[1].split(/\/(.+)/)[1]
+          expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
+          const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
+          const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
+          const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
           chai.request(httpScheme + server)
             .get(apiPath + '/partyRole')
             .end(function (err, res) {
               expect(err).to.be.null
               expect(res).to.have.status(200)
-              var resJSON = JSON.parse(res.text)
+              const resJSON = JSON.parse(res.text)
               expect(resJSON, 'Response should be an array').to.be.an('array')
               expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
               done()
@@ -112,33 +112,33 @@ for (const index in components) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
-          expect(securityAPIs['partyrole'].url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
-          const httpScheme = securityAPIs['partyrole'].url.split('://')[0] + '://'
-          const server = securityAPIs['partyrole'].url.split('://')[1].split('/')[0]
-          const apiPath = '/' + securityAPIs['partyrole'].url.split('://')[1].split(/\/(.+)/)[1]
+          expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
+          const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
+          const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
+          const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
           chai.request(httpScheme + server)
             .get(apiPath + '/partyRole')
             .end(function (err, res) {
               expect(err).to.be.null
               expect(res).to.have.status(200)
-              var resJSON = JSON.parse(res.text)
+              const resJSON = JSON.parse(res.text)
               expect(resJSON, 'Response should be an array').to.be.an('array')
               expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
               done()
             })
         })
         it('One partyrole should match controllerRole', function (done) {
-          expect(securityAPIs['partyrole'].url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
-          const httpScheme = securityAPIs['partyrole'].url.split('://')[0] + '://'
-          const server = securityAPIs['partyrole'].url.split('://')[1].split('/')[0]
-          const apiPath = '/' + securityAPIs['partyrole'].url.split('://')[1].split(/\/(.+)/)[1]
+          expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
+          const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
+          const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
+          const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
           const controllerRole = spec.security.controllerRole
           chai.request(httpScheme + server)
             .get(apiPath + '/partyRole')
             .end(function (err, res) {
               expect(err).to.be.null
               expect(res).to.have.status(200)
-              var resJSON = JSON.parse(res.text)
+              const resJSON = JSON.parse(res.text)
               expect(resJSON, 'Response should be an array').to.be.an('array')
               expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
               let found = false
@@ -147,7 +147,7 @@ for (const index in components) {
                   found = true
                 }
               }
-              expect(found, "Response at least one partyRole should match controllerRole '" + controllerRole + "'" ).to.equal(true)
+              expect(found, "Response at least one partyRole should match controllerRole '" + controllerRole + "'").to.equal(true)
               done()
             })
         })
