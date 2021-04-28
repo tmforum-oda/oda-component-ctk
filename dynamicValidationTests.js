@@ -44,7 +44,7 @@ for (const index in components) {
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
     it('Component can be found', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha2', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
           expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)
@@ -53,7 +53,7 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (deployment_status: Complete)', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha2', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
           expect(status.deployment_status, 'status.deployment_status is Complete').to.equal('Complete')
@@ -62,9 +62,10 @@ for (const index in components) {
     })
   })
 
-  // get list of exposed APIs
-  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha2', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
+  // get Component resource
+  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     const status = res.body.items[0].status
+    const spec = res.body.items[0].spec
     const exposedAPIList = status.exposedAPIs
     for (const apiKey in exposedAPIList) {
       describe('Step 2(' + apiKey + '): Run-time test of exposed API: ' + exposedAPIList[apiKey].name, function () {
@@ -83,8 +84,8 @@ for (const index in components) {
         })
       })
     }
-    const versionsWithRole = ['oda.tmforum.org/v1alpha2']
-    if (versionsWithRole.indexOf(componentAPIVersion) > -1) {
+    const versionsWithRoleOnly = ['oda.tmforum.org/v1alpha2']
+    if (versionsWithRoleOnly.indexOf(componentAPIVersion) > -1) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
@@ -100,6 +101,53 @@ for (const index in components) {
               var resJSON = JSON.parse(res.text)
               expect(resJSON, 'Response should be an array').to.be.an('array')
               expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+              done()
+            })
+        })
+      })
+    }
+
+    const versionsWithRoleandBootstrap = ['oda.tmforum.org/v1alpha3']
+    if (versionsWithRoleandBootstrap.indexOf(componentAPIVersion) > -1) {
+      const securityAPIs = status.securityAPIs
+      describe('Step 3: Run-time test of security API: partyrole', function () {
+        it('securityAPI partyrole to return at least 1 partyrole', function (done) {
+          expect(securityAPIs['partyrole'].url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
+          const httpScheme = securityAPIs['partyrole'].url.split('://')[0] + '://'
+          const server = securityAPIs['partyrole'].url.split('://')[1].split('/')[0]
+          const apiPath = '/' + securityAPIs['partyrole'].url.split('://')[1].split(/\/(.+)/)[1]
+          chai.request(httpScheme + server)
+            .get(apiPath + '/partyRole')
+            .end(function (err, res) {
+              expect(err).to.be.null
+              expect(res).to.have.status(200)
+              var resJSON = JSON.parse(res.text)
+              expect(resJSON, 'Response should be an array').to.be.an('array')
+              expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+              done()
+            })
+        })
+        it('One partyrole should match controllerRole', function (done) {
+          expect(securityAPIs['partyrole'].url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
+          const httpScheme = securityAPIs['partyrole'].url.split('://')[0] + '://'
+          const server = securityAPIs['partyrole'].url.split('://')[1].split('/')[0]
+          const apiPath = '/' + securityAPIs['partyrole'].url.split('://')[1].split(/\/(.+)/)[1]
+          const controllerRole = spec.security.controllerRole
+          chai.request(httpScheme + server)
+            .get(apiPath + '/partyRole')
+            .end(function (err, res) {
+              expect(err).to.be.null
+              expect(res).to.have.status(200)
+              var resJSON = JSON.parse(res.text)
+              expect(resJSON, 'Response should be an array').to.be.an('array')
+              expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+              let found = false
+              for (const roleKey in resJSON) {
+                if (resJSON[roleKey].name === controllerRole) {
+                  found = true
+                }
+              }
+              expect(found, "Response at least one partyRole should match controllerRole '" + controllerRole + "'" ).to.equal(true)
               done()
             })
         })
