@@ -1,0 +1,283 @@
+apiVersion: oda.tmforum.org/v1alpha1
+kind: component
+metadata:
+  labels:
+    oda.tmforum.org/componentName: Product Catalog Management
+    oda.tmforum.org/funtionalBlockName: Core Commerce Management
+  name: TAG_REALESE_NAME - Product Catalog Management
+spec:
+  componentKinds:
+  - group: core
+    kind: Catalog
+  coreFunction:
+    exposedAPIs:
+        - ProductCatalogManagement:
+            version: 4.0
+            id: TMF620
+            catalog:
+                  - GET
+                  - GET /id
+                  - POST
+                  - PATCH
+                  - DELETE
+            category:
+                  - GET
+                  - GET /id
+                  - POST
+                  - PATCH
+                  - DELETE
+            productSpecification:
+                  - GET
+                  - GET /id
+                  - POST
+                  - PATCH
+                  - DELETE
+            productOffering:
+                  - GET
+                  - GET /id
+                  - POST
+                  - PATCH
+                  - DELETE
+            productOfferingPrice:
+                  - GET
+                  - GET /id
+                  - POST
+                  - PATCH
+                  - DELETE
+            exportJob :
+                  - POST
+                  - GET
+                  - GET /id
+                  - DELETE
+            importJob :
+                  - POST
+                  - GET
+                  - GET /id
+                  - DELETE
+        - ProcessFlowManagement:
+            version: 4.0
+            id: TMF701
+            processFlow:
+                - POST
+                - GET
+                - GET /id
+                - DELETE
+            taskFlow:
+                - PATCH
+                - GET
+                - GET /id
+        - PromotionManagement:
+            version: 4.0
+            id: TMF671
+            promotion:
+                - GET
+                - GET /id
+                - POST
+                - PATCH
+                - DELETE
+        - Event:
+            version: 4.0
+            id: TMF688
+            listener:
+                - POST
+            hub:
+                - POST
+                - DELETE
+    dependantAPIs:
+        - ServiceCatalogManagement:
+          version: 4.0
+          id: TMF633
+          serviceSpecification:
+              - GET
+              - GET /id
+        - PartyRoleManagement:
+          version: 4.0
+          id : TMF669
+          partyRole:
+              - GET
+              - GET /id
+        - Party:
+          version: 4.0
+          id : TMF632
+          individual:
+              - GET
+              - GET /id
+          organization:
+              - GET
+              - GET /id
+        - ResourceCatalog:
+          version: 4.0
+          id : TMF672
+          resourceSpecification:
+              - GET
+              - GET /id
+        - AgreementManagement:
+          version: 4.0
+          id : TMF651
+          agreement:
+              - GET
+              - GET /id
+          agreementSpecification:
+              - GET
+              - GET /id
+        - SLA:
+          version: 4.0
+          id : TMF623
+          serviceLevelAgreement:
+              - GET
+              - GET /id
+        - GeographicAddressManagement:
+          version: 4.0
+          id : TMF673
+          geographicAddress:
+              - GET
+              - GET /id
+        - GeographicSiteManagement:
+          version: 4.0
+          id : TMF674
+          geographicSite:
+              - GET
+              - GET /id
+        - GeographicLocation:
+          version: 4.0
+          id : TMF675
+          geographicLocation:
+              - GET
+              - GET /id
+        - UserRolePermission:
+          version: 4.0
+          id : TMF672
+          permission:
+              - GET
+              - GET /id
+        - Event:
+          version: 4.0
+          id : TMF688
+          event:
+              - POST
+              - GET /id
+              - GET
+    managementAPIs:
+        - ResourceActivationConfiguration:
+            version: 4.0
+            id: TMF702
+            resource:
+                - GET
+                - GET /id
+                - POST
+                - PATCH
+                - DELETE
+            monitor:
+                - GET
+                - GET /id
+        - ResourceFunctionActivation:
+            version: 4.0
+            id: TMF664
+            resourceFunction:
+                - GET
+                - GET /id
+                - POST
+                - PATCH
+                - DELETE
+            monitor:
+                - GET
+                - GET /id
+            heal:
+                - POST
+                - GET
+                - GET /id
+            scale:
+                - POST
+                - GET
+                - GET /id
+            migrate:
+                - POST
+                - GET
+                - GET /id
+  eventNotification:
+    publishedEvents:
+         ProductCatalogManagement:
+            - productSpecificationCreate
+            - productSpecificationDeleteEvent
+            - categoryCreateEvent
+            - categoryDeleteEvent
+            - productOfferingCreateEvent
+            - productOfferingAttributeValueChangeEvent
+            - productOfferingStateChangeEvent
+            - productOfferingDeleteEvent
+            - productOfferingPriceCreateEvent
+            - productOfferingPriceAttributeValueChangeEvent
+            - productOfferingPriceStateChangeEvent
+            - productOfferingPriceDeleteEvent
+            - catalogCreateEvent
+            - catalogDeleteEvent
+            - catalogBatchEvent
+         PromotionManagement:
+            - promotionCreateEvent
+            - promotionDeleteEvent
+            - promotionAttributeValueChangeEvent
+            - promotionStateChangeEvent
+            - promotionInformationRequiredEvent
+         ProcessFlowManagement:
+            - processFlowCreateEvent
+            - processFlowStateChangeEvent
+            - processFlowStateDeleteEvent
+            - processFlowStateAttributeValueChangeEvent
+            - taskFlowCreateEvent
+            - taskFlowStateChangeEvent
+            - taskFlowDeleteEvent
+            - taskFlowAttributeValueChangeEvent
+            - taskFlowInformationRequiredEvent
+    publishedComponentManagementEvents:
+         ResourceActivationAndConfiguration:
+            - resourceCreateEvent
+            - resourceAttributeValueChangeEvent
+            - resourceStateChangeEvent
+            - resourceDeleteEvent
+            - monitorCreateEvent
+            - monitorStatechangeEvent
+            - monitorAttributeValueChange
+            - monitorDeleteEvent
+         ResourceFunctionActivationAndConfiguration:
+            - MigrateCreateEvent
+            - MigrateAttributeValueChangeEvent
+            - MigrateStateChangeEvent
+            - MigratedeleteEvent
+            - HealCreateEvent
+            - HealAttributeValueChangeEvent
+            - HealStateChangeEvent
+            - HealDeleteEvent
+            - ScaleCreateEvent
+            - ScaleAttributeValueChangeEvent
+            - ScaleStateChangeEvent
+            - ScaleDeleteEvent
+            - ResourceFunctionCreateEvent
+            - ResourceFunctionAttributeValueChangeEvent
+            - ResourceFunctionStateChangeEvent
+            - ResourceFunctionDeleteEvent
+    subscribedEvents:
+         ServiceCatalogManagement:
+            - serviceSpecificationStateChange
+            - serviceSpecificationAttributeValueChangeEvent
+            - serviceSpecificationCreateEvent
+            - serviceSpecificationDeleteEvent
+         ResourceCatalog:
+            - resourceSpecificationCreateEvent
+            - resourceSpecificationChangeEvent
+            - resourceSpecificationDeleteEvent
+  maintainers:
+  - email: alfonso.orlando@accenture.com
+    name: Alfonso Orlando
+  - email: ludovic.robert@orange.com
+    name: Ludovic Robert   
+  management: []
+  owners:
+  - email: gaetano.biancardi@accenture.com
+    name: Gaetano Biancardi
+  security:
+    securitySchemes: []
+  selector:
+    matchLabels:
+      oda.tmforum.org/componentName: Product Catalog Management
+  type: Product Catalog Management
+  version: 0.0.2
