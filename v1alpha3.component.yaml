@@ -219,14 +219,14 @@ spec:
   coreFunction:
     exposedAPIs: 
     - name: productcatalogmanagement
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-productcatalog-v4.0.0.swagger.json
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
       implementation: r1-prodcatapi
       path: /r1-productcatalog/tmf-api/productCatalogManagement/v4
       developerUI: /r1-productcatalog/tmf-api/productCatalogManagement/v4/docs
       port: 8080
     dependentAPIs: 
     - name: party      
-      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json  
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF632_PartyManagement/master/TMF632-Party-v4.0.0.swagger.json 
   eventNotification:
     publishedEvents: []
     subscribedEvents: []

@@ -4,10 +4,12 @@
   "description": "ODA Component Compliance Test Kit CTK",
   "main": "index.js",
   "scripts": {
-    "start": "node staticValidationRunner.js",
-    "static": "node staticValidationRunner.js",
-    "dynamic": "node dynamicValidationRunner.js",
-    "test": "node staticValidationRunner.js"
+    "start": "node L1-staticValidationRunner.js",
+    "L1-static": "node L1-staticValidationRunner.js",
+    "L1-dynamic": "node L1-dynamicValidationRunner.js",
+    "L2-static": "node L2-staticValidationRunner.js",
+    "L2-dynamic": "node L2-dynamicValidationRunner.js",
+    "test": "node L1-staticValidationRunner.js"
   },
   "repository": {
     "type": "git",

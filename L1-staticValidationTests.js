@@ -1,9 +1,12 @@
 /* eslint-disable no-undef */
 const fs = require('fs')
-const expect = require('chai').expect
+const chai = require('chai')
+const expect = chai.expect
 const YAML = require('yaml')
 const process = require('process')
 const COMPONENT = 'component'
+const chaiHttp = require('chai-http')
+chai.use(chaiHttp)
 
 console.log('***************************************************************************')
 console.log('Open Digital Architecture - Component Test Kit CTK Static Tests')
@@ -36,6 +39,8 @@ for (const index in components) {
   })
 
   describe('Step 1: Check ODA-Component Metadata for component ' + componentEnvelopeName, function () {
+    this.timeout(15000)
+
     documentArray = YAML.parseAllDocuments(file)
     const componentDoc = getComponentDocument(documentArray)
 
@@ -101,14 +106,34 @@ for (const index in components) {
       })
     }
 
-    it('Spec has eventNotification with publishedEvents and subscribedEvents', function (done) {
-      const spec = componentDoc.get('spec')
-      const eventNotification = spec.get('eventNotification')
-      expect(eventNotification, 'Spec has a eventNotification field of type object').to.be.a('object')
-      expect(eventNotification.get('publishedEvents'), "eventNotification should have a 'publishedEvents' field of type object").to.be.a('object')
-      expect(eventNotification.get('subscribedEvents'), "eventNotification should have a 'subscribedEvents' field of type object").to.be.a('object')
-      done()
-    })
+    const versionsWithAccessibleSwagger = ['oda.tmforum.org/v1alpha3']
+    if (versionsWithAccessibleSwagger.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Swagger file of exposedAPIs and dependentAPIs is accessible', async function () {
+        const spec = componentDoc.get('spec')
+        const coreFunction = spec.get('coreFunction')
+        expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
+        expect(coreFunction.get('exposedAPIs'), "coreFunction should have a 'exposedAPIs' field of type object").to.be.a('object')
+        expect(coreFunction.get('dependentAPIs'), "coreFunction should have a 'dependentAPIs' field of type object").to.be.a('object')
+        const exposedAPIsArray = coreFunction.get('exposedAPIs').items
+        for (const key in exposedAPIsArray) {
+          const specification = exposedAPIsArray[key].get('specification')
+          const httpScheme = specification.split('://')[0] + '://'
+          const server = specification.split('://')[1].split('/')[0]
+          const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+          const res = await chai.request(httpScheme + server).get(apiPath).send()
+          expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+        }
+        const dependentAPIs = coreFunction.get('dependentAPIs').items
+        for (const key in dependentAPIs) {
+          const specification = dependentAPIs[key].get('specification')
+          const httpScheme = specification.split('://')[0] + '://'
+          const server = specification.split('://')[1].split('/')[0]
+          const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+          const res = await chai.request(httpScheme + server).get(apiPath).send()
+          expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+        }
+      })
+    }
 
     it('Spec has management', function (done) {
       const spec = componentDoc.get('spec')
@@ -189,3 +214,4 @@ function getComponentDocument (inDocumentArray) {
   }
   return null
 };
+

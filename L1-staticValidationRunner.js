@@ -19,7 +19,7 @@ const mocha = new Mocha({
   reporter: 'spec'
 })
 
-mocha.addFile('staticValidationTests.js')
+mocha.addFile('L1-staticValidationTests.js')
 
 // Run the test.
 mocha.run(function (failures) {

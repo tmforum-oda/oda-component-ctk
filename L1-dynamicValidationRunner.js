@@ -19,7 +19,7 @@ const mocha = new Mocha({
   reporter: 'spec'
 })
 
-mocha.addFile('dynamicValidationTests.js')
+mocha.addFile('L1-dynamicValidationTests.js')
 
 // Run the test.
 mocha.run(function (failures) {
