@@ -21,12 +21,12 @@ spec:
           path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4
           developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4/docs
           port: 8080
-#        - name: processflow
-#          specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
-#          implementation: {{.Release.Name}}-processflow
-#          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/processFlow/v4
-#          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/processFlow/v4/docs
-#          port: 8080
+        - name: processflow
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
+          implementation: {{.Release.Name}}-processflow
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/processFlow/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/processFlow/v4/docs
+          port: 8080
     dependantAPIs:
         - name: processflow
           specification: https://github.com/tmforum-apis/TMF701_ProcessFlow/blob/master/TMF701-ProcessFlow-v4.0.0.swagger.json

@@ -29,6 +29,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.12.1",
     "chai": "^4.2.0",
+    "chai-files": "^1.4.0",
     "chai-http": "^4.3.0",
     "colors": "^1.4.0",
     "fs": "0.0.1-security",

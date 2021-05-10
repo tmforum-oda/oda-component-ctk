@@ -16,7 +16,7 @@ const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
 
 console.log('***************************************************************************')
-console.log('Open Digital Architecture - Component Test Kit CTK Dynamic Tests')
+console.log('Open Digital Architecture - Component Test Kit CTK Level 1 Dynamic Tests')
 console.log('***************************************************************************')
 console.log()
 
@@ -52,11 +52,11 @@ for (const index in components) {
         }).catch(done)
     })
 
-    it('Component has deployed successfully (deployment_status: Complete)', function (done) {
+    it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
       k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
-          expect(status.deployment_status, 'status.deployment_status is Complete').to.equal('Complete')
+          expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')
           done()
         }).catch(done)
     })

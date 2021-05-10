@@ -197,7 +197,8 @@ metadata:
   labels:
     oda.tmforum.org/componentName: r1-productcatalog
 spec:
-  type: productcatalog
+  type: TMFC-001-productcatalogmanagement
+  version: "0.0.1"
   selector:
     matchLabels:
      oda.tmforum.org/componentName: r1-productcatalog
@@ -208,7 +209,6 @@ spec:
     kind: PersistentVolumeClaim
   - group: apps
     kind: Deployment  
-  version: "0.0.1"
   description: "Simple Product Catalog ODA-Component from Open-API reference implementation." 
   maintainers:
   - name: Lester Thomas

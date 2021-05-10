@@ -9,7 +9,7 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
 console.log('***************************************************************************')
-console.log('Open Digital Architecture - Component Test Kit CTK Static Tests')
+console.log('Open Digital Architecture - Component Test Kit CTK Level 1 Static Tests')
 console.log('***************************************************************************')
 console.log()
 const components = process.env.components.split(',')
