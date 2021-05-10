@@ -1,5 +1,5 @@
 {
-    "url": " http://localhost:8669/tmf-api/partyRoleManagement/v4/",
+    "url": " http://localhost/r1-productcatalog/tmf-api/partyRoleManagement/v4/",
     "headers": {
         "Accept": "application/json",
         "Content-Type": "application/json"
