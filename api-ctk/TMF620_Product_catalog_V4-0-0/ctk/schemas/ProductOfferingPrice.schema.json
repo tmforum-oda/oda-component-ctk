@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "isBundle": {
+            "type": "boolean"
+        },
+        "priceType": {
+            "type": "string"
+        }
+    },
+    "required": [
+        
+    ]
+}

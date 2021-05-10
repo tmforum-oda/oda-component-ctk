@@ -1,0 +1,40 @@
+{
+    "url": "http://api-product-catalog-v4-0-0.mybluemix.net/tmf-api/productCatalogManagement/v4/",
+    "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer 1321321"
+    },
+    "payloads": {
+        "ProductSpecification": {
+            "POST": {
+                "payload": {
+                    "name": "Cisco Firepower NGFW"
+                }
+            }
+        },
+        "ProductOffering": {
+            "POST": {
+                "payload": {
+                    "name": "aProductOffering",
+                    "productSpecification": {
+                        "id": "9881",
+                        "href": "https://mycsp.com:8080/tmf-api/productCatalogManagement/v4/productSpecification/9881",
+                        "version": "1.1",
+                        "name": "Robotics999",
+                        "@referredType": "DeviceSpecification"
+                    }
+                }
+            }
+        },
+        "ProductOfferingPrice": {
+            "POST": {
+                "payload": {
+                    "name": "Recurring Charge for Business Firewall",
+                    "isBundle": false,
+                    "priceType": "recurring"
+                }
+            }
+        }
+    }
+}
