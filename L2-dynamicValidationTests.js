@@ -13,8 +13,10 @@ const expect = chai.expect
 const COMPONENT = 'component'
 
 const ctkPaths = {
-  "Product Catalog Management": "TMF620_Product_catalog_V4-0-0",
-  "Party Role Management": "TMF669-PartyRole"
+  'Product Catalog Management':
+      { '4.0.0': 'TMF620_Product_catalog_V4-0-0' },
+  'Party Role Management': 
+      { '4.0.0': 'TMF669-PartyRole' }
 }
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
@@ -68,27 +70,32 @@ for (const index in components) {
   // get Component resource
   k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     describe('Step 2 run CTK on each mandatory API from Golden Component ', function () {
+      // get the component details
       const status = res.body.items[0].status
       const spec = res.body.items[0].spec
       const type = spec.type
       const version = spec.version
+
+      // find the corresponding 'Golden Component' 
       const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
       const file = fs.readFileSync('./golden-components/' + goldenComponentFilename, 'utf8')
       documentArray = YAML.parseAllDocuments(file)
       const goldenComponent = documentArray[0]
       const goldenExposedAPI = goldenComponent.get('spec').get('coreFunction').get('exposedAPIs')
       const goldenExposedAPIArray = goldenExposedAPI.items
-      const exposedAPIArray = spec.coreFunction.exposedAPIs
+
+      // run the CTK Corresponding to each API in the Golden Components coreFunction/exposedAPIs
       for (const key in goldenExposedAPIArray) {
         const goldenAPIName = goldenExposedAPIArray[key].get('name')
-        it("Executing OpenAPI CTK for " + goldenAPIName + ": check /results folder for your results.", async function () {
+        it('Executing OpenAPI CTK for ' + goldenAPIName + ': check /results folder for your results.', async function () {
           this.timeout(120000) // 2 minute timeout
-
           const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
           const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
+
           // look in the current component spec for an API with the same title and version
           let foundAPI = false
           let targetCTKTitle, targetCTKVersion, targetAPIName
+          const exposedAPIArray = spec.coreFunction.exposedAPIs
           for (const exposedAPIArrayKey in exposedAPIArray) {
             const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
             const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
@@ -100,21 +107,24 @@ for (const index in components) {
             }
           }
           expect(foundAPI, "Found '" + goldenAPIobject.info.title + "' API with version '" + goldenAPIobject.info.version + "'").to.equal(true)
-          const ctkName = ctkPaths[targetCTKTitle]
-          config = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
+          // Look up the OpenAPI CTK name for this API/Version
+          const ctkName = ctkPaths[targetCTKTitle][targetCTKVersion]
+
+          // configure and set-up the CTK
+          CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
           // update the API URL in config from Component
-          // get url from component status
-          let targetAPIURL
-          for (const statusPIKey in status.exposedAPIs) {
-            if (status.exposedAPIs[statusPIKey].name === targetAPIName) {
-              targetAPIURL = status.exposedAPIs[statusPIKey].url
+          for (const statusAPIKey in status.exposedAPIs) {
+            if (status.exposedAPIs[statusAPIKey].name === targetAPIName) {
+              CTKConfig.url = status.exposedAPIs[statusAPIKey].url + '/'
             }
           }
-          config.url = targetAPIURL + '/'
-          fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(config))
+          fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
 
-          const { execSync } = require('child_process');
-          execSync ('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+          // execute the CTK
+          const { execSync } = require('child_process')
+          execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+
+          // move the CTK results to the /results folder
           let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
           let newPath = './results/' + ctkName + '.html'
           fs.rename(oldPath, newPath, function (err) {
@@ -125,16 +135,50 @@ for (const index in components) {
           fs.rename(oldPath, newPath, function (err) {
             if (err) throw err
           })
+
           // check the results
           testResults = JSON.parse(fs.readFileSync(newPath))
           const numberOfFailures = testResults.run.failures.length
-
-          // For each CTK, edit the config.json file and run the CTK
-          // Copy and re-name the htmlResults and jsonResults files
           expect(numberOfFailures, 'Test result should have zero failures - check /results folder for details.').to.equal(0)
-
         })
       }
+    })
+
+    describe('Step 3 run party role CTK against component security implementation', function () {
+      // get the component details
+      const spec = res.body.items[0].spec
+      const status = res.body.items[0].status
+
+      it('Executing OpenAPI CTK for partyrole: check /results folder for your results.', async function () {
+        const ctkName = ctkPaths['Party Role Management']['4.0.0']
+        // configure and set-up the CTK
+        CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
+        // update the API URL in config from Component
+        CTKConfig.url = status.securityAPIs.partyrole.url + '/'
+
+        fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
+
+        // execute the CTK
+        const { execSync } = require('child_process')
+        execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+
+        // move the CTK results to the /results folder
+        let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
+        let newPath = './results/' + ctkName + '.html'
+        fs.rename(oldPath, newPath, function (err) {
+          if (err) throw err
+        })
+        oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
+        newPath = './results/' + ctkName + '.json'
+        fs.rename(oldPath, newPath, function (err) {
+          if (err) throw err
+        })
+
+        // check the results
+        testResults = JSON.parse(fs.readFileSync(newPath))
+        const numberOfFailures = testResults.run.failures.length
+        expect(numberOfFailures, 'Test result should have zero failures - check /results folder for details.').to.equal(0)
+      })
     })
   })
 }

@@ -1,17 +1,1 @@
-{
-    "url": " http://localhost/r1-productcatalog/tmf-api/partyRoleManagement/v4/",
-    "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    },
-    "payloads": {
-        "PartyRole": {
-            "POST": {
-                "payload": {
-                    "name": "qqymucymyd",
-                    "roleType": {}
-                }
-            }
-        }
-    }
-}
+{"url":"http://localhost/r1-productcatalog/tmf-api/partyRoleManagement/v4/","headers":{"Accept":"application/json","Content-Type":"application/json"},"payloads":{"PartyRole":{"POST":{"payload":{"name":"qqymucymyd","roleType":{}}}}}}
