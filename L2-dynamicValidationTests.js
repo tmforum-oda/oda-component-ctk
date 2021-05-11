@@ -146,16 +146,13 @@ for (const index in components) {
 
     describe('Step 3 run party role CTK against component security implementation', function () {
       // get the component details
-      const spec = res.body.items[0].spec
       const status = res.body.items[0].status
 
       it('Executing OpenAPI CTK for partyrole: check /results folder for your results.', async function () {
         const ctkName = ctkPaths['Party Role Management']['4.0.0']
         // configure and set-up the CTK
         CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
-        // update the API URL in config from Component
         CTKConfig.url = status.securityAPIs.partyrole.url + '/'
-
         fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
 
         // execute the CTK
