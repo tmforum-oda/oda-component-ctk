@@ -1,2 +1,4 @@
 node_modules/
 results/
+api-ctk/*/jsonResults.json
+api-ctk/*/*.html

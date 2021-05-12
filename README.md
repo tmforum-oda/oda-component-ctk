@@ -1,6 +1,6 @@
 # ODA Component - Compliance Test Kit (CTK)
 
-This folder contains the test runners that execute CTK tests for an ODA Component.
+This folder contains the test runners that execute CTK tests for an ODA Component. There is a video demonstration of the CTKs at https://www.youtube.com/watch?v=6f82SHgwz28
 
 There are two levels of CTK: 
 * The L1 CTK allows components to be promoted from the Stage 1 (Sandbox) to Stage 2 (Components conform to the [Component design guidelines](../oda-ca-docs/ODAComponentDesignGuidelines.md), but could be of any functional scope). 
