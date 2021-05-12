@@ -197,8 +197,7 @@ metadata:
   labels:
     oda.tmforum.org/componentName: r1-productcatalog
 spec:
-  type: TMFC-001-productcatalogmanagement
-  version: "0.0.1"
+  type: TMFC001-productcatalogmanagement
   selector:
     matchLabels:
      oda.tmforum.org/componentName: r1-productcatalog
@@ -209,6 +208,7 @@ spec:
     kind: PersistentVolumeClaim
   - group: apps
     kind: Deployment  
+  version: "0.0.1"
   description: "Simple Product Catalog ODA-Component from Open-API reference implementation." 
   maintainers:
   - name: Lester Thomas
@@ -226,7 +226,7 @@ spec:
       port: 8080
     dependentAPIs: 
     - name: party      
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF632_PartyManagement/master/TMF632-Party-v4.0.0.swagger.json 
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF632_PartyManagement/master/TMF632-Party-v4.0.0.swagger.json  
   eventNotification:
     publishedEvents: []
     subscribedEvents: []
@@ -243,4 +243,4 @@ spec:
       implementation: r1-partyroleapi
       path: /r1-productcatalog/tmf-api/partyRoleManagement/v4
       developerUI: /r1-productcatalog/tmf-api/partyRoleManagement/v4/docs
-      port: 8080 
+      port: 8080
