@@ -96,59 +96,57 @@ for (const index in components) {
         const goldenAPIName = goldenExposedAPIArray[key].get('name')
         it('Executing OpenAPI CTK for ' + goldenAPIName + ': check /results folder for your results.', async function () {
           this.timeout(120000) // 2 minute timeout
-          expect(async function () {
-            const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
-            const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
+          const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
+          const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
 
-            // look in the current component spec for an API with the same title and version
-            let foundAPI = false
-            let targetCTKTitle, targetCTKVersion, targetAPIName
-            const exposedAPIArray = spec.coreFunction.exposedAPIs
-            for (const exposedAPIArrayKey in exposedAPIArray) {
-              const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
-              const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
-              if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
-                foundAPI = true
-                targetCTKTitle = goldenAPIobject.info.title
-                targetCTKVersion = goldenAPIobject.info.version
-                targetAPIName = componentName + '-' + exposedAPIArray[exposedAPIArrayKey].name
-              }
+          // look in the current component spec for an API with the same title and version
+          let foundAPI = false
+          let targetCTKTitle, targetCTKVersion, targetAPIName
+          const exposedAPIArray = spec.coreFunction.exposedAPIs
+          for (const exposedAPIArrayKey in exposedAPIArray) {
+            const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
+            const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
+            if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
+              foundAPI = true
+              targetCTKTitle = goldenAPIobject.info.title
+              targetCTKVersion = goldenAPIobject.info.version
+              targetAPIName = componentName + '-' + exposedAPIArray[exposedAPIArrayKey].name
             }
-            expect(foundAPI, "Found '" + goldenAPIobject.info.title + "' API with version '" + goldenAPIobject.info.version + "'").to.equal(true)
-            // Look up the OpenAPI CTK name for this API/Version
-            const ctkName = ctkPaths[targetCTKTitle][targetCTKVersion]
+          }
+          expect(foundAPI, "Found '" + goldenAPIobject.info.title + "' API with version '" + goldenAPIobject.info.version + "'").to.equal(true)
+          // Look up the OpenAPI CTK name for this API/Version
+          const ctkName = ctkPaths[targetCTKTitle][targetCTKVersion]
 
-            // configure and set-up the CTK
-            CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
-            // update the API URL in config from Component
-            for (const statusAPIKey in status.exposedAPIs) {
-              if (status.exposedAPIs[statusAPIKey].name === targetAPIName) {
-                CTKConfig.url = status.exposedAPIs[statusAPIKey].url + '/'
-              }
+          // configure and set-up the CTK
+          CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
+          // update the API URL in config from Component
+          for (const statusAPIKey in status.exposedAPIs) {
+            if (status.exposedAPIs[statusAPIKey].name === targetAPIName) {
+              CTKConfig.url = status.exposedAPIs[statusAPIKey].url + '/'
             }
-            fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
+          }
+          fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
 
-            // execute the CTK
-            const { execSync } = require('child_process')
-            execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+          // execute the CTK
+          const { execSync } = require('child_process')
+          execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
 
-            // move the CTK results to the /results folder
-            let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
-            let newPath = './results/' + ctkName + '.html'
-            fs.rename(oldPath, newPath, function (err) {
-              if (err) throw err
-            })
-            oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
-            newPath = './results/' + ctkName + '.json'
-            fs.rename(oldPath, newPath, function (err) {
-              if (err) throw err
-            })
+          // move the CTK results to the /results folder
+          let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
+          let newPath = './results/' + ctkName + '.html'
+          fs.rename(oldPath, newPath, function (err) {
+            if (err) throw err
+          })
+          oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
+          newPath = './results/' + ctkName + '.json'
+          fs.rename(oldPath, newPath, function (err) {
+            if (err) throw err
+          })
 
-            // check the results
-            testResults = JSON.parse(fs.readFileSync(newPath))
-            const numberOfFailures = testResults.run.failures.length
-            expect(numberOfFailures, 'Test result should have zero failures - check /results folder for details.').to.equal(0)
-          }, "CTK should run with no exceptions").to.not.throw()
+          // check the results
+          testResults = JSON.parse(fs.readFileSync(newPath))
+          const numberOfFailures = testResults.run.failures.length
+          expect(numberOfFailures, 'Test result should have zero failures - check /results folder for details.').to.equal(0)
         })
       }
     })

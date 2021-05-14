@@ -2,6 +2,8 @@
 
 This folder contains the  Compliance Test Kit (CTK) for an ODA Component. There is a video demonstration of the CTKs at https://www.youtube.com/watch?v=6f82SHgwz28
 
+ [![CTK](https://img.youtube.com/vi/6f82SHgwz28/0.jpg)](https://www.youtube.com/watch?v=6f82SHgwz28)
+
 There are two levels of CTK: 
 * The L1 CTK allows components to be promoted from the Stage 1 (Sandbox) to Stage 2 (Components conform to the [Component design guidelines](https://github.com/tmforum-oda/oda-ca-docs/blob/master/ODAComponentDesignGuidelines.md), but could be of any functional scope). 
 * The L2 CTK allows components to be promoted from Stage 2 to Stage 3 (Components that meet mandatory functional scope of the corresponding 'Golden Component').
