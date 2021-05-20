@@ -2,6 +2,22 @@ const Mocha = require('mocha')
 const process = require('process')
 const fs = require('fs')
 
+let namespace = 'components' // default
+if (process.env.NAMESPACE) {
+  namespace = process.env.NAMESPACE
+}
+process.argv.forEach(function (val, index, array) {
+  if ((val === '-n') || (val === '--namespace')) {
+    if (array[index + 1]) {
+      namespace = array[index + 1]
+    } else {
+      console.error('Please provide the namespace value after %s', val)
+      process.exit(1)
+    }
+  }
+})
+process.env.NAMESPACE = namespace
+
 // create an environment variable with list of components to test. Either find all components in components folder or the single component passed as a command-line arguement
 if (process.argv.length > 2) {
   process.env.components = process.argv[2]

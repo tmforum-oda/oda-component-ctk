@@ -11,6 +11,7 @@ chai.use(chaiHttp)
 const expect = chai.expect
 
 const COMPONENT = 'component'
+const NAMESPACE = process.env.NAMESPACE
 
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
@@ -35,16 +36,16 @@ for (const index in components) {
   console.log({ componentAPIVersion: componentAPIVersion })
   describe('Step 0: Basic environment connectivity tests', function () {
     it('Kubectl configured correctly', function (done) {
-      k8sCoreApi.listNamespacedPod('components').then((res) => {
-        expect(res, "Kubectl should return pods in 'components' namespace").to.be.a('object')
+      k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
+        expect(res, "Kubectl should return pods in " + NAMESPACE + " namespace").to.be.a('object')
         done()
-      })
+      }).catch(done)
     })
   })
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
-    it('Component can be found', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
+    it('Component ' + componentName + ' can be found in namespace ' + NAMESPACE, function (done) {
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
           expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)
@@ -53,7 +54,7 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
           expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')
@@ -63,7 +64,7 @@ for (const index in components) {
   })
 
   // get Component resource
-  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', 'components', 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
+  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     const status = res.body.items[0].status
     const spec = res.body.items[0].spec
     const exposedAPIList = status.exposedAPIs
