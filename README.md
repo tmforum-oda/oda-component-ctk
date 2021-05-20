@@ -25,11 +25,16 @@ npm install
 Execute the validation tests with either:
 
 ```
-npm run <CTK Test Type> <filename.component.yaml>
+npm run <CTK Test Type> -- <filename.component.yaml>
 ```
 
 Where `<CTK Test Type>` is one of `L1-static`, `L1-dynamic`, `L2-static`, `L2-dynamic`.
 
+It defaults to the `components` namespace. If you want to use an alternative, the command is:
+
+```
+npm run <CTK Test Type> -- <filename.component.yaml> --namespace <namespace name>
+```
 
 Typically you create the <filename.component.yaml> from your helm chart with the command
 
