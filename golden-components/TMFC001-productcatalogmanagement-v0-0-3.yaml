@@ -1,0 +1,137 @@
+apiVersion: oda.tmforum.org/v1alpha1
+kind: component
+metadata:
+  labels:
+  - name: Tag.Release.Name - Product Catalog Management
+  oda.tmforum.org/funtionalBlockName: CoreCommerceManagement
+  oda.tmforum.org/componentName: ProductCatalogManagement
+spec:
+  componentKinds:
+  - group: core
+    kind: Service
+  - group: core
+    kind: PersistentVolumeClaim
+  - group: apps
+    kind: Deployment
+  coreFunction:
+    exposedAPIs:
+        - name: ProductCatalogManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
+          required: true
+          implementation: /{{.Release.Name}}-ProductCatalogManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProductCatalogManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProductCatalogManagement/v4/docs
+          port: 8080
+        - name: ProcessFlowManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-ProcessFlowManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProcessFlowManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProcessFlowManagement/v4/docs
+          port: 8080
+        - name: PromotionManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF671_Promotion/master/TMF671-Promotion-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-PromotionManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/PromotionManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/PromotionManagement/v4/docs
+          port: 8080 
+        - name: Event
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF688-Event/master/TMF688-Event-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-Event
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4/docs
+          port: 8080
+    dependantAPIs:
+        - name: ServiceCatalogManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-ServiceCatalogManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ServiceCatalogManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ServiceCatalogManagement/v4/docs
+          port: 8080
+        - name: PartyRoleManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-PartyRoleManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/PartyRoleManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/PartyRoleManagement/v4/docs
+          port: 8080
+        - name: Party
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF671_Promotion/master/TMF671-Promotion-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-Party
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Party/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Party/v4/docs
+          port: 8080 
+        - name: ResourceCatalog
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF688-ResourceCatalog/master/TMF688-ResourceCatalog-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-ResourceCatalog
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceCatalog/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceCatalog/v4/docs
+          port: 8080
+        - name: AgreementManagement
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-AgreementManagement
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/AgreementManagement/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/AgreementManagement/v4/docs
+          port: 8080
+        - name: SLA
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF623_SLA/master/TMF623-SLA-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-SLA
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/SLA/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/SLA/v4/docs
+          port: 8080 
+        - name: GeographicAddress
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF673_GeographicAddress/master/TMF673-GeographicAddress-v4.0.1.swagger.json
+          implementation: /{{.Release.Name}}-GeographicAddress
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicAddress/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicAddress/v4/docs
+          port: 8080
+        - name: GeographicSite
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF674_GeographicSite/master/TMF674-GeographicSite-v4.0.0.swagger.json
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicSite/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicSite/v4/docs
+          port: 8080
+        - name: GeographicLocation
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF675_GeographicLocation/master/TMF675-GeographicLocation-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-GeographicLocation
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicLocation/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/GeographicLocation/v4/docs
+          port: 8080 
+        - name: UserRolesPermissions
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF672_UserRolesPermissions/master/TMF672-UserRolePermission-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-UserRolesPermissions
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/UserRolesPermissions/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/UserRolesPermissions/v4/docs
+          port: 8080 
+        - name: Event
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF688-Event/master/TMF688-Event-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-Event
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4/docs
+          port: 8080
+    managementAPIs:
+        - name: ResourceActivationConfiguration
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF702-ResourceActivationConfiguration/master/TMF702-ResourceActivation-v4.0.0.swagger.json
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceActivationConfiguration/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceActivationConfiguration/v4/docs
+          port: 8080
+        - name: ResourceFunctionActivation
+          specification: https://raw.githubusercontent.com/tmforum-apis/TMF688-ResourceFunctionActivation/master/TMF688-ResourceFunctionActivation-v4.0.0.swagger.json
+          implementation: /{{.Release.Name}}-ResourceFunctionActivation
+          path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceFunctionActivation/v4
+          developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ResourceFunctionActivation/v4/docs
+          port: 8080
+  eventNotification:
+    publishedEvents: []
+    subscribedEvents: []
+  maintainers:
+  - email: anastasios.sarantis1@vodafone.com
+    name: Tassos Sarantis
+  management: []
+  owners:
+  - email: Iturkington@tmforum.org
+    name: Ian Turkington
+  security:
+    securitySchemes: []
+  selector:
+    matchLabels:
+      oda.tmforum.org/componentName: ProductCatalogManagement
+  type: TMFC-001-productcatalogmanagement
+  version: 0.0.3
