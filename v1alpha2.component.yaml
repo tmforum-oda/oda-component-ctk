@@ -165,7 +165,7 @@ metadata:
   labels:
     oda.tmforum.org/componentName: r1-productcatalog
 spec:
-  type: productcatalog
+  type: TMFC001-productcatalogmanagement
   selector:
     matchLabels:
      oda.tmforum.org/componentName: r1-productcatalog
@@ -187,7 +187,7 @@ spec:
   coreFunction:
     exposedAPIs: 
     - name: productcatalogmanagement
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-productcatalog-v4.0.0.swagger.json
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
       implementation: r1-prodcatapi
       path: /r1-productcatalog/tmf-api/productCatalogManagement/v4
       developerUI: /r1-productcatalog/tmf-api/productCatalogManagement/v4/docs

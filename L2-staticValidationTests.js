@@ -144,6 +144,7 @@ async function getSchemaFromURL(inURL) {
   const server = inURL.split('://')[1].split('/')[0]
   const apiPath = '/' + inURL.split('://')[1].split(/\/(.+)/)[1]
   const APIresponse = await chai.request(httpScheme + server).get(apiPath).send()
+  expect(APIresponse.res.statusCode, 'Expect to be able to download API Schema from URL').to.equal(200)
   const APIobject = JSON.parse(APIresponse.res.text)
   return (APIobject)
 }
