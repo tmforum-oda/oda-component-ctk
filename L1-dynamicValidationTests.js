@@ -13,6 +13,8 @@ const expect = chai.expect
 const COMPONENT = 'component'
 const NAMESPACE = process.env.NAMESPACE
 
+const HEADER = process.env.HEADER
+
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
 
@@ -75,13 +77,21 @@ for (const index in components) {
           const httpScheme = exposedAPIList[apiKey].url.split('://')[0] + '://'
           const server = exposedAPIList[apiKey].url.split('://')[1].split('/')[0]
           const apiPath = '/' + exposedAPIList[apiKey].url.split('://')[1].split(/\/(.+)/)[1]
-          chai.request(httpScheme + server)
-            .get(apiPath)
-            .end(function (err, res) {
-              expect(err).to.be.null
-              expect(res).to.have.status(200)
-              done()
-            })
+
+          let requestChain = chai.request(httpScheme + server)
+
+          requestChain = requestChain.get(apiPath)
+          if (HEADER !== '') {
+            // add authToken headder
+            headerName = HEADER.split(':')[0]
+            headerValue = HEADER.split(':')[1]
+            requestChain = requestChain.set(headerName, headerValue)
+          }
+          requestChain.end(function (err, res) {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            done()
+          })
         })
       })
     }
@@ -94,16 +104,24 @@ for (const index in components) {
           const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
           const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
-          chai.request(httpScheme + server)
-            .get(apiPath + '/partyRole')
-            .end(function (err, res) {
-              expect(err).to.be.null
-              expect(res).to.have.status(200)
-              const resJSON = JSON.parse(res.text)
-              expect(resJSON, 'Response should be an array').to.be.an('array')
-              expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
-              done()
-            })
+
+          let requestChain = chai.request(httpScheme + server)
+
+          requestChain = requestChain.get(apiPath + '/partyRole')
+          if (HEADER !== '') {
+            // add authToken headder
+            headerName = HEADER.split(':')[0]
+            headerValue = HEADER.split(':')[1]
+            requestChain = requestChain.set(headerName, headerValue)
+          }
+          requestChain.end(function (err, res) {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            const resJSON = JSON.parse(res.text)
+            expect(resJSON, 'Response should be an array').to.be.an('array')
+            expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+            done()
+          })
         })
       })
     }
@@ -117,16 +135,23 @@ for (const index in components) {
           const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
           const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
-          chai.request(httpScheme + server)
-            .get(apiPath + '/partyRole')
-            .end(function (err, res) {
-              expect(err).to.be.null
-              expect(res).to.have.status(200)
-              const resJSON = JSON.parse(res.text)
-              expect(resJSON, 'Response should be an array').to.be.an('array')
-              expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
-              done()
-            })
+          let requestChain = chai.request(httpScheme + server)
+
+          requestChain = requestChain.get(apiPath + '/partyRole')
+          if (HEADER !== '') {
+            // add authToken headder
+            headerName = HEADER.split(':')[0]
+            headerValue = HEADER.split(':')[1]
+            requestChain = requestChain.set(headerName, headerValue)
+          }
+          requestChain.end(function (err, res) {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            const resJSON = JSON.parse(res.text)
+            expect(resJSON, 'Response should be an array').to.be.an('array')
+            expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+            done()
+          })
         })
         it('One partyrole should match controllerRole', function (done) {
           expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
@@ -134,23 +159,30 @@ for (const index in components) {
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
           const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
           const controllerRole = spec.security.controllerRole
-          chai.request(httpScheme + server)
-            .get(apiPath + '/partyRole')
-            .end(function (err, res) {
-              expect(err).to.be.null
-              expect(res).to.have.status(200)
-              const resJSON = JSON.parse(res.text)
-              expect(resJSON, 'Response should be an array').to.be.an('array')
-              expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
-              let found = false
-              for (const roleKey in resJSON) {
-                if (resJSON[roleKey].name === controllerRole) {
-                  found = true
-                }
+          let requestChain = chai.request(httpScheme + server)
+
+          requestChain = requestChain.get(apiPath + '/partyRole')
+          if (HEADER !== '') {
+            // add authToken headder
+            headerName = HEADER.split(':')[0]
+            headerValue = HEADER.split(':')[1]
+            requestChain = requestChain.set(headerName, headerValue)
+          }
+          requestChain.end(function (err, res) {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            const resJSON = JSON.parse(res.text)
+            expect(resJSON, 'Response should be an array').to.be.an('array')
+            expect(resJSON, 'Response should have at least one partyRole').to.have.length.at.least(1)
+            let found = false
+            for (const roleKey in resJSON) {
+              if (resJSON[roleKey].name === controllerRole) {
+                found = true
               }
-              expect(found, "Response at least one partyRole should match controllerRole '" + controllerRole + "'").to.equal(true)
-              done()
-            })
+            }
+            expect(found, "Response at least one partyRole should match controllerRole '" + controllerRole + "'").to.equal(true)
+            done()
+          })
         })
       })
     }
