@@ -6,8 +6,12 @@ let namespace = 'components' // default
 if (process.env.NAMESPACE) {
   namespace = process.env.NAMESPACE
 }
+
+let header = '' // default
+let numberOfArgs = 0
 process.argv.forEach(function (val, index, array) {
   if ((val === '-n') || (val === '--namespace')) {
+    numberOfArgs = numberOfArgs + 2
     if (array[index + 1]) {
       namespace = array[index + 1]
     } else {
@@ -15,8 +19,20 @@ process.argv.forEach(function (val, index, array) {
       process.exit(1)
     }
   }
+
+  if ((val === '-H') || (val === '--header')) {
+    numberOfArgs = numberOfArgs + 2
+    if (array[index + 1]) {
+      header = array[index + 1]
+    } else {
+      console.error('Please provide the header value after %s', val)
+      process.exit(1)
+    }
+  }  
 })
+
 process.env.NAMESPACE = namespace
+process.env.HEADER = header
 
 // create an environment variable with list of components to test. Either find all components in components folder or the single component passed as a command-line arguement
 if (process.argv.length > 2) {

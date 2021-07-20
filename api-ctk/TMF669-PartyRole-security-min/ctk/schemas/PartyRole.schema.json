@@ -1,0 +1,1 @@
+{"$schema": "http://json-schema.org/schema#", "type": "object", "properties": {"name": {"type": "string"}, "roleType": {"type": "object"}}, "required": ["name", "roleType"]}

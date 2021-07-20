@@ -15,8 +15,8 @@ const COMPONENT = 'component'
 const ctkPaths = {
   'Product Catalog Management':
       { '4.0.0': 'TMF620_Product_catalog_V4-0-0' },
-  'Party Role Management': 
-      { '4.0.0': 'TMF669-PartyRole' }
+  'Party Role Management':
+      { '4.0.0': 'TMF669-PartyRole-security-min' }   // { '4.0.0': 'TMF669-PartyRole' }
 }
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
@@ -27,7 +27,7 @@ console.log('*******************************************************************
 console.log()
 
 const NAMESPACE = process.env.NAMESPACE
-
+const HEADER = process.env.HEADER
 const components = process.env.components.split(',')
 for (const index in components) {
   const componentEnvelopeName = components[index]
@@ -127,6 +127,14 @@ for (const index in components) {
               CTKConfig.url = status.exposedAPIs[statusAPIKey].url + '/'
             }
           }
+
+          if (HEADER !== '') {
+            // add authToken headder
+            headerName = HEADER.split(':')[0]
+            headerValue = HEADER.split(':')[1]
+            CTKConfig.headers[headerName] = headerValue
+          }
+
           fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
 
           // execute the CTK
@@ -136,12 +144,12 @@ for (const index in components) {
           // move the CTK results to the /results folder
           let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
           let newPath = './results/' + ctkName + '.html'
-          fs.rename(oldPath, newPath, function (err) {
+          fs.renameSync(oldPath, newPath, function (err) {
             if (err) throw err
           })
           oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
           newPath = './results/' + ctkName + '.json'
-          fs.rename(oldPath, newPath, function (err) {
+          fs.renameSync(oldPath, newPath, function (err) {
             if (err) throw err
           })
 
@@ -158,10 +166,17 @@ for (const index in components) {
       const status = res.body.items[0].status
 
       it('Executing OpenAPI CTK for partyrole: check /results folder for your results.', async function () {
+        this.timeout(120000) // 2 minute timeout
         const ctkName = ctkPaths['Party Role Management']['4.0.0']
         // configure and set-up the CTK
         CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
         CTKConfig.url = status.securityAPIs.partyrole.url + '/'
+        if (HEADER !== '') {
+          // add authToken headder
+          headerName = HEADER.split(':')[0]
+          headerValue = HEADER.split(':')[1]
+          CTKConfig.headers[headerName] = headerValue
+        }
         fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
 
         // execute the CTK
@@ -171,12 +186,12 @@ for (const index in components) {
         // move the CTK results to the /results folder
         let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
         let newPath = './results/' + ctkName + '.html'
-        fs.rename(oldPath, newPath, function (err) {
+        fs.renameSync(oldPath, newPath, function (err) {
           if (err) throw err
         })
         oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
         newPath = './results/' + ctkName + '.json'
-        fs.rename(oldPath, newPath, function (err) {
+        fs.renameSync(oldPath, newPath, function (err) {
           if (err) throw err
         })
 
