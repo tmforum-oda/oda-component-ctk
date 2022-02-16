@@ -106,13 +106,15 @@ for (const index in components) {
           let targetCTKTitle, targetCTKVersion, targetAPIName
           const exposedAPIArray = spec.coreFunction.exposedAPIs
           for (const exposedAPIArrayKey in exposedAPIArray) {
-            const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
-            const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
-            if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
-              foundAPI = true
-              targetCTKTitle = goldenAPIobject.info.title
-              targetCTKVersion = goldenAPIobject.info.version
-              targetAPIName = componentName + '-' + exposedAPIArray[exposedAPIArrayKey].name
+            if ('specification' in exposedAPIArray[exposedAPIArrayKey]) {
+              const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
+              const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
+              if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
+                foundAPI = true
+                targetCTKTitle = goldenAPIobject.info.title
+                targetCTKVersion = goldenAPIobject.info.version
+                targetAPIName = componentName + '-' + exposedAPIArray[exposedAPIArrayKey].name
+              }
             }
           }
           expect(foundAPI, "Found '" + goldenAPIobject.info.title + "' API with version '" + goldenAPIobject.info.version + "'").to.equal(true)
