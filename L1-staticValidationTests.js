@@ -43,7 +43,6 @@ for (const index in components) {
 
     documentArray = YAML.parseAllDocuments(file)
     const componentDoc = getComponentDocument(documentArray)
-
     it('Contains document of kind: component', function (done) {
       // eslint-disable-next-line no-unused-expressions
       expect(componentDoc, "The document should have a field of 'kind: component'.").to.not.be.null
@@ -51,7 +50,7 @@ for (const index in components) {
     })
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
+      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4']
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);

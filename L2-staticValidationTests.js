@@ -53,7 +53,7 @@ for (const index in components) {
     })
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
+      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4']
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -99,6 +99,9 @@ for (const index in components) {
         // look in the current component spec for an API with the same title and version
         let foundAPI = false
         for (const exposedAPIArrayKey in exposedAPIArray) {
+          console.log("------------------------------------------------")
+          console.log(exposedAPIArrayKey)
+          console.log("------------------------------------------------")
           const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get('specification')
           const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
           if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {

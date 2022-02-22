@@ -1,4 +1,5 @@
-const { When, Then, After } = require('cucumber');
+const { Given, When, Then, After } = require('@cucumber/cucumber');
+const componentUtils = require('component-utils')
 const fs = require('fs')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
@@ -14,6 +15,15 @@ const HEADER = process.env.HEADER
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
 
+Given('An initial catalog populated with product category data', function () {
+    // Write code here that turns the phrase above into concrete actions
+
+    // get access to the Product Catalog API
+    console.log('Getting access to the Product Catalog API')
+    console.log(componentUtils.getCoreAPIs())
+    return 'pending';
+  });
+
 When('we request the products categories', async function () {
     // write implementation here
     return 'pending'
@@ -24,9 +34,14 @@ Then('we should receive list of categories', async function (dataTable) {
     return 'pending'
 });
 
-When('we select Internet line of product', async function () {
-    // write implementation here
-    return 'pending'
+Given('An initial catalog populated with product offer data linked to {string} category', function (string) {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+  });
+
+When('we select Internet line of product category', function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
 });
 
 Then('we should receive list of offers', async function (dataTable) {

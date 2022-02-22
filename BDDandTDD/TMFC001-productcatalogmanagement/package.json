@@ -1,0 +1,25 @@
+{
+  "name": "cucumber-test-app",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "./node_modules/.bin/cucumber-js ./features/IG1228-UC002-Browse-B2C-Catalogue.feature "
+  },
+  "private": true,
+  "dependencies": {
+    "@kubernetes/client-node": "^0.12.1",
+    "chai": "^4.2.0",
+    "chai-files": "^1.4.0",
+    "chai-http": "^4.3.0",
+    "colors": "^1.4.0",
+    "component-utils": "file:component-utils",
+    "fs": "0.0.1-security",
+    "mocha": "^8.2.1",
+    "path": "^0.12.7",
+    "stream-buffers": "^3.0.2",
+    "ws": "^8.0.0",
+    "yaml": "^1.10.0"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "7.3.2"
+  }
+}
