@@ -12,7 +12,6 @@ const expect = chai.expect
 
 const COMPONENT = 'component'
 const NAMESPACE = process.env.NAMESPACE
-
 const HEADER = process.env.HEADER
 
 const kc = new k8s.KubeConfig()

@@ -2,7 +2,7 @@
   "name": "cucumber-test-app",
   "version": "0.0.1",
   "scripts": {
-    "start": "./node_modules/.bin/cucumber-js ./features/IG1228-UC002-Browse-B2C-Catalogue.feature "
+    "start": "./node_modules/.bin/cucumber-js ./features/IG1228-UC002-Browse-B2C-Catalogue.feature  --publish"
   },
   "private": true,
   "dependencies": {

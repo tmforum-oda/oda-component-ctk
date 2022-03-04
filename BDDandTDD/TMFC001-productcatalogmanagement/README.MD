@@ -35,6 +35,7 @@ Warnings:
    ? When we request the products categories
        Undefined. Implement with the following snippet:
 
+
          When('we request the products categories', function () {
            // Write code here that turns the phrase above into concrete actions
            return 'pending';
@@ -57,3 +58,12 @@ Warnings:
 If you copy the code snippets into a file `./features/steps/IG1228-UC002-Steps.v1.js' and then fill in the actual test details, then you will see the tests start to succeed (or at least different warning messages!).
 
 There is a good tutorial on Cucumber javascript framework at https://www.testim.io/blog/cucumber-js-for-bdd-an-introductory-tutorial-with-examples/
+
+
+Running the BDD scripts
+-----------------------
+
+type:
+```
+npm start
+```

@@ -1,5 +1,4 @@
 {
-    "url": "http://a576e999356a44e898169adcf3aaf879-368993360.eu-west-1.elb.amazonaws.com/r1-productcatalog/tmf-api/productCatalogManagement/v4/",
     "headers": {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -7,12 +6,11 @@
         "Auth": "LKLKJSDHLKJH"
     },
     "payloads": {
-        "ProductCategory": {
-            "POST": {
-                "payload": {
-                    "name": "Internet line of product"
-                }
+        "category": [{
+            "payload": {
+                "name": "Internet line of product",
+                "description": "Fiber and ADSL broadband products"
             }
-        }
+        }]
     }
 }

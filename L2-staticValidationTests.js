@@ -99,9 +99,6 @@ for (const index in components) {
         // look in the current component spec for an API with the same title and version
         let foundAPI = false
         for (const exposedAPIArrayKey in exposedAPIArray) {
-          console.log("------------------------------------------------")
-          console.log(exposedAPIArrayKey)
-          console.log("------------------------------------------------")
           const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get('specification')
           const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
           if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
