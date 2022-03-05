@@ -2,10 +2,11 @@
   "name": "cucumber-test-app",
   "version": "0.0.1",
   "scripts": {
-    "start": "./node_modules/.bin/cucumber-js ./features/IG1228-UC002-Browse-B2C-Catalogue.feature  --publish"
+    "start": "cucumber-js  --publish"
   },
   "private": true,
   "dependencies": {
+    "@cucumber/cucumber": "^7.3.2",
     "@kubernetes/client-node": "^0.12.1",
     "chai": "^4.2.0",
     "chai-files": "^1.4.0",
@@ -18,8 +19,5 @@
     "stream-buffers": "^3.0.2",
     "ws": "^8.0.0",
     "yaml": "^1.10.0"
-  },
-  "devDependencies": {
-    "@cucumber/cucumber": "7.3.2"
   }
 }
