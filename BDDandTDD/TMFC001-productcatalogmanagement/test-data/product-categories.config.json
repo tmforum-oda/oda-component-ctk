@@ -7,20 +7,14 @@
     },
     "payloads": {
         "category": [{
-            "payload": {
-                "name": "Internet line of product",
-                "description": "Fiber and ADSL broadband products"
-            }
+            "name": "Internet line of product",
+            "description": "Fiber and ADSL broadband products"
         },{
-            "payload": {
-                "name": "Mobile line of product",
-                "description": "Mobile phones and packages"
-            }
+            "name": "Mobile line of product",
+            "description": "Mobile phones and packages"
         },{
-            "payload": {
-                "name": "IoT line of product",
-                "description": "IoT devices and solutions"
-            }
+            "name": "IoT line of product",
+            "description": "IoT devices and solutions"
         }]
     }
 }

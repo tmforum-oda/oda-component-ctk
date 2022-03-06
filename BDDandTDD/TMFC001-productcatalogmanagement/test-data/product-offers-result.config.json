@@ -7,17 +7,13 @@
     },
     "payloads": {
         "productoffering": [{
-            "payload": {
                 "name": "Fiber Offering 1",
                 "description": "50 Mbps Fiber broadband",
                 "category": [{
                     "href": "/category?name=Internet line of product",
                     "@referredType": "Category"
                 }]
-
-            }
         },{
-            "payload": {
                 "name": "Fiber Offering 2",
                 "description": "100 Mbps Fiber broadband",
                 "category": [{
@@ -25,16 +21,13 @@
                     "@referredType": "Category"
                 }]
 
-            }
         },{
-            "payload": {
                 "name": "Fiber + Mobile Offering 3",
                 "description": "100 Mbps Fiber broadband + Unlimited data mobile",
                 "category": [{
                     "href": "/category?name=Internet line of product",
                     "@referredType": "Category"
                 }]
-            }
         }]
     }
 }
