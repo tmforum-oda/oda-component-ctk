@@ -2,18 +2,11 @@ const { Given, When, Then, After } = require('@cucumber/cucumber');
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const assert = require('assert');
-const k8s = require('@kubernetes/client-node')
 const componentUtils = require('component-utils')
 
 chai.use(chaiHttp)
 const NAMESPACE = 'components'
-const CATEGORY_RESULT_DATA_FILE = './test-data/product-categories.config.json'
-const OFFER_TEST_DATA_FILE = './test-data/product-offers-input.config.json'
-const OFFER_RESULT_DATA_FILE = './test-data/product-offers-result.config.json'
 const HTTP_OK = 200
-
-const kc = new k8s.KubeConfig()
-kc.loadFromDefault()
 
 const componentInstanceName = 'r1-productcatalog'
 
@@ -24,38 +17,44 @@ Given('An empty product catalog', async function () {
   productCatalogAPIURL = await componentUtils.getAPIURL(componentInstanceName, 'productcatalogmanagement', NAMESPACE)
   assert.notEqual(productCatalogAPIURL, null, "Can't find Product Catalog API")
 
-  // delete all product offers
-  let loadSuccessful = await componentUtils.deleteTestData('productoffering', productCatalogAPIURL)
-  assert.equal(loadSuccessful, true, 'Failed to delete productoffering test data')
+  // delete all productofferingprice resources
+  let deleteSuccessful = await componentUtils.deleteTestData('productofferingprice', productCatalogAPIURL)
+  assert.equal(deleteSuccessful, true, 'Failed to delete productofferingprice test data')
 
-  // delete all product categories
-  loadSuccessful = await componentUtils.deleteTestData('category', productCatalogAPIURL)
-  assert.equal(loadSuccessful, true, 'Failed to delete category test data')
+  // delete all productoffering resources
+  deleteSuccessful = await componentUtils.deleteTestData('productoffering', productCatalogAPIURL)
+  assert.equal(deleteSuccessful, true, 'Failed to delete productoffering test data')
+
+  // delete all productspecification resources
+  deleteSuccessful = await componentUtils.deleteTestData('productspecification', productCatalogAPIURL)
+  assert.equal(deleteSuccessful, true, 'Failed to delete productspecification test data')
+
+  // delete all category resources
+  deleteSuccessful = await componentUtils.deleteTestData('category', productCatalogAPIURL)
+  assert.equal(deleteSuccessful, true, 'Failed to delete category test data')
+
+  // delete all catalog resources
+  deleteSuccessful = await componentUtils.deleteTestData('catalog', productCatalogAPIURL)
+  assert.equal(deleteSuccessful, true, 'Failed to delete catalog test data')
 })
 
 Given('A product catalog populated with {string} data', async function (inputResource, dataTable) {
-  // Build the product category data from the dataTable
-  const resourceData = dataTable.hashes()
-  const testDataObject = { payloads: {} }
-  testDataObject.payloads[inputResource] = resourceData
-  const loadSuccessful = await componentUtils.loadTestDataFromObject(testDataObject, productCatalogAPIURL)
+  // Load the inputResource data from the dataTable
+  const loadSuccessful = await componentUtils.loadTestDataFromDataTable(inputResource, dataTable, productCatalogAPIURL)
   assert.equal(loadSuccessful, true, 'Failed to load test data')
 })
 
 When('we request a list of {string} resources', async function (inputResource) {
-  // get the product categories
+  // get the inputResource resource list
   const response = await chai.request(productCatalogAPIURL).get('/' + inputResource)
   assert.equal(response.status, HTTP_OK, 'Failed to get ' + inputResource + ' list')
   this.returnData = response.body
 })
 
 Then('we should see {string} data', async function (inputResource, dataTable) {
-  // Build the expected result data from the dataTable
-  const resourceData = dataTable.hashes()
-  const testDataObject = { payloads: {} }
-  testDataObject.payloads[inputResource] = resourceData
-  const valid = await componentUtils.validateReturnDataFromObject(testDataObject, this.returnData, productCatalogAPIURL)
-  assert.equal(valid, true, 'Product categories do not match result data')
+  // validate result data against the dataTable
+  const valid = await componentUtils.validateReturnDataFromDataTable(inputResource, dataTable, this.returnData, productCatalogAPIURL)
+  assert.equal(valid, true, inputResource + ' do not match result data')
 })
 
 Given('A catalog populated with {string} data linked to {string} resources', async function (inputResource, linkedResource, dataTable) {
