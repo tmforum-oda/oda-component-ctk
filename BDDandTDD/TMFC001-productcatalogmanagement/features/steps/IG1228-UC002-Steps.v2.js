@@ -83,3 +83,13 @@ When('we select {string} filtered by {string} equal to {string}', async function
   assert.equal(response.status, HTTP_OK, 'Failed to get ' + inResource + ' list')
   this.returnData = response.body
 })
+
+When('We delete a {string} resource', function (inResource, dataTable) {
+  // Write code here that turns the phrase above into concrete actions
+
+})
+
+Then('We should not see the {string} resource', function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending'
+})
