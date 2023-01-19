@@ -1,6 +1,5 @@
 const Mocha = require('mocha')
 const process = require('process')
-const fs = require('fs')
 
 let namespace = 'components' // default
 if (process.env.NAMESPACE) {

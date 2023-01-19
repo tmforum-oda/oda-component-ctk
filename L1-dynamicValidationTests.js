@@ -11,8 +11,11 @@ chai.use(chaiHttp)
 const expect = chai.expect
 
 const COMPONENT = 'component'
+const COMPONENTS = 'components'
 const NAMESPACE = process.env.NAMESPACE
 const HEADER = process.env.HEADER
+const TMFORUM_ODA_API_GROUP = 'oda.tmforum.org'
+const TMFORUM_ODA_API_VERSION = 'v1beta1'
 
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
@@ -45,8 +48,8 @@ for (const index in components) {
   })
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
-    it('Component ' + componentName + ' can be found in namespace ' + NAMESPACE, function (done) {   
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+    it('Component ' + componentName + ' can be found in namespace ' + NAMESPACE, function (done) {
+      k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
           expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)
@@ -55,7 +58,7 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
           expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')
@@ -65,7 +68,7 @@ for (const index in components) {
   })
 
   // get Component resource
-  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
+  k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     const status = res.body.items[0].status
     const spec = res.body.items[0].spec
     const exposedAPIList = status.exposedAPIs
@@ -94,7 +97,7 @@ for (const index in components) {
         })
       })
     }
-    const versionsWithRoleOnly = ['oda.tmforum.org/v1alpha2']
+    const versionsWithRoleOnly = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
     if (versionsWithRoleOnly.indexOf(componentAPIVersion) > -1) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
@@ -125,7 +128,7 @@ for (const index in components) {
       })
     }
 
-    const versionsWithRoleandBootstrap = ['oda.tmforum.org/v1alpha4']
+    const versionsWithRoleandBootstrap = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
     if (versionsWithRoleandBootstrap.indexOf(componentAPIVersion) > -1) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {

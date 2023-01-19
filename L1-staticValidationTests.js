@@ -50,7 +50,7 @@ for (const index in components) {
     })
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha1', 'oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4']
+      const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -105,9 +105,9 @@ for (const index in components) {
       })
     }
 
-    const versionsWithAccessibleSwagger = ['oda.tmforum.org/v1alpha3']
+    const versionsWithAccessibleSwagger = ['oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
     if (versionsWithAccessibleSwagger.indexOf(componentDoc.get('apiVersion')) > -1) {
-      it('Swagger file of exposedAPIs and dependentAPIs is accessible', async function () {
+      it('Swagger file of coreFunction exposedAPIs and dependentAPIs is accessible', async function () {
         const spec = componentDoc.get('spec')
         const coreFunction = spec.get('coreFunction')
         expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
@@ -134,21 +134,83 @@ for (const index in components) {
       })
     }
 
-    it('Spec has management', function (done) {
-      const spec = componentDoc.get('spec')
-      const management = spec.get('management')
-      done()
-      expect(management, 'Spec has a management field of type object').to.be.a('object')
-    })
+    const versionsWithdependentAPIsInManagementandSecurity = ['oda.tmforum.org/v1beta1']
+    if (versionsWithdependentAPIsInManagementandSecurity.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Swagger file of management exposedAPIs and dependentAPIs is accessible (for openapis)', async function () {
+        const spec = componentDoc.get('spec')
+        const management = spec.get('management')
+        expect(management, 'Spec has a management field of type object').to.be.a('object')
+        expect(management.get('exposedAPIs'), "management should have a 'exposedAPIs' field of type object").to.be.a('object')
+        expect(management.get('dependentAPIs'), "management should have a 'dependentAPIs' field of type object").to.be.a('object')
+        const exposedAPIsArray = management.get('exposedAPIs').items
+        for (const key in exposedAPIsArray) {
+          if (exposedAPIsArray[key].get('apitype') === 'openapi') {
+            const specification = exposedAPIsArray[key].get('specification')
+            const httpScheme = specification.split('://')[0] + '://'
+            const server = specification.split('://')[1].split('/')[0]
+            const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+            const res = await chai.request(httpScheme + server).get(apiPath).send()
+            expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+          }
+        }
+        const dependentAPIs = management.get('dependentAPIs').items
+        for (const key in dependentAPIs) {
+          if (dependentAPIs[key].get('apitype') === 'openapi') {
+            const specification = dependentAPIs[key].get('specification')
+            const httpScheme = specification.split('://')[0] + '://'
+            const server = specification.split('://')[1].split('/')[0]
+            const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+            const res = await chai.request(httpScheme + server).get(apiPath).send()
+            expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+          }
+        }
+      })
+      it('Swagger file of security exposedAPIs and dependentAPIs is accessible (for openapis)', async function () {
+        const spec = componentDoc.get('spec')
+        const security = spec.get('security')
+        expect(security, 'Spec has a security field of type object').to.be.a('object')
+        expect(security.get('exposedAPIs'), "security should have a 'exposedAPIs' field of type object").to.be.a('object')
+        expect(security.get('dependentAPIs'), "security should have a 'dependentAPIs' field of type object").to.be.a('object')
+        const exposedAPIsArray = security.get('exposedAPIs').items
+        for (const key in exposedAPIsArray) {
+          if (exposedAPIsArray[key].get('apitype') === 'openapi') {
+            const specification = exposedAPIsArray[key].get('specification')
+            const httpScheme = specification.split('://')[0] + '://'
+            const server = specification.split('://')[1].split('/')[0]
+            const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+            const res = await chai.request(httpScheme + server).get(apiPath).send()
+            expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+          }
+        }
+        const dependentAPIs = security.get('dependentAPIs').items
+        for (const key in dependentAPIs) {
+          if (dependentAPIs[key].get('apitype') === 'openapi') {
+            const specification = dependentAPIs[key].get('specification')
+            const httpScheme = specification.split('://')[0] + '://'
+            const server = specification.split('://')[1].split('/')[0]
+            const apiPath = '/' + specification.split('://')[1].split(/\/(.+)/)[1]
+            const res = await chai.request(httpScheme + server).get(apiPath).send()
+            expect(res.status, 'Swagger ' + specification + ' has a return code of 200').to.equal(200)
+          }
+        }
+      })
+    } else {
+      it('Spec has management', function (done) {
+        const spec = componentDoc.get('spec')
+        const management = spec.get('management')
+        done()
+        expect(management, 'Spec has a management field of type object').to.be.a('object')
+      })
+      it('Spec has security', function (done) {
+        const spec = componentDoc.get('spec')
+        const security = spec.get('security')
+        expect(security, 'Spec has a security field of type object').to.be.a('object')
+        done()
+      })
+    }
 
-    it('Spec has security', function (done) {
-      const spec = componentDoc.get('spec')
-      const security = spec.get('security')
-      expect(security, 'Spec has a security field of type object').to.be.a('object')
-      done()
-    })
-    const versionsWithRole = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
-    if (versionsWithRole.indexOf(componentDoc.get('apiVersion')) > -1) {
+    const versionsWithRoleInObject = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4']
+    if (versionsWithRoleInObject.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has partyrole', function (done) {
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
@@ -164,7 +226,24 @@ for (const index in components) {
       })
     }
 
-    const versionsWithControllerRole = ['oda.tmforum.org/v1alpha3']
+    const versionsWithRoleInArray = ['oda.tmforum.org/v1beta1']
+    if (versionsWithRoleInArray.indexOf(componentDoc.get('apiVersion')) > -1) {
+      it('Security has partyrole', function (done) {
+        const spec = componentDoc.get('spec')
+        const security = spec.get('security')
+        let partyRoleFound = false
+        const exposedAPIsArray = security.get('exposedAPIs').items
+        for (const api in exposedAPIsArray) {
+          if (exposedAPIsArray[api].get('name') === 'partyrole') {
+            partyRoleFound = true
+          }
+        }
+        expect(partyRoleFound, 'Security exposedAPIs includes an api named partyrole').to.equal(true)
+        done()
+      })
+    }
+
+    const versionsWithControllerRole = ['oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
     if (versionsWithControllerRole.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has controllerRole', function (done) {
         const spec = componentDoc.get('spec')
