@@ -1,0 +1,8 @@
+{
+    "url": " http://localhost:8637/tmf-api/productInventory/v4/",
+    "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    "payloads": {}
+}

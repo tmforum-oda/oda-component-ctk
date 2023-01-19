@@ -1,0 +1,12 @@
+{
+"db_prot": "mongodb",
+"db_user": "mongodb",
+"db_password": "mongodb",
+"db_host": "localhost",
+"db_port": 27017,
+"db_name": "tmf",
+"alarm_host": "http://localhost:10011",
+"alarm_url_hal": "/api/",
+
+"strict_schema": true
+}

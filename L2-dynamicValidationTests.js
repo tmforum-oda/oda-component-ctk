@@ -16,7 +16,9 @@ const ctkPaths = {
   'Product Catalog Management':
       { '4.0.0': 'TMF620_Product_catalog_V4-0-0' },
   'Party Role Management':
-      { '4.0.0': 'TMF669-PartyRole-security-min' }   // { '4.0.0': 'TMF669-PartyRole' }
+      { '4.0.0': 'TMF669-PartyRole-security-min' },
+  'Product Inventory Management':
+      { '4.0.0': 'TMF620_Product_inventory_V4-0-0' }
 }
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()

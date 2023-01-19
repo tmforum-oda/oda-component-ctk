@@ -2,7 +2,7 @@ apiVersion: oda.tmforum.org/v1beta1
 kind: component
 metadata:
   labels:
-    oda.tmforum.org/componentName: ProductCatalogManagement
+    oda.tmforum.org/componentName: ProductCatalogCanagement
     oda.tmforum.org/funtionalBlockName: Core Commerce Management
     name: Tag_Release_Name - ProductCatalogCanagement
 spec:
@@ -15,27 +15,21 @@ spec:
     kind: Deployment
   coreFunction:
     exposedAPIs:
-    - name: productcatalogmanagement
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
-      implementation: {{.Release.Name}}-prodcatapi
+    - name: ProductInventory
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF637_ProductInventory/master/TMF637-ProductInventory-v4.0.0.swagger.json
       apitype: openapi
-      path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4
-      developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4/docs
+      implementation: {{.Release.Name}}-ProductInventory
+      path: {{.Release.Name}}-{{.Values.component.type}}tmf-apiproductInventoryv4
+      developerUI: {{.Release.Name}}-{{.Values.component.type}}tmf-apiproductInventoryv4docs
       port: 8080
     dependantAPIs:
-    - name: party 
-      apitype: openapi     
-      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json 
-  eventNotification:
-    publishedEvents: []
-    subscribedEvents: []
+    - name: ProductCatalogManagement
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
+      apitype: openapi
   management: 
     exposedAPIs:
     - name: metrics
       apitype: prometheus
-      implementation: {{.Release.Name}}-{{.Values.component.name}}-sm
-      path: /{{.Release.Name}}-{{.Values.component.name}}/metrics
-      port: 4000
   security:
     controllerRole: {{ .Values.security.controllerRole }}
     exposedAPIs: 
@@ -47,13 +41,10 @@ spec:
       developerUI: /{{.Release.Name}}-{{.Values.component.name}}/tmf-api/partyRoleManagement/v4/docs
       port: 8080      
   maintainers:
-  - email: alfonso.orlando@accenture.com
-    name: Alfonso Orlando
+  - email: kamal.maghsoudlou@ericsson.com
+    name: Kamal Maghsoudlou
   owners:
-  - email: gaetano.biancardi@accenture.com
-    name: Gaetano Biancardi
-  selector:
-    matchLabels:
-      oda.tmforum.org/componentName: ProductCatalogManagement
+  - email: kamal.maghsoudlou@ericsson.com
+    name: Kamal Maghsoudlou
   type: TMFC-001-productcatalogmanagement
   version: 0.0.1
