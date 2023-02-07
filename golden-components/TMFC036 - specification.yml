@@ -1,0 +1,239 @@
+apiVersion: oda.tmforum.org/v1alpha1
+kind: component
+metadata:
+  labels:
+    oda.tmforum.org/componentName: SalesManagement
+    oda.tmforum.org/funtionalBlockName: Party
+    name: TMFC036 - Sales Management
+spec:
+  componentKinds:
+  - group: core
+    kind: Catalog
+    coreFunction:
+        exposedAPIs:
+            SalesManagement:
+            version: 4.0
+            id: TMF699
+            SalesLead:
+                - GET
+                - GET /id
+                - POST
+                - PATH
+                - DELETE
+            SalesOpportunity:
+                - GET
+                - GET /id
+                - POST
+                - PATH
+                - DELETE
+            Event:
+            version: 4.0
+            id : TMF688
+            event:
+                - POST
+                - GET /id
+                - GET
+            ProcessFlowManagement:
+            version: 4.0
+            id : TMF701
+            processFlow:
+                - POST
+                - GET /id
+                - GET
+                - DELETE
+            TaskFlow:
+                - GET /id
+                - GET
+                - PATCH
+        dependentAPIs:
+            PartyManagemnet:
+            version: 4.0
+            id: TMF632
+            individual:
+                - GET
+                - GET /id
+            organization:
+                - GET
+                - GET /id
+            PartyRole:
+            version: 4.0
+            id: TMF632
+            PartyRole:
+                - GET
+                - GET /id
+            ProductCatalogManagement:
+            version: 4.0
+            id: TMF620
+            ProductOffering:
+                - GET
+                - GET /id    
+            ProductSpecification:
+                - GET
+                - GET /id
+            ProductOfferingPrice:
+                - GET
+                - GET /id
+            AgreementManagement:
+            version: 4.0
+            id: TMF651
+            Agreement:
+                - GET
+                - GET /id
+            AgreementSpecification:
+                - GET
+                - GET /id
+            QuoteManagement:
+            version: 4.0
+            id: TMF648
+            Quote:
+                - GET
+                - GET /id
+            Event:
+            version: 4.0
+            id : TMF688
+            event:
+                - POST
+                - GET /id
+                - GET
+            ProcessFlowManagement:
+            version: 4.0
+            id : TMF701
+            processFlow:
+                - POST
+                - GET /id
+                - GET
+                - DELETE
+            TaskFlow:
+                - GET /id
+                - GET
+                - PATCH
+        managementAPIs:
+            ResourceActivationConfiguration:
+            version: 4.0
+            id: TMF702
+            resource:
+                - GET
+                - GET /id
+                - POST
+                - PATCH
+                - DELETE
+            monitor:
+                - GET
+                - GET /id
+            ResourceFunctionActivation:
+            version: 4.0
+            id: TMF664
+            resourceFunction:
+                - GET
+                - GET /id
+                - POST
+                - PATCH
+                - DELETE
+            monitor:
+                - GET
+                - GET /id
+            heal:
+                - POST
+                - GET
+                - GET /id
+            scale:
+                - POST
+                - GET
+                - GET /id
+            migrate:
+                - POST
+                - GET
+                - GET /id
+    eventNotification:
+    publishedEvents:
+        SalesLead:
+            - SalesLeadCreateEvent
+            - SalesLeadAttributeValueChangeEvent
+            - SalesLeadStateChangeEvent
+            - SalesLeadDeleteEvent
+        SalesOpportunity:
+            - SalesOpportunityCreateEvent
+            - SalesOpportunityAttributeValueChangeEvent
+            - SalesOpportunityStateChangeEvent
+            - SalesOpportunityDeleteEvent
+        ProcessFlowManagement:
+            - ProcessFlowAttributeValueChangeEvent
+            - ProcessFlowCreateEvent
+            - ProcessFlowDeleteEvent
+            - ProcessFlowSpecificationAttributeValueChangeEvent
+            - ProcessFlowSpecificationCreateEvent
+            - ProcessFlowSpecificationDeleteEvent
+            - ProcessFlowSpecificationStateChangeEvent
+            - ProcessFlowStateChangeEvent
+            - TaskFlowAttributeValueChangeEvent
+            - TaskFlowCreateEvent
+            - TaskFlowDeleteEvent
+            - TaskFlowInformationRequiredEvent
+            - TaskFlowSpecificationAttributeValueChangeEvent
+            - TaskFlowSpecificationCreateEvent
+            - TaskFlowSpecificationDeleteEvent
+            - TaskFlowSpecificationStateChangeEvent
+            - TaskFlowStateChangeEvent
+    SubscribedEvent:
+        Individual:
+            - IndividualCreateEvent
+            - IndividualAttributeValueChangeEvent
+            - IndividualStateChangeEvent
+            - IndividualDeleteEvent
+        Organization:
+            - OrganizationCreateEvent
+            - OrganizationAttributeValueChangeEvent
+            - OrganizationStateChangeEvent
+            - OrganizationDeleteEvent
+        ProductOffering:
+            - ProductOfferingCreateEvent
+            - ProductOfferingAttributeValueChangeEvent
+            - ProductOfferingStateChangeEvent
+            - ProductOfferingDeleteEvent     
+        ProductOfferingPrice:
+            - ProductOfferingPriceCreateEvent
+            - ProductOfferingPriceAttributeValueChangeEvent
+            - ProductOfferingPriceStateChangeEvent
+            - ProductOfferingPriceDeleteEvent
+        ProductSpecification:
+            - ProductSpecificationCreateEvent
+            - ProductSpecificationAttributeValueChangeEvent
+            - ProductSpecificationStateChangeEvent
+            - ProductSpecificationDeleteEvent    
+        Agreement:
+            - AgreementCreateEvent
+            - AgreementAttributeValueChangeEvent
+            - AgreementStateChangeEvent
+            - AgreementDeleteEvent       
+        AgreementSpecification:
+            - AgreementSpecificationCreateEvent
+            - AgreementSpecificationAttributeValueChangeEvent
+            - AgreementSpecificationStateChangeEvent
+            - AgreementSpecificationDeleteEvent
+        Quote:
+            - QuoteCreateEvent
+            - QuoteStateChangeEvent
+            - QuoteDeleteEvent
+            - QuoteInformationRequiredEvent
+            - QuoteAttributeValueChangeEvent       
+        PartyRole:
+            - PartyRoleCreateEvent
+            - PartyRoleAttributeValueChangeEvent
+            - PartyRoleStateChangeEvent
+            - PartyRoleDeleteEvent
+    maintainers:
+        - email: gaetano.biancardi@accenture.com
+        - name: Gaetano Biancardi
+        - email: anastasios.sarantis@cityfibre.com
+        - name: Tassos Sarantis
+    management: []
+        owners:
+        - email: gaetano.biancardi@accenture.com
+        - name: Gaetano Biancardi
+    security:
+        securitySchemes: []
+        selector:
+        matchLabels:
+    oda.tmforum.org/componentName: Sales Management
+    type: Sales Management
+    version: 0.0.1
