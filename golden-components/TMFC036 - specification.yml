@@ -2,16 +2,16 @@ apiVersion: oda.tmforum.org/v1alpha1
 kind: component
 metadata:
   labels:
-    oda.tmforum.org/componentName: SalesManagement
+    oda.tmforum.org/componentName: Lead and Opportunity Management
     oda.tmforum.org/funtionalBlockName: Party
-    name: TMFC036 - Sales Management
+    name: TMFC036 - Lead and Opportunity Management
 spec:
   componentKinds:
   - group: core
     kind: Catalog
     coreFunction:
         exposedAPIs:
-            SalesManagement:
+        - SalesManagement:
             version: 4.0
             id: TMF699
             SalesLead:
@@ -20,33 +20,33 @@ spec:
                 - POST
                 - PATH
                 - DELETE
-            SalesOpportunity:
+        - SalesOpportunity:
                 - GET
                 - GET /id
                 - POST
                 - PATH
                 - DELETE
-            Event:
+        - Event:
             version: 4.0
-            id : TMF688
+            id: TMF688
             event:
                 - POST
                 - GET /id
                 - GET
-            ProcessFlowManagement:
+        - ProcessFlowManagement:
             version: 4.0
-            id : TMF701
+            id: TMF701
             processFlow:
                 - POST
                 - GET /id
                 - GET
                 - DELETE
-            TaskFlow:
+        - TaskFlow:
                 - GET /id
                 - GET
                 - PATCH
         dependentAPIs:
-            PartyManagemnet:
+          - PartyManagemnet:
             version: 4.0
             id: TMF632
             individual:
@@ -55,13 +55,13 @@ spec:
             organization:
                 - GET
                 - GET /id
-            PartyRole:
+          - PartyRole:
             version: 4.0
-            id: TMF632
-            PartyRole:
+            id: TMF669
+            Role:
                 - GET
                 - GET /id
-            ProductCatalogManagement:
+          - ProductCatalogManagement:
             version: 4.0
             id: TMF620
             ProductOffering:
@@ -73,7 +73,7 @@ spec:
             ProductOfferingPrice:
                 - GET
                 - GET /id
-            AgreementManagement:
+          - AgreementManagement:
             version: 4.0
             id: TMF651
             Agreement:
@@ -82,22 +82,28 @@ spec:
             AgreementSpecification:
                 - GET
                 - GET /id
-            QuoteManagement:
+          - QuoteManagement:
             version: 4.0
             id: TMF648
             Quote:
                 - GET
                 - GET /id
-            Event:
+          - Event:
             version: 4.0
-            id : TMF688
+            id: TMF688
             event:
                 - POST
                 - GET /id
                 - GET
+            ProductOrderManagement:
+            version: 4.0
+            id: TMF622
+            ProductOrder:
+                - GET
+                - GET /id
             ProcessFlowManagement:
             version: 4.0
-            id : TMF701
+            id: TMF701
             processFlow:
                 - POST
                 - GET /id
@@ -108,7 +114,7 @@ spec:
                 - GET
                 - PATCH
         managementAPIs:
-            ResourceActivationConfiguration:
+          - ResourceActivationConfiguration:
             version: 4.0
             id: TMF702
             resource:
@@ -120,7 +126,7 @@ spec:
             monitor:
                 - GET
                 - GET /id
-            ResourceFunctionActivation:
+          - ResourceFunctionActivation:
             version: 4.0
             id: TMF664
             resourceFunction:
@@ -195,6 +201,12 @@ spec:
             - ProductOfferingPriceAttributeValueChangeEvent
             - ProductOfferingPriceStateChangeEvent
             - ProductOfferingPriceDeleteEvent
+        ProductOrder:
+            - ProductOrderCreateEvent 
+            - ProductOrderAttributeValueChangeEvent 
+            - ProductOrderDeleteEvent 
+            - ProductOrderStateChangeEvent 
+            - ProductOrderInformationRequiredEvent
         ProductSpecification:
             - ProductSpecificationCreateEvent
             - ProductSpecificationAttributeValueChangeEvent
@@ -226,14 +238,14 @@ spec:
         - name: Gaetano Biancardi
         - email: anastasios.sarantis@cityfibre.com
         - name: Tassos Sarantis
-    management: []
+    management: 
         owners:
-        - email: gaetano.biancardi@accenture.com
-        - name: Gaetano Biancardi
+            - email: gaetano.biancardi@accenture.com
+            - name: Gaetano Biancardi
     security:
         securitySchemes: []
-        selector:
-        matchLabels:
+        selector: []
+        matchLabels: []
     oda.tmforum.org/componentName: Sales Management
     type: Sales Management
     version: 0.0.1
