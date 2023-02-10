@@ -46,7 +46,7 @@ spec:
                 - GET
                 - PATCH
         dependentAPIs:
-          - PartyManagemnet:
+        - PartyManagemnet:
             version: 4.0
             id: TMF632
             individual:
@@ -55,13 +55,13 @@ spec:
             organization:
                 - GET
                 - GET /id
-          - PartyRole:
+        - PartyRole:
             version: 4.0
             id: TMF669
             Role:
                 - GET
                 - GET /id
-          - ProductCatalogManagement:
+        - ProductCatalogManagement:
             version: 4.0
             id: TMF620
             ProductOffering:
@@ -73,7 +73,7 @@ spec:
             ProductOfferingPrice:
                 - GET
                 - GET /id
-          - AgreementManagement:
+        - AgreementManagement:
             version: 4.0
             id: TMF651
             Agreement:
@@ -82,26 +82,26 @@ spec:
             AgreementSpecification:
                 - GET
                 - GET /id
-          - QuoteManagement:
+        - QuoteManagement:
             version: 4.0
             id: TMF648
             Quote:
                 - GET
                 - GET /id
-          - Event:
+        - Event:
             version: 4.0
             id: TMF688
             event:
                 - POST
                 - GET /id
                 - GET
-            ProductOrderManagement:
+        - ProductOrderManagement:
             version: 4.0
             id: TMF622
             ProductOrder:
                 - GET
                 - GET /id
-            ProcessFlowManagement:
+        - ProcessFlowManagement:
             version: 4.0
             id: TMF701
             processFlow:
