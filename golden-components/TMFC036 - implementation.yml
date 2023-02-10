@@ -2,13 +2,43 @@ apiVersion: oda.tmforum.org/v1alpha1
 kind: component
 metadata: null
 labels:
+<<<<<<< HEAD
+- name: TMFC036 - Lead and Opportunity Management
+oda.tmforum.org/funtionalBlockName: party
+oda.tmforum.org/componentName: Lead and Opportunity Management
+spec:
+componentKinds:
+coreFunction:
+=======
   - name: TMFC036 - Lead and Opportunity Management
 oda.tmforum.org/funtionalBlockName: Party Management
 oda.tmforum.org/componentName: Lead and Opportunity Management
 spec: null
 componentKinds: null
 coreFunction: null
+>>>>>>> 4658e33ad908db390f4ff5a954b23fc7a4637f9e
 exposedAPIs:
+<<<<<<< HEAD
+- name: SalesManagement
+specification: https://raw.githubusercontent.com/tmforum-apis/TMF699_SalesManagement/master/TMF699-SalesManagement-v4.0.0.swagger.json
+required: true
+implementation: /{{.Release.Name}}-SalesManagement
+path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/SalesManagement/v4
+developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/SalesManagement/v4/docs
+port: 8080
+- name: ProcessFlowManagment
+specification: https://raw.githubusercontent.com/tmforum-apis/TMF701_ProcessFlow/master/TMF701-ProcessFlow-v4.0.0.swagger.json
+implementation: /{{.Release.Name}}-ProcessFlowManagment
+path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProcessFlowManagment/v4
+developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/ProcessFlowManagment/v4/docs
+port: 8080
+- name: Event
+specification: https://raw.githubusercontent.com/tmforum-apis/TMF688-Event/master/TMF688-Event-v4.0.0.swagger.json
+implementation: /{{.Release.Name}}-Event
+path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4
+developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4/docs
+port: 8080
+=======
   - name: SalesManagement
     specification: https://raw.githubusercontent.com/tmforum-apis/TMF699_SalesManagement/master/TMF699-SalesManagement-v4.0.0.swagger.json
     required: true
@@ -31,6 +61,7 @@ exposedAPIs:
     path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4
     developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/Event/v4/docs
     port: 8080
+>>>>>>> 4658e33ad908db390f4ff5a954b23fc7a4637f9e
 dependantAPIs:
   - name: PartyManagemnet
     specification: https://raw.githubusercontent.com/tmforum-apis/TMF632_PartyManagement/master/TMF632-Party-v4.0.0.swagger.json
