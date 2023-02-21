@@ -28,12 +28,13 @@
   "homepage": "https://github.com/tmforum-rand/oda-component-definitions#readme",
   "dependencies": {
     "@kubernetes/client-node": "^0.12.1",
+    "allure-mocha": "^2.0.0-beta.26",
     "chai": "^4.2.0",
     "chai-files": "^1.4.0",
     "chai-http": "^4.3.0",
     "colors": "^1.4.0",
     "fs": "0.0.1-security",
-    "mocha": "^8.2.1",
+    "mocha": "^8.4.0",
     "path": "^0.12.7",
     "stream-buffers": "^3.0.2",
     "yaml": "^1.10.0"

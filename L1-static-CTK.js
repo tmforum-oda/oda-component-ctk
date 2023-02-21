@@ -16,7 +16,7 @@ if (process.argv.length > 2) {
 }
 
 const mocha = new Mocha({
-  reporter: 'spec'
+  reporter: 'allure-mocha'
 })
 
 mocha.addFile('L1-staticValidationTests.js')

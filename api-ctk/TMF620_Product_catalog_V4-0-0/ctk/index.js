@@ -6,7 +6,6 @@ config = JSON.parse(fs.readFileSync('../config.json'))
 
 const pmCollection = require('./CTK-Product_Catalog-4.0.0.postman_collection.json')
 
-exportEnvironment(config.url)
 
 headers = []
 Object.keys(config.headers).forEach(function (header) {
@@ -16,13 +15,13 @@ Object.keys(config.headers).forEach(function (header) {
   }
   headers.push(h)
 })
+
 pmCollection.item.forEach(function (i, indexi) {
   i.item.forEach(function (ii, indexii) {
     pmCollection.item[indexi].item[indexii].request.header = headers
   })
 })
 
-fs.writeFileSync('pmtest.json', JSON.stringify(pmCollection))
 Object.keys(config.payloads).forEach(resource => {
   const v = new Validator()
   const schema = require('./schemas/' + resource + '.schema.json')
@@ -42,6 +41,10 @@ Object.keys(config.payloads).forEach(resource => {
     pmCollection.item[6].item[0].request.body.raw = JSON.stringify(config.payloads[resource].POST.payload)
   }
 })
+fs.writeFileSync('pmtest.json', JSON.stringify(pmCollection))
+
+
+exportEnvironment(config.url)
 
 function exportEnvironment (url) {
   const fs = require('fs')
@@ -66,7 +69,7 @@ function runNewman () {
     collection: pmCollection,
     environment: require('./TMFENV.json'),
     insecure: true,
-    reporters: ['html', 'json'],
+    reporters: ['allure', 'html', 'json'],
     reporter: {
       html: {
         export: '../htmlResults.html' // If not specified, the file will be written to `newman/` in the current working directory.
@@ -74,6 +77,9 @@ function runNewman () {
       },
       json: {
         export: '../jsonResults.json'
+      },
+      allure: {
+        export: '../allureResults'
       }
     }
   }).on('start', function (err, args) {

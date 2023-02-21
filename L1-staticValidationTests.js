@@ -6,6 +6,8 @@ const YAML = require('yaml')
 const process = require('process')
 const COMPONENT = 'component'
 const chaiHttp = require('chai-http')
+const allure  = require("allure-mocha/runtime").allure;
+
 chai.use(chaiHttp)
 
 console.log('***************************************************************************')
@@ -18,8 +20,10 @@ for (const index in components) {
   const componentEnvelopeName = components[index]
   let documentArray = []
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
-  describe('Step 0: Basic file tests for component ' + componentEnvelopeName, function () {
-    it('File naming convention', function (done) {
+  describe('Step 0: Basic file tests for component ' + componentEnvelopeName,  () => {
+    it('File naming convention', (done) => {
+      
+      
       const nameArray = componentEnvelopeName.split('.')
       expect(nameArray[nameArray.length - 2], "Filename should end '.component.yaml'").to.equal('component')
       expect(nameArray[nameArray.length - 1], "Filename should end '.component.yaml'").to.equal('yaml')

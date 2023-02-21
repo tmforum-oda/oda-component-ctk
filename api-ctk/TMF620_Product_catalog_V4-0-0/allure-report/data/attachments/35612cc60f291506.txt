@@ -1,0 +1,120 @@
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+
+var jsonData = pm.response.json();
+
+if (Array.isArray(jsonData) && (jsonData.length > 0)) {
+    jsonData.forEach(function (instance, index) {
+
+        var requiredAttributes = ['href', 'id', 'lastUpdate', 'lifecycleStatus', 'name'];
+
+
+        if (instance['isBundle'] !== undefined && instance['isBundle'] == true) {
+            requiredAttributes.push('bundledProductSpecification')
+            pm.test('Response has bundledProductSpecification attribute', function () { pm.expect(instance["bundledProductSpecification"]).to.be.a('array'); });
+        }
+
+        pm.test('Instance has all mandatory attributes', function () { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) });
+
+
+
+
+
+
+        
+        pm.test('Response has href attribute', function () { pm.expect(instance["href"]).to.be.a('string'); });
+        pm.test('Response has id attribute', function () { pm.expect(instance["id"]).to.be.a('string'); });
+        pm.test('Response has lastUpdate attribute', function () { pm.expect(instance["lastUpdate"]).to.be.a('string'); });
+        pm.test('Response has lifecycleStatus attribute', function () { pm.expect(instance["lifecycleStatus"]).to.be.a('string'); });
+        pm.test('Response has name attribute', function () { pm.expect(instance["name"]).to.be.a('string'); });
+
+        pm.test('Body includes value held on href', function () {
+            pm.expect(pm.response.text()).to.include(instance['href']);
+        });
+        pm.test('Body includes value held on id', function () {
+            pm.expect(pm.response.text()).to.include(instance['id']);
+        });
+        pm.test('Body includes value held on lastUpdate', function () {
+            pm.expect(pm.response.text()).to.include(instance['lastUpdate']);
+        });
+        pm.test('Body includes value held on lifecycleStatus', function () {
+            pm.expect(pm.response.text()).to.include(instance['lifecycleStatus']);
+        });
+        pm.test('Body includes value held on name', function () {
+            pm.expect(pm.response.text()).to.include(instance['name']);
+        });
+        // Individualized tests
+        if (instance.id == pm.globals.get("IDPS01")) {
+            pm.test('href is ' + pm.globals.get("HREFPS01"), function () { pm.expect(instance['href']) == pm.globals.get('HREFPS01'); });
+            pm.test('id is ' + pm.globals.get("IDPS01"), function () { pm.expect(instance['id']) == pm.globals.get('IDPS01'); });
+            pm.test('lastUpdate is ' + pm.globals.get("LASTUPDATEPS01"), function () { pm.expect(instance['lastUpdate']) == pm.globals.get('LASTUPDATEPS01'); });
+            pm.test('lifecycleStatus is ' + pm.globals.get("LIFECYCLESTATUSPS01"), function () { pm.expect(instance['lifecycleStatus']) == pm.globals.get('LIFECYCLESTATUSPS01'); });
+            pm.test('name is ' + pm.globals.get("NAMEPS01"), function () { pm.expect(instance['name']) == pm.globals.get('NAMEPS01'); });
+        }
+        if (instance.id == pm.globals.get("IDPS02")) {
+            pm.test('href is ' + pm.globals.get("HREFPS02"), function () { pm.expect(instance['href']) == pm.globals.get('HREFPS02'); });
+            pm.test('id is ' + pm.globals.get("IDPS02"), function () { pm.expect(instance['id']) == pm.globals.get('IDPS02'); });
+            pm.test('lastUpdate is ' + pm.globals.get("LASTUPDATEPS02"), function () { pm.expect(instance['lastUpdate']) == pm.globals.get('LASTUPDATEPS02'); });
+            pm.test('lifecycleStatus is ' + pm.globals.get("LIFECYCLESTATUSPS02"), function () { pm.expect(instance['lifecycleStatus']) == pm.globals.get('LIFECYCLESTATUSPS02'); });
+            pm.test('name is ' + pm.globals.get("NAMEPS02"), function () { pm.expect(instance['name']) == pm.globals.get('NAMEPS02'); });
+        }
+    });
+}
+else {
+    var instance = pm.response.json();
+    var requiredAttributes = ['href', 'id', 'lastUpdate', 'lifecycleStatus', 'name'];
+
+
+    if (instance['isBundle'] !== undefined && instance['isBundle'] == true) {
+        requiredAttributes.push('bundledProductSpecification')
+    }
+
+    pm.test('Instance has all mandatory attributes', function () { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) });
+
+
+
+
+
+
+    pm.test('Response has href attribute', function () { pm.expect(instance["href"]).to.be.a('string'); });
+    pm.test('Response has id attribute', function () { pm.expect(instance["id"]).to.be.a('string'); });
+    pm.test('Response has lastUpdate attribute', function () { pm.expect(instance["lastUpdate"]).to.be.a('string'); });
+    pm.test('Response has lifecycleStatus attribute', function () { pm.expect(instance["lifecycleStatus"]).to.be.a('string'); });
+    pm.test('Response has name attribute', function () { pm.expect(instance["name"]).to.be.a('string'); });
+
+    pm.test('Body includes value held on href', function () {
+        pm.expect(pm.response.text()).to.include(instance['href']);
+    });
+    pm.test('Body includes value held on id', function () {
+        pm.expect(pm.response.text()).to.include(instance['id']);
+    });
+    pm.test('Body includes value held on lastUpdate', function () {
+        pm.expect(pm.response.text()).to.include(instance['lastUpdate']);
+    });
+    pm.test('Body includes value held on lifecycleStatus', function () {
+        pm.expect(pm.response.text()).to.include(instance['lifecycleStatus']);
+    });
+    pm.test('Body includes value held on name', function () {
+        pm.expect(pm.response.text()).to.include(instance['name']);
+    });
+    // Individualized tests
+    if (instance.id == pm.globals.get("IDPS01")) {
+        pm.test('href is ' + pm.globals.get("HREFPS01"), function () { pm.expect(instance['href']) == pm.globals.get('HREFPS01'); });
+        pm.test('id is ' + pm.globals.get("IDPS01"), function () { pm.expect(instance['id']) == pm.globals.get('IDPS01'); });
+        pm.test('lastUpdate is ' + pm.globals.get("LASTUPDATEPS01"), function () { pm.expect(instance['lastUpdate']) == pm.globals.get('LASTUPDATEPS01'); });
+        pm.test('lifecycleStatus is ' + pm.globals.get("LIFECYCLESTATUSPS01"), function () { pm.expect(instance['lifecycleStatus']) == pm.globals.get('LIFECYCLESTATUSPS01'); });
+        pm.test('name is ' + pm.globals.get("NAMEPS01"), function () { pm.expect(instance['name']) == pm.globals.get('NAMEPS01'); });
+    }
+    if (instance.id == pm.globals.get("IDPS02")) {
+        pm.test('href is ' + pm.globals.get("HREFPS02"), function () { pm.expect(instance['href']) == pm.globals.get('HREFPS02'); });
+        pm.test('id is ' + pm.globals.get("IDPS02"), function () { pm.expect(instance['id']) == pm.globals.get('IDPS02'); });
+        pm.test('lastUpdate is ' + pm.globals.get("LASTUPDATEPS02"), function () { pm.expect(instance['lastUpdate']) == pm.globals.get('LASTUPDATEPS02'); });
+        pm.test('lifecycleStatus is ' + pm.globals.get("LIFECYCLESTATUSPS02"), function () { pm.expect(instance['lifecycleStatus']) == pm.globals.get('LIFECYCLESTATUSPS02'); });
+        pm.test('name is ' + pm.globals.get("NAMEPS02"), function () { pm.expect(instance['name']) == pm.globals.get('NAMEPS02'); });
+    }
+
+}
+
