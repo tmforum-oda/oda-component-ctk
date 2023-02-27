@@ -30,8 +30,8 @@ for (const index in components) {
 
     it('Valid YAML document(s)', function (done) { // check that the file contains 1 or more YAML documents and that documents parse with zero errors
       documentArray = YAML.parseAllDocuments(file)
-      expect(documentArray, 'The file shold contain at least one YAML document.').to.be.a('array')
-      expect(documentArray.length, 'The file shold contain at least one YAML document.').to.be.greaterThan(0)
+      expect(documentArray, 'The file should contain at least one YAML document.').to.be.a('array')
+      expect(documentArray.length, 'The file should contain at least one YAML document.').to.be.greaterThan(0)
       // go through each document checking for errors
       for (const docKey in documentArray) {
         expect(documentArray[docKey].errors.length, 'YAML parsing error.' + documentArray[docKey].errors.toString()).to.equal(0)
