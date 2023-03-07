@@ -5,10 +5,10 @@ from pathlib import Path
 
 
 def process_html(html):
-    return html.replace("`", "\\`") \
-        .replace("\n","") \
-        .replace("\r","") \
-        .replace("\t","") \
+    return html #.replace("`", "\\`") 
+        #.replace("\n","") \
+        #.replace("\r","") \
+        #.replace("\t","") \
 
 def load_reports():
     for report in Path("../components-ctk-reports").glob("*.html"):

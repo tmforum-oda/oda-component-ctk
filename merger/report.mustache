@@ -12,7 +12,7 @@
         <iframe id="{{name}}" style=""></iframe>
         <script>
             var iframe = document.getElementById('{{name}}');
-            iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(`{{{content}}}`);
+            iframe.srcdoc = `{{content}}`;
         </script>
     {{/reports}}
 </body>
