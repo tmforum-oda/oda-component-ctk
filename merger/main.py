@@ -11,7 +11,17 @@ def process_html(html):
         #.replace("\t","") \
 
 def load_reports():
-    for report in Path("../components-ctk-reports").glob("*.html"):
+    base_report_path = Path("../components-ctk-reports")
+    report_paths = [
+        base_report_path.joinpath("L1-static-ctk.html"),
+        base_report_path.joinpath("L1-dynamic-ctk.html"),
+        base_report_path.joinpath("L2-static-ctk.html"),
+        base_report_path.joinpath("L2-dynamic-ctk.html"),
+        base_report_path.joinpath("APICTK-results.html"),
+        base_report_path.joinpath("BDD-TDD.html")
+       
+    ]
+    for report in report_paths:
         with report.open("r") as f:
             yield {
                 "name": report.stem,
