@@ -1,6 +1,8 @@
 const Mocha = require('mocha')
 const process = require('process')
 const fs = require('fs')
+const mochaOptions = require('./.mocharc.json')
+
 
 // create an environment variable with list of components to test. Either find all components in components folder or the single component passed as a command-line arguement
 if (process.argv.length > 2) {
@@ -15,9 +17,8 @@ if (process.argv.length > 2) {
   process.env.components = fileArray.join(',')
 }
 
-const mocha = new Mocha({
-  reporter: 'spec'
-})
+const mocha = new Mocha(mochaOptions)
+
 
 mocha.addFile('L2-staticValidationTests.js')
 

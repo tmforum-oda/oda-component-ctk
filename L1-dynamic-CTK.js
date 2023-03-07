@@ -1,5 +1,6 @@
 const Mocha = require('mocha')
 const process = require('process')
+const mochaOptions = require('./.mocharc.json')
 
 let namespace = 'components' // default
 if (process.env.NAMESPACE) {
@@ -36,9 +37,7 @@ process.env.HEADER = header
 // create an environment variable for the component passed as a command-line arguement
 process.env.components = process.argv[numberOfArgs + 2]
 
-const mocha = new Mocha({
-  reporter: 'spec'
-})
+const mocha = new Mocha(mochaOptions)
 
 mocha.addFile('L1-dynamicValidationTests.js')
 

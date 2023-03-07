@@ -1,6 +1,8 @@
 const Mocha = require('mocha')
 const process = require('process')
 const fs = require('fs')
+const mochaOptions = require('./.mocharc.json')
+
 
 let namespace = 'components' // default
 if (process.env.NAMESPACE) {
@@ -47,9 +49,8 @@ if (process.argv.length > 2) {
   process.env.components = fileArray.join(',')
 }
 
-const mocha = new Mocha({
-  reporter: 'spec'
-})
+const mocha = new Mocha(mochaOptions)
+
 
 mocha.addFile('L2-dynamicValidationTests.js')
 

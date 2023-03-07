@@ -1,0 +1,34 @@
+    <section class="suite">
+      <h1>Step 0: Basic environment connectivity tests</h1>
+      <dl>
+        <dt>Kubectl configured correctly</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js</dt>
+        <dd><pre><code>k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) =&#x3E; {
+  expect(res, &#x22;Kubectl should return pods in &#x22; + NAMESPACE + &#x22; namespace&#x22;).to.be.a(&#x27;object&#x27;)
+  done()
+}).catch(done)</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Step 1: Check metadata for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt class="error">Component r1-productcatalog can be found in namespace components</dt>
+        <dt class="error">/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js</dt>
+        <dd class="error"><pre><code>k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, &#x27;metadata.name=&#x27; + componentName)
+  .then(function (res) {
+    const numberOfComponentsFound = res.body.items.length
+    expect(numberOfComponentsFound, &#x27;Should find 1 component with name &#x27; + componentName).to.equal(1)
+    done()
+  }).catch(done)</code></pre></dd>
+        <dd class="error">AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1</dd>
+        <dt class="error">Component has deployed successfully (summary/status.deployment_status: Complete)</dt>
+        <dt class="error">/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js</dt>
+        <dd class="error"><pre><code>k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, &#x27;metadata.name=&#x27; + componentName)
+  .then(function (res) {
+    const status = res.body.items[0].status
+    expect(status[&#x27;summary/status&#x27;].deployment_status, &#x27;status.summary/status.deployment_status is Complete&#x27;).to.equal(&#x27;Complete&#x27;)
+    done()
+  }).catch(done)</code></pre></dd>
+        <dd class="error">TypeError: Cannot read properties of undefined (reading &#x27;status&#x27;)</dd>
+      </dl>
+    </section>

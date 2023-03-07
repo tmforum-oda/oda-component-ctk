@@ -1,0 +1,88 @@
+    <section class="suite">
+      <h1>Step 0: Basic file tests for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>File naming convention</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>const nameArray = componentEnvelopeName.split(&#x27;.&#x27;)
+expect(nameArray[nameArray.length - 2], &#x22;Filename should end &#x27;.component.yaml&#x27;&#x22;).to.equal(&#x27;component&#x27;)
+expect(nameArray[nameArray.length - 1], &#x22;Filename should end &#x27;.component.yaml&#x27;&#x22;).to.equal(&#x27;yaml&#x27;)
+done()</code></pre></dd>
+        <dt>Valid YAML document(s)</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>// check that the file contains 1 or more YAML documents and that documents parse with zero errors
+     documentArray = YAML.parseAllDocuments(file)
+     expect(documentArray, &#x27;The file shold contain at least one YAML document.&#x27;).to.be.a(&#x27;array&#x27;)
+     expect(documentArray.length, &#x27;The file shold contain at least one YAML document.&#x27;).to.be.greaterThan(0)
+     // go through each document checking for errors
+     for (const docKey in documentArray) {
+       expect(documentArray[docKey].errors.length, &#x27;YAML parsing error.&#x27; + documentArray[docKey].errors.toString()).to.equal(0)
+     }
+     done()</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>Contains document of kind: component</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>// eslint-disable-next-line no-unused-expressions
+expect(componentDoc, &#x22;The document should have a field of &#x27;kind: component&#x27;.&#x22;).to.not.be.null
+done()</code></pre></dd>
+        <dt>Component apiVersion &#x22;oda.tmforum.org/v1alpha4&#x22; is within supported versions</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>const supportedVersions = [&#x27;oda.tmforum.org/v1alpha2&#x27;, &#x27;oda.tmforum.org/v1alpha3&#x27;, &#x27;oda.tmforum.org/v1alpha4&#x27;, &#x27;oda.tmforum.org/v1beta1&#x27;]
+expect(componentDoc.get(&#x27;apiVersion&#x27;), &#x22;Component should have an &#x27;apiVersion&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(componentDoc.get(&#x27;apiVersion&#x27;)).to.be.oneOf(supportedVersions, &#x22;&#x27;apiVersion&#x27; should be within supported versions &#x22; + supportedVersions);
+done()</code></pre></dd>
+        <dt>Component has spec</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>expect(componentDoc.get(&#x27;spec&#x27;), &#x22;Component should have a &#x27;spec&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>type and version match one of the &#x27;Golden Components&#x27;</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const type = spec.get(&#x27;type&#x27;)
+const version = spec.get(&#x27;version&#x27;)
+const goldenComponentFilename = type + &#x27;-v&#x27; + version.split(&#x27;.&#x27;).join(&#x27;-&#x27;) + &#x27;.yaml&#x27;
+expect(type, &#x22;Spec should have a &#x27;type&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(version, &#x22;Spec should have a &#x27;version&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(chaiFiles.file(&#x27;./golden-components/&#x27; + goldenComponentFilename)).to.exist
+done()</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Step 2: Check any APIs in &#x27;Golden Component&#x27; are specified in component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>exposedAPIs in &#x27;Golden Components&#x27; have corresponding exposedAPI in component</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js</dt>
+        <dd><pre><code>async function () {
+      const spec = componentDoc.get(&#x27;spec&#x27;)
+      const exposedAPIArray = componentDoc.get(&#x27;spec&#x27;).get(&#x27;coreFunction&#x27;).get(&#x27;exposedAPIs&#x27;).items
+      const type = spec.get(&#x27;type&#x27;)
+      const version = spec.get(&#x27;version&#x27;)
+      const goldenComponentFilename = type + &#x27;-v&#x27; + version.split(&#x27;.&#x27;).join(&#x27;-&#x27;) + &#x27;.yaml&#x27;
+      const file = fs.readFileSync(&#x27;./golden-components/&#x27; + goldenComponentFilename, &#x27;utf8&#x27;)
+      documentArray = YAML.parseAllDocuments(file)
+      const goldenComponent = documentArray[0]
+      expect(goldenComponent, &#x22;Golden Component should be of type object&#x22;).to.be.a(&#x27;object&#x27;)
+      const goldenExposedAPI = goldenComponent.get(&#x27;spec&#x27;).get(&#x27;coreFunction&#x27;).get(&#x27;exposedAPIs&#x27;)
+      const goldenExposedAPIArray = goldenExposedAPI.items
+      for (const key in goldenExposedAPIArray) {
+        const goldenAPISpec = goldenExposedAPIArray[key].get(&#x27;specification&#x27;)
+        const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
+        // look in the current component spec for an API with the same title and version
+        let foundAPI = false
+        for (const exposedAPIArrayKey in exposedAPIArray) {
+          const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get(&#x27;specification&#x27;)
+          const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
+          if ((exposedAPIobject.info.title === goldenAPIobject.info.title) &#x26;&#x26; (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
+            foundAPI = true
+          }
+        }
+        expect(foundAPI, &#x22;Found &#x27;&#x22; + goldenAPIobject.info.title + &#x22;&#x27; API with version &#x27;&#x22; + goldenAPIobject.info.version + &#x22;&#x27;&#x22;).to.equal(true)
+      }
+      expect(version, &#x22;Spec should have a &#x27;version&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+      expect(chaiFiles.file(&#x27;./golden-components/&#x27; + goldenComponentFilename)).to.exist
+    }</code></pre></dd>
+      </dl>
+    </section>

@@ -1,0 +1,278 @@
+    <section class="suite">
+      <h1>Step 0: Basic file tests for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>File naming convention</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const nameArray = componentEnvelopeName.split(&#x27;.&#x27;)
+expect(nameArray[nameArray.length - 2], &#x22;Filename should end &#x27;.component.yaml&#x27;&#x22;).to.equal(&#x27;component&#x27;)
+expect(nameArray[nameArray.length - 1], &#x22;Filename should end &#x27;.component.yaml&#x27;&#x22;).to.equal(&#x27;yaml&#x27;)
+done()</code></pre></dd>
+        <dt>Valid YAML document(s)</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>// check that the file contains 1 or more YAML documents and that documents parse with zero errors
+     documentArray = YAML.parseAllDocuments(file)
+     expect(documentArray, &#x27;The file shold contain at least one YAML document.&#x27;).to.be.a(&#x27;array&#x27;)
+     expect(documentArray.length, &#x27;The file shold contain at least one YAML document.&#x27;).to.be.greaterThan(0)
+     // go through each document checking for errors
+     for (const docKey in documentArray) {
+       expect(documentArray[docKey].errors.length, &#x27;YAML parsing error.&#x27; + documentArray[docKey].errors.toString()).to.equal(0)
+     }
+     done()</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>Contains document of kind: component</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>// eslint-disable-next-line no-unused-expressions
+expect(componentDoc, &#x22;The document should have a field of &#x27;kind: component&#x27;.&#x22;).to.not.be.null
+done()</code></pre></dd>
+        <dt>Component apiVersion &#x22;oda.tmforum.org/v1alpha4&#x22; is within supported versions</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const supportedVersions = [&#x27;oda.tmforum.org/v1alpha2&#x27;, &#x27;oda.tmforum.org/v1alpha3&#x27;, &#x27;oda.tmforum.org/v1alpha4&#x27;, &#x27;oda.tmforum.org/v1beta1&#x27;]
+expect(componentDoc.get(&#x27;apiVersion&#x27;), &#x22;Component should have an &#x27;apiVersion&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(componentDoc.get(&#x27;apiVersion&#x27;)).to.be.oneOf(supportedVersions, &#x22;&#x27;apiVersion&#x27; should be within supported versions &#x22; + supportedVersions);
+done()</code></pre></dd>
+        <dt>Component has metadata</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>expect(componentDoc.get(&#x27;metadata&#x27;), &#x22;Component should have a &#x27;metadata&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>Metadata has name and labels</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const metadata = componentDoc.get(&#x27;metadata&#x27;)
+expect(metadata.get(&#x27;name&#x27;), &#x22;Metadata should have a &#x27;name&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(metadata.get(&#x27;labels&#x27;), &#x22;Metadata should have a &#x27;labels&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>Component has spec</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>expect(componentDoc.get(&#x27;spec&#x27;), &#x22;Component should have a &#x27;spec&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>Spec has type, version, description, maintainers, owners </dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+expect(spec.get(&#x27;type&#x27;), &#x22;Spec should have a &#x27;type&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(spec.get(&#x27;version&#x27;), &#x22;Spec should have a &#x27;version&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(spec.get(&#x27;description&#x27;), &#x22;Spec should have a &#x27;description&#x27; field of type string&#x22;).to.be.a(&#x27;string&#x27;)
+expect(spec.get(&#x27;maintainers&#x27;), &#x22;Spec should have a &#x27;maintainers&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+expect(spec.get(&#x27;owners&#x27;), &#x22;Spec should have a &#x27;owners&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>Spec has coreFunction with exposedAPIs and dependentAPIs</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const coreFunction = spec.get(&#x27;coreFunction&#x27;)
+expect(coreFunction, &#x27;Spec has a coreFunction field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+expect(coreFunction.get(&#x27;exposedAPIs&#x27;), &#x22;coreFunction should have a &#x27;exposedAPIs&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+expect(coreFunction.get(&#x27;dependentAPIs&#x27;), &#x22;coreFunction should have a &#x27;dependentAPIs&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt class="error">Swagger file of coreFunction exposedAPIs and dependentAPIs is accessible</dt>
+        <dt class="error">/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd class="error"><pre><code>async function () {
+        const spec = componentDoc.get(&#x27;spec&#x27;)
+        const coreFunction = spec.get(&#x27;coreFunction&#x27;)
+        expect(coreFunction, &#x27;Spec has a coreFunction field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+        expect(coreFunction.get(&#x27;exposedAPIs&#x27;), &#x22;coreFunction should have a &#x27;exposedAPIs&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+        expect(coreFunction.get(&#x27;dependentAPIs&#x27;), &#x22;coreFunction should have a &#x27;dependentAPIs&#x27; field of type object&#x22;).to.be.a(&#x27;object&#x27;)
+        const exposedAPIsArray = coreFunction.get(&#x27;exposedAPIs&#x27;).items
+        for (const key in exposedAPIsArray) {
+          const specification = exposedAPIsArray[key].get(&#x27;specification&#x27;)
+          const httpScheme = specification.split(&#x27;://&#x27;)[0] + &#x27;://&#x27;
+          const server = specification.split(&#x27;://&#x27;)[1].split(&#x27;/&#x27;)[0]
+          const apiPath = &#x27;/&#x27; + specification.split(&#x27;://&#x27;)[1].split(/\/(.+)/)[1]
+          const res = await chai.request(httpScheme + server).get(apiPath).send()
+          expect(res.status, &#x27;Swagger &#x27; + specification + &#x27; has a return code of 200&#x27;).to.equal(200)
+        }
+        const dependentAPIs = coreFunction.get(&#x27;dependentAPIs&#x27;).items
+        for (const key in dependentAPIs) {
+          const specification = dependentAPIs[key].get(&#x27;specification&#x27;)
+          const httpScheme = specification.split(&#x27;://&#x27;)[0] + &#x27;://&#x27;
+          const server = specification.split(&#x27;://&#x27;)[1].split(&#x27;/&#x27;)[0]
+          const apiPath = &#x27;/&#x27; + specification.split(&#x27;://&#x27;)[1].split(/\/(.+)/)[1]
+          const res = await chai.request(httpScheme + server).get(apiPath).send()
+          expect(res.status, &#x27;Swagger &#x27; + specification + &#x27; has a return code of 200&#x27;).to.equal(200)
+        }
+      }</code></pre></dd>
+        <dd class="error">Error: getaddrinfo ENOTFOUND open-api.tmforum.org</dd>
+        <dt>Spec has management</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const management = spec.get(&#x27;management&#x27;)
+done()
+expect(management, &#x27;Spec has a management field of type object&#x27;).to.be.a(&#x27;object&#x27;)</code></pre></dd>
+        <dt>Spec has security</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const security = spec.get(&#x27;security&#x27;)
+expect(security, &#x27;Spec has a security field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+done()</code></pre></dd>
+        <dt>Security has partyrole</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const security = spec.get(&#x27;security&#x27;)
+const partyrole = security.get(&#x27;partyrole&#x27;)
+expect(partyrole, &#x27;Security property includes a partyrole field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const specification = partyrole.get(&#x27;specification&#x27;)
+expect(specification, &#x27;partyrole property includes a specification field of type string&#x27;).to.be.a(&#x27;string&#x27;)
+const implementation = partyrole.get(&#x27;implementation&#x27;)
+expect(implementation, &#x27;partyrole property includes an implementation field of type string&#x27;).to.be.a(&#x27;string&#x27;)
+const path = partyrole.get(&#x27;path&#x27;)
+expect(path, &#x27;partyrole property includes a path field of type string&#x27;).to.be.a(&#x27;string&#x27;)
+done()</code></pre></dd>
+        <dt>Security has controllerRole</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const spec = componentDoc.get(&#x27;spec&#x27;)
+const security = spec.get(&#x27;security&#x27;)
+const controllerRole = security.get(&#x27;controllerRole&#x27;)
+expect(controllerRole, &#x27;security object includes a controllerRole property of type string&#x27;).to.be.a(&#x27;string&#x27;)
+done()</code></pre></dd>
+      </dl>
+    </section>
+    <section class="suite">
+      <h1>Step 2: Check any standard kubernetes resources are labelled for component r1-productcatalog.component.yaml</h1>
+      <dl>
+        <dt>Resource 0 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 1 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 2 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 3 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 4 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 5 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 6 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 7 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 8 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 9 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 10 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+        <dt>Resource 11 is labelled</dt>
+        <dt>/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-staticValidationTests.js</dt>
+        <dd><pre><code>const docResource = documentArray[i]
+const docMetadata = docResource.get(&#x27;metadata&#x27;)
+expect(docMetadata, &#x27;Resource has a metadata field of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const docName = docMetadata.get(&#x27;name&#x27;)
+const docLabels = docMetadata.get(&#x27;labels&#x27;)
+expect(docLabels, docName + &#x27; resource has a metadata field with labels of type object&#x27;).to.be.a(&#x27;object&#x27;)
+const componentNameLabel = docLabels.get(&#x27;oda.tmforum.org/componentName&#x27;)
+expect(componentNameLabel, docName + &#x27; resource has a oda.tmforum.org/componentName label of type string&#x27;).to.be.a(&#x27;string&#x27;)
+expect(componentNameLabel, docName + &#x22; resource has a oda.tmforum.org/componentName label matching the component name &#x27;&#x22; + inComponentName + &#x22;&#x27;&#x22;).to.equal(inComponentName)
+done()</code></pre></dd>
+      </dl>
+    </section>
