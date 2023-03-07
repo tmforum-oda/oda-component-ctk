@@ -79,7 +79,7 @@ function runNewman () {
         export: '../jsonResults.json'
       },
       allure: {
-        export: '../allureResults'
+        export: '../../../allure-results'
       }
     }
   }).on('start', function (err, args) {
