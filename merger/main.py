@@ -35,7 +35,7 @@ def gen_report(report_data):
 def main():
     template_data = [entry for entry in load_reports()]
     generated_report = gen_report(template_data)
-    with open("report.html", "w+") as f:
+    with open("../components-ctk-reports/report.html", "w+") as f:
         f.write(generated_report)
 
     return 0

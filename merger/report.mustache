@@ -9,11 +9,7 @@
 <body>
     {{#reports}}
         <h1>{{name}}</h1>
-        <iframe id="{{name}}" style=""></iframe>
-        <script>
-            var iframe = document.getElementById('{{name}}');
-            iframe.srcdoc = `{{content}}`;
-        </script>
+        <iframe src="{{name}}.html" style=""></iframe>
     {{/reports}}
 </body>
 </html>
