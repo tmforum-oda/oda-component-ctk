@@ -4,18 +4,23 @@ import chevron
 from pathlib import Path
 
 
+def process_html(html):
+    return html.replace("`", "\\`") \
+        .replace("\n","") \
+        .replace("\r","") \
+        .replace("\t","") \
+
 def load_reports():
     for report in Path("../components-ctk-reports").glob("*.html"):
         with report.open("r") as f:
             yield {
                 "name": report.stem,
-                "content": f.read()
+                "content": process_html(f.read())
             }
-    pass
 
 
 def gen_report(report_data):
-    with open("template.html", "r") as f:
+    with open("report.mustache", "r") as f:
         template = f.read()
 
     template_args = {
@@ -24,6 +29,7 @@ def gen_report(report_data):
             "reports": report_data,
         }
     }
+
     return chevron.render(**template_args)
 
 def main():

@@ -9,9 +9,11 @@
 <body>
     {{#reports}}
         <h1>{{name}}</h1>
-        <iframe src="{{content}}">
-
-        </iframe>
+        <iframe id="{{name}}" style=""></iframe>
+        <script>
+            var iframe = document.getElementById('{{name}}');
+            iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(`{{{content}}}`);
+        </script>
     {{/reports}}
 </body>
 </html>
