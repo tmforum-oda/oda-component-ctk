@@ -4,18 +4,26 @@ import chevron
 from pathlib import Path
 
 
+test_names = {
+    "L1-static-ctk": "Generic static tests",
+    "L1-dynamic-ctk": "Generic dynamic tests",
+    "L2-static-ctk": "Component specific static tests",
+    "L2-dynamic-ctk": "Component specific dynamic tests",
+    "APICTK-results": "API CTK",
+    "BDD-TDD": "BDD-TDD"
+}
+
+
 def process_html(html):
-    return html #.replace("`", "\\`") 
-        #.replace("\n","") \
-        #.replace("\r","") \
-        #.replace("\t","") \
+    return html
+
 
 def load_reports():
     base_report_path = Path("../components-ctk-reports")
     report_paths = [
         base_report_path.joinpath("L1-static-ctk.html"),
-        base_report_path.joinpath("L1-dynamic-ctk.html"),
         base_report_path.joinpath("L2-static-ctk.html"),
+        base_report_path.joinpath("L1-dynamic-ctk.html"),
         base_report_path.joinpath("L2-dynamic-ctk.html"),
         base_report_path.joinpath("APICTK-results.html"),
         base_report_path.joinpath("BDD-TDD.html")
@@ -24,7 +32,8 @@ def load_reports():
     for report in report_paths:
         with report.open("r") as f:
             yield {
-                "name": report.stem,
+                "file": report.name,
+                "name": test_names[report.stem],
                 "content": process_html(f.read())
             }
 
