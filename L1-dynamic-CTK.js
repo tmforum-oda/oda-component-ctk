@@ -37,7 +37,13 @@ process.env.HEADER = header
 // create an environment variable for the component passed as a command-line arguement
 process.env.components = process.argv[numberOfArgs + 2]
 
-const mocha = new Mocha(mochaOptions)
+const mocha = new Mocha({
+  ...mochaOptions,
+  reporterOptions: {
+    reportFilename: '[status]_[datetime]-Generic_dynamic-report',
+    json: false
+  }
+})
 
 mocha.addFile('L1-dynamicValidationTests.js')
 

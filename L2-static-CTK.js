@@ -17,7 +17,13 @@ if (process.argv.length > 2) {
   process.env.components = fileArray.join(',')
 }
 
-const mocha = new Mocha(mochaOptions)
+const mocha = new Mocha({
+  ...mochaOptions,
+  reporterOptions: {
+    reportFilename: '[status]_[datetime]-Specific_static-report',
+    json: false
+  },
+})
 
 
 mocha.addFile('L2-staticValidationTests.js')
