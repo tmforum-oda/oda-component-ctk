@@ -52,8 +52,9 @@ if (process.argv.length > 2) {
 const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
+    ...mochaOptions.reporterOptions,
     reportFilename: '[status]_[datetime]-Specific_dynamic-report',
-    json: false
+    reportTitle: 'Component specific Dynamic CTK Report',
   },
 })
 

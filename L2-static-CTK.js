@@ -20,8 +20,9 @@ if (process.argv.length > 2) {
 const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
+    ...mochaOptions.reporterOptions,
     reportFilename: '[status]_[datetime]-Specific_static-report',
-    json: false
+    reportTitle: 'Component specific Static CTK Report',
   },
 })
 

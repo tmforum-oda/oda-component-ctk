@@ -40,9 +40,10 @@ process.env.components = process.argv[numberOfArgs + 2]
 const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
+    ...mochaOptions.reporterOptions,
     reportFilename: '[status]_[datetime]-Generic_dynamic-report',
-    json: false
-  }
+    reportTitle: 'Generic Dynamic Validation Tests',
+  },
 })
 
 mocha.addFile('L1-dynamicValidationTests.js')
