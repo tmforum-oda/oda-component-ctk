@@ -2,7 +2,7 @@
   "name": "TMFC001-ProductCatalog component BDD tests",
   "version": "0.0.1",
   "scripts": {
-    "start": "mkdir ../../results/BDD && cucumber-js --format html:../../results/BDD/cucumber-report.html"
+    "start": "mkdir ../../results/BDD && cucumber-js --format html:../../results/BDD/cucumber-report.html json:../../results/BDD/cucumber-report.json"
   },
   "license": "Apache-2.0",
   "author": "Lester Thomas",

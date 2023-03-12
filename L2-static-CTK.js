@@ -21,7 +21,7 @@ const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
     ...mochaOptions.reporterOptions,
-    reportFilename: '[status]-Specific_static-report',
+    reportFilename: 'Specific_static-report',
     reportTitle: 'Component specific Static CTK Report',
   },
 })

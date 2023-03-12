@@ -72,11 +72,11 @@ function runNewman () {
     reporters: ['allure', 'html', 'json'],
     reporter: {
       html: {
-        export: '../../../results/api-ctk/TMF620-htmlResults.html' // If not specified, the file will be written to `newman/` in the current working directory.
+        export: '../../../results/api-ctk/TMF620-Results.html' // If not specified, the file will be written to `newman/` in the current working directory.
         // template: './customTemplate.hbs' // optional, this will be picked up relative to the directory that Newman runs in.
       },
       json: {
-        export: '../../../results/api-ctk/TMF620-jsonResults.json'
+        export: '../../../results/api-ctk/TMF620-Results.json'
       }
       //qallure: {
         //export: '../../../allure-results'

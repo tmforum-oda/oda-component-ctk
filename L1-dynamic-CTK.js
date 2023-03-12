@@ -41,7 +41,7 @@ const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
     ...mochaOptions.reporterOptions,
-    reportFilename: '[status]-Generic_dynamic-report',
+    reportFilename: 'Generic_dynamic-report',
     reportTitle: 'Generic Dynamic Validation Tests',
   },
 })
