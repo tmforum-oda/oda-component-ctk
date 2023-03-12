@@ -20,7 +20,7 @@ const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
     ...mochaOptions.reporterOptions,
-    reportFilename: '[status]_[datetime]-Generic_static-report',
+    reportFilename: '[status]-Generic_static-report',
     reportTitle: 'Generic Static CTK Report',
   },
 })

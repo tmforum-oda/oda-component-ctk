@@ -53,7 +53,7 @@ const mocha = new Mocha({
   ...mochaOptions,
   reporterOptions: {
     ...mochaOptions.reporterOptions,
-    reportFilename: '[status]_[datetime]-Specific_dynamic-report',
+    reportFilename: '[status]-Specific_dynamic-report',
     reportTitle: 'Component specific Dynamic CTK Report',
   },
 })
