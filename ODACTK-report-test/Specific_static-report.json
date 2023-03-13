@@ -1,0 +1,258 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 7,
+    "passes": 7,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-03-12T03:33:33.405Z",
+    "end": "2023-03-12T03:33:33.637Z",
+    "duration": 232,
+    "testsRegistered": 7,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "3a23a375-8227-46a7-a48a-623f37ad7423",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "87ab7450-d2df-4ab8-b8d9-8c1382816ef2",
+          "title": "Step 0: Basic file tests for component r1-productcatalog.component.yaml",
+          "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js",
+          "file": "/L2-staticValidationTests.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "File naming convention",
+              "fullTitle": "Step 0: Basic file tests for component r1-productcatalog.component.yaml File naming convention",
+              "timedOut": false,
+              "duration": 2,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const nameArray = componentEnvelopeName.split('.')\nexpect(nameArray[nameArray.length - 2], \"Filename should end '.component.yaml'\").to.equal('component')\nexpect(nameArray[nameArray.length - 1], \"Filename should end '.component.yaml'\").to.equal('yaml')\ndone()",
+              "err": {},
+              "uuid": "640dccab-a4db-463b-93d6-b983f9cad4b0",
+              "parentUUID": "87ab7450-d2df-4ab8-b8d9-8c1382816ef2",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Valid YAML document(s)",
+              "fullTitle": "Step 0: Basic file tests for component r1-productcatalog.component.yaml Valid YAML document(s)",
+              "timedOut": false,
+              "duration": 10,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// check that the file contains 1 or more YAML documents and that documents parse with zero errors\n      documentArray = YAML.parseAllDocuments(file)\n      expect(documentArray, 'The file shold contain at least one YAML document.').to.be.a('array')\n      expect(documentArray.length, 'The file shold contain at least one YAML document.').to.be.greaterThan(0)\n      // go through each document checking for errors\n      for (const docKey in documentArray) {\n        expect(documentArray[docKey].errors.length, 'YAML parsing error.' + documentArray[docKey].errors.toString()).to.equal(0)\n      }\n      done()",
+              "err": {},
+              "uuid": "29a08784-8fc1-4f6f-a1e5-f5cd8633ecbf",
+              "parentUUID": "87ab7450-d2df-4ab8-b8d9-8c1382816ef2",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "640dccab-a4db-463b-93d6-b983f9cad4b0",
+            "29a08784-8fc1-4f6f-a1e5-f5cd8633ecbf"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 12,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "ff946521-e160-4521-a1ff-5c37d7269e2d",
+          "title": "Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml",
+          "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js",
+          "file": "/L2-staticValidationTests.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Contains document of kind: component",
+              "fullTitle": "Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml Contains document of kind: component",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// eslint-disable-next-line no-unused-expressions\nexpect(componentDoc, \"The document should have a field of 'kind: component'.\").to.not.be.null\ndone()",
+              "err": {},
+              "uuid": "6aec1726-e8c0-4fe5-94eb-6532f0e344ed",
+              "parentUUID": "ff946521-e160-4521-a1ff-5c37d7269e2d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Component apiVersion \"oda.tmforum.org/v1alpha4\" is within supported versions",
+              "fullTitle": "Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml Component apiVersion \"oda.tmforum.org/v1alpha4\" is within supported versions",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']\nexpect(componentDoc.get('apiVersion'), \"Component should have an 'apiVersion' field of type string\").to.be.a('string')\nexpect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, \"'apiVersion' should be within supported versions \" + supportedVersions);\ndone()",
+              "err": {},
+              "uuid": "c71959c7-e433-4325-ab1d-34d5c7f17dee",
+              "parentUUID": "ff946521-e160-4521-a1ff-5c37d7269e2d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Component has spec",
+              "fullTitle": "Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml Component has spec",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "expect(componentDoc.get('spec'), \"Component should have a 'spec' field of type object\").to.be.a('object')\ndone()",
+              "err": {},
+              "uuid": "0dedaab2-999a-4c19-ae53-6c74071da507",
+              "parentUUID": "ff946521-e160-4521-a1ff-5c37d7269e2d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "type and version match one of the 'Golden Components'",
+              "fullTitle": "Step 1: Check ODA-Component Metadata for component r1-productcatalog.component.yaml type and version match one of the 'Golden Components'",
+              "timedOut": false,
+              "duration": 1,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const spec = componentDoc.get('spec')\nconst type = spec.get('type')\nconst version = spec.get('version')\nconst goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'\nexpect(type, \"Spec should have a 'type' field of type string\").to.be.a('string')\nexpect(version, \"Spec should have a 'version' field of type string\").to.be.a('string')\nexpect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist\ndone()",
+              "err": {},
+              "uuid": "e6ad5ce7-0817-4b53-b2bc-7aa43fda914b",
+              "parentUUID": "ff946521-e160-4521-a1ff-5c37d7269e2d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "6aec1726-e8c0-4fe5-94eb-6532f0e344ed",
+            "c71959c7-e433-4325-ab1d-34d5c7f17dee",
+            "0dedaab2-999a-4c19-ae53-6c74071da507",
+            "e6ad5ce7-0817-4b53-b2bc-7aa43fda914b"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 15000
+        },
+        {
+          "uuid": "a3e9dac5-ea0c-41df-bdef-9ae6de44413d",
+          "title": "Step 2: Check any APIs in 'Golden Component' are specified in component r1-productcatalog.component.yaml",
+          "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-staticValidationTests.js",
+          "file": "/L2-staticValidationTests.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "exposedAPIs in 'Golden Components' have corresponding exposedAPI in component",
+              "fullTitle": "Step 2: Check any APIs in 'Golden Component' are specified in component r1-productcatalog.component.yaml exposedAPIs in 'Golden Components' have corresponding exposedAPI in component",
+              "timedOut": false,
+              "duration": 209,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const spec = componentDoc.get('spec')\nconst exposedAPIArray = componentDoc.get('spec').get('coreFunction').get('exposedAPIs').items\nconst type = spec.get('type')\nconst version = spec.get('version')\nconst goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'\nconst file = fs.readFileSync('./golden-components/' + goldenComponentFilename, 'utf8')\ndocumentArray = YAML.parseAllDocuments(file)\nconst goldenComponent = documentArray[0]\nexpect(goldenComponent, \"Golden Component should be of type object\").to.be.a('object')\nconst goldenExposedAPI = goldenComponent.get('spec').get('coreFunction').get('exposedAPIs')\nconst goldenExposedAPIArray = goldenExposedAPI.items\nfor (const key in goldenExposedAPIArray) {\n  const goldenAPISpec = goldenExposedAPIArray[key].get('specification')\n  const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)\n  // look in the current component spec for an API with the same title and version\n  let foundAPI = false\n  for (const exposedAPIArrayKey in exposedAPIArray) {\n    const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get('specification')\n    const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)\n    if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {\n      foundAPI = true\n    }\n  }\n  expect(foundAPI, \"Found '\" + goldenAPIobject.info.title + \"' API with version '\" + goldenAPIobject.info.version + \"'\").to.equal(true)\n}\nexpect(version, \"Spec should have a 'version' field of type string\").to.be.a('string')\nexpect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist",
+              "err": {},
+              "uuid": "bd2c4873-c570-4cb2-bcdf-d6cf767c405a",
+              "parentUUID": "a3e9dac5-ea0c-41df-bdef-9ae6de44413d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "bd2c4873-c570-4cb2-bcdf-d6cf767c405a"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 209,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 15000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "8.4.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "Specific_static-report",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/baseline-ctk",
+        "reportFilename": "Specific_static-report",
+        "reportTitle": "Component specific Static CTK Report"
+      },
+      "version": "6.2.0"
+    }
+  }
+}

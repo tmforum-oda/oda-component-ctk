@@ -1,5 +1,6 @@
 import json
 import chevron
+import shutil
 from pathlib import Path
 
 class ResultsLoader:
@@ -23,7 +24,8 @@ class ResultsLoader:
                 yield {
                     "name": htmlreport.stem,
                     "html_path": str(htmlreport),
-                    "json_path": str(jsonreport)
+                    "json_path": str(jsonreport),
+                    "type": "api-ctk"
                 }
             else:
                 print("Warning: json report not found: ", jsonreport)
@@ -36,7 +38,8 @@ class ResultsLoader:
                 yield {
                     "name": report_name,
                     "html_path": str(html_report),
-                    "json_path": str(json_report)
+                    "json_path": str(json_report),
+                    "type": "component-ctk"
                 }
             else: 
                 print("Warning: baseline report not found: ", html_report)
@@ -45,19 +48,30 @@ class ResultsLoader:
 
 class ResultsProcessor:
     def __init__(self):
-        self.results = ResultsLoader(Path("../results"))
+        self.results_path = Path("../results")
+        self.results = ResultsLoader(self.results_path)
         pass
 
     def load_result_files(self):
-        files =  {
-            "apictk_reports": list(self.results.glob_apictk_reports()),
-            "baseline_ctk_reports": list(self.results.load_baseline_ctk_reports()),
+        results = {
+            "reports": [
+                *list(self.results.glob_apictk_reports()),
+                *list(self.results.load_baseline_ctk_reports()),
+            ]
         }
+        #print(json.dumps(results, indent=4))
+        return results
+    
+    def copy_results_to_output_directory(self, out_path: Path):
+        shutil.copytree(
+            self.results_path / "baseline-ctk" / "assets", 
+            out_path / "assets", 
+            dirs_exist_ok=True
+        )
+        for type in self.results.report_types:
+            for report in (self.results_path / type).glob("*.*"):
+                shutil.copyfile(report, out_path / report.name)
 
-        return {
-            **files,
-            "template_data": gen_template_data(files) 
-        }
 
 class HighLevelSummaryReport:
     def __init__(self, results_files):
@@ -75,42 +89,54 @@ class HighLevelSummaryReport:
 
 class reportRenderer:
     def __init__(self, results):
-        self.results_files = results.load_result_files()
-        print(json.dumps(self.results_files, indent=4))
+        self.results = results
         self.output_path = Path("../ODACTK-report-test")
         self.template_path = Path("report.mustache")
         self.output_path.mkdir(parents=True, exist_ok=True)
-
-    def render(self):
-        render_template(
+        self.renderer = MustacheRenderer(
             self.template_path, 
-            self.output_path.joinpath("report.html"), 
-            self.results_files["template_data"]
+            self.output_path, 
         )
 
 
+    def render(self):
+        self.result_data = self.results.load_result_files()
+        self.renderer.add_template_data(self.result_data)
+        self.renderer.render(self.result_data)
+        self.results.copy_results_to_output_directory(self.output_path)
 
-def gen_template_data(files):
-    template_data = []
-    for report_type in files.values():
-        for test_result_file in report_type:
-            template_data.append(test_result_file)
-    return {
-        "reports": template_data
-    }
 
-def render_template(template_path, output_path, data):
-    with template_path.open("r") as f:
-        template = f.read()
+class MustacheRenderer:
+    def __init__(self, template_path, output_path):
+        self.template_path = template_path
+        self.output_path = output_path.joinpath("index.html")
+        self.data = {
+            "sections": []
+        }
 
-    template_args = {
-        "template": template,
-        "data": data,
-    }
+    def render(self, data):
+        with self.template_path.open("r") as f:
+            template = f.read()
 
-    with output_path.open("w+") as f:
-        f.write(chevron.render(**template_args))
+        template_args = {
+            "template": template,
+            "data": self.data,
+        }
 
+        with self.output_path.open("w+") as f:
+            f.write(chevron.render(**template_args))
+
+
+    def add_template_data(self, data):
+        for report in data["reports"]:
+            self.data["sections"].append({
+                "name": report["name"],
+                "type": report["type"],
+                "html_path": Path(report["html_path"]).name,
+                "json_path": Path(report["json_path"]).name,
+                "Section_title": f"{report['type']}: {report['name']}"
+            })
+            
 
 def main():
     results = ResultsProcessor()

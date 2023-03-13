@@ -1,0 +1,170 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 3,
+    "passes": 1,
+    "pending": 0,
+    "failures": 2,
+    "start": "2023-03-12T03:33:35.575Z",
+    "end": "2023-03-12T03:33:35.668Z",
+    "duration": 93,
+    "testsRegistered": 3,
+    "passPercent": 33.33333333333333,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1f10fb30-8136-4ba3-b2b4-d24cdefe2a44",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0c253962-4282-4553-8e9b-7564d78f3eb4",
+          "title": "Step 0: Basic environment connectivity tests",
+          "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js",
+          "file": "/L2-dynamicValidationTests.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Kubectl configured correctly",
+              "fullTitle": "Step 0: Basic environment connectivity tests Kubectl configured correctly",
+              "timedOut": false,
+              "duration": 27,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {\n  expect(res, \"Kubectl should return pods in 'components' namespace\").to.be.a('object')\n  done()\n})",
+              "err": {},
+              "uuid": "7f3513fe-03bf-4895-992b-ba215ac4dc03",
+              "parentUUID": "0c253962-4282-4553-8e9b-7564d78f3eb4",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "7f3513fe-03bf-4895-992b-ba215ac4dc03"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 27,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "65227876-2f10-4786-8838-3403674c7d82",
+          "title": "Step 1: Check metadata for component r1-productcatalog.component.yaml",
+          "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js",
+          "file": "/L2-dynamicValidationTests.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Component can be found",
+              "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component can be found",
+              "timedOut": false,
+              "duration": 10,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)\n  .then(function (res) {\n    const numberOfComponentsFound = res.body.items.length\n    expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)\n    done()\n  }).catch(done)",
+              "err": {
+                "message": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1",
+                "estack": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:59:100\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": "- 0\n+ 1\n"
+              },
+              "uuid": "0cb41a06-20ac-40b6-8918-da5324a6dd66",
+              "parentUUID": "65227876-2f10-4786-8838-3403674c7d82",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Component has deployed successfully (summary/status.deployment_status: Complete)",
+              "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component has deployed successfully (summary/status.deployment_status: Complete)",
+              "timedOut": false,
+              "duration": 8,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)\n  .then(function (res) {\n    const status = res.body.items[0].status\n    expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')\n    done()\n  }).catch(done)",
+              "err": {
+                "message": "TypeError: Cannot read properties of undefined (reading 'status')",
+                "estack": "TypeError: Cannot read properties of undefined (reading 'status')\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:67:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": null
+              },
+              "uuid": "c649bd2a-3ddd-4340-93fd-5264a891a693",
+              "parentUUID": "65227876-2f10-4786-8838-3403674c7d82",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "0cb41a06-20ac-40b6-8918-da5324a6dd66",
+            "c649bd2a-3ddd-4340-93fd-5264a891a693"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 18,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "8.4.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "Specific_dynamic-report",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/baseline-ctk",
+        "reportFilename": "Specific_dynamic-report",
+        "reportTitle": "Component specific Dynamic CTK Report"
+      },
+      "version": "6.2.0"
+    }
+  }
+}
