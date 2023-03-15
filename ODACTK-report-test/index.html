@@ -11,14 +11,57 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-            
+    <style>
+        :root {
+        --column-fixed-width: 150px; 
+        }
+
+       
+        table {
+        width: 100%;
+        font-size: 13px;
+        }
+
+        /* Table Fixed Column */
+
+        table th,
+        table td {
+        padding-right: 24px;
+        padding-left: 24px;
+        white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Page Content goes here -->
-    <section>
-        <h1>summary</h1>
-        <table class="striped">
+    <div class="section">
+        <h1 class="center-align">ODA Conformance Summary Report</h1>
+        <div class="divider"></div>
+    </div>
+
+    <div class="row section">
+        <div class="col s6 card">
+            <div class="card-content">
+                <span class="card-title">Component</span>
+                <p>Version: </p>
+                <p>Name: </p>
+                <p>Total: </p>
+                <p>Conformance level: </p>
+            </div>
+        </div>
+       <div class="col s6 card">
+            <div class="card-content">
+                <span class="card-title">Canvas</span>
+                <p>Kubernetes Version: </p>
+                <p>Platform: </p>
+                <p>Canvas version: </p>
+                <p>Canvas</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="card z-depth-2">
+        <table class="striped" style="padding-left: 1rem">
             <tr>
                 <th>Name</th>
                 <th>Type</th>
@@ -73,8 +116,10 @@
                 <td>0</td>
                 <td>0</td>
             </tr>
-        </table>    
-    </section>
+        </table>
+    </div>
+    </div>
+    <div class="row">
     <ul class="collapsible popout">
         <li>
             <div class="collapsible-header">
@@ -86,6 +131,7 @@
         </li>
     </ul>
     
+    <div class="row">
     <ul class="collapsible popout">
         <li>
             <div class="collapsible-header">
@@ -97,6 +143,7 @@
         </li>
     </ul>
     
+    <div class="row">
     <ul class="collapsible popout">
         <li>
             <div class="collapsible-header">
@@ -108,6 +155,7 @@
         </li>
     </ul>
     
+    <div class="row">
     <ul class="collapsible popout">
         <li>
             <div class="collapsible-header">
@@ -119,6 +167,7 @@
         </li>
     </ul>
     
+    <div class="row">
     <ul class="collapsible popout">
         <li>
             <div class="collapsible-header">
@@ -131,13 +180,14 @@
     </ul>
     
     </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.collapsible');
             var instances = M.Collapsible.init(elems, {
                 accordion: false,
-                outDuration: 700,
-                inDuration: 700
+                outDuration:600,
+                inDuration: 600
             });
         });
     </script>
