@@ -40,38 +40,24 @@ for (const index in components) {
   const k8sCustomApi = kc.makeApiClient(k8s.CustomObjectsApi)
   console.log({ componentAPIVersion: componentAPIVersion })
   describe('Step 0: Basic environment connectivity tests', function () {
-    beforeEach(function () {
-      addContext(this, 'some context Before describe');
-    });
-    describe('Check connectivity to Kubernetes cluster', function () {
-      beforeEach(function () {
-        addContext(this, 'some context before it');
-      });
-      it('Kubectl configured correctly', function (done) {
-        addContext(this, 'Kubectl configured correctly and description added')
-        addContext(this, 'Kubectl configured correctly and second description added')
-        addContext(this, 'Kubectl configured correctly and description added')
-        addContext(this, {
-          title: 'expected output added',
-          value: {
-            a: 1,
-            b: '2',
-            c: 'd',
-          },
-        });
+    it('Kubectl configured correctly', function (done) {
+      addContext(this, 'The pourpose of this test is to check if the kubectl is configured correctly')
+      addContext(this, 'The configuration must be available and the context must be set to the correct cluster')
+    
 
 
-        k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
-          expect(res, "Kubectl should return pods in " + NAMESPACE + " namespace").to.be.a('object')
-          done()
-        }).catch(done)
-      })
-      
+      k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
+        expect(res, "Kubectl should return pods in " + NAMESPACE + " namespace").to.be.a('object')
+        done()
+      }).catch(done)
     })
+      
   })
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
     it('Component ' + componentName + ' can be found in namespace ' + NAMESPACE, function (done) {
+      addContext(this, 'The pourpose of this test is to check if the component can be found in the selected namespace')
+      
       k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
@@ -81,6 +67,8 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
+      addContext(this, 'This test expects the value of summary/status.deployment_status of the component resource to be Complete')
+      
       k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
@@ -98,6 +86,7 @@ for (const index in components) {
     for (const apiKey in exposedAPIList) {
       describe('Step 2(' + apiKey + '): Run-time test of exposed API: ' + exposedAPIList[apiKey].name, function () {
         it('exposedAPI endpoints give HTTP 200 response', function (done) {
+          addContext(this, 'This test looks at the list of exposed apis and checks if their assigned url is accessible')
           expect(exposedAPIList[apiKey].url, 'status.exposedAPI[' + apiKey + '].url should be a string').to.be.a('string')
           const httpScheme = exposedAPIList[apiKey].url.split('://')[0] + '://'
           const server = exposedAPIList[apiKey].url.split('://')[1].split('/')[0]
@@ -125,6 +114,8 @@ for (const index in components) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
+          addContext(this, 'Party role must be available on the security API')
+          
           expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
           const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
@@ -156,6 +147,8 @@ for (const index in components) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
+          addContext(this, 'Party role must be created on the security API')
+
           expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
           const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
@@ -179,6 +172,8 @@ for (const index in components) {
           })
         })
         it('One partyrole should match controllerRole', function (done) {
+          addContext(this, 'The canvas and the component apis should be aligned')
+
           expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
           const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
           const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]

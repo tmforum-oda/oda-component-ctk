@@ -7,6 +7,7 @@ const process = require('process')
 const COMPONENT = 'component'
 const chaiHttp = require('chai-http')
 const allure  = require("allure-mocha/runtime").allure;
+const addContext = require('mochawesome/addContext');
 
 chai.use(chaiHttp)
 
@@ -22,7 +23,7 @@ for (const index in components) {
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
   describe('Step 0: Basic file tests for component ' + componentEnvelopeName,  () => {
     it('File naming convention', (done) => {
-      
+      addContext(this, 'Name must conform to the naming convention: <component-name>.component.yaml')
       
       const nameArray = componentEnvelopeName.split('.')
       expect(nameArray[nameArray.length - 2], "Filename should end '.component.yaml'").to.equal('component')
@@ -48,6 +49,9 @@ for (const index in components) {
     documentArray = YAML.parseAllDocuments(file)
     const componentDoc = getComponentDocument(documentArray)
     it('Contains document of kind: component', function (done) {
+      addContext(this, 'The component document should have a field of "kind: component"')
+      
+
       // eslint-disable-next-line no-unused-expressions
       expect(componentDoc, "The document should have a field of 'kind: component'.").to.not.be.null
       done()
@@ -55,6 +59,7 @@ for (const index in components) {
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
       const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+      addContext(this, 'The component document should have a field of "apiVersion: oda.tmforum.org/v1alpha2" or "apiVersion: oda.tmforum.org/v1alpha3" or "apiVersion: oda.tmforum.org/v1alpha4" or "apiVersion: oda.tmforum.org/v1beta1"')
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -62,11 +67,16 @@ for (const index in components) {
     })
 
     it('Component has metadata', function (done) {
+      addContext(this, 'Metadata must be available in the component document envelope.')
+      
+    
       expect(componentDoc.get('metadata'), "Component should have a 'metadata' field of type object").to.be.a('object')
       done()
     })
 
     it('Metadata has name and labels', function (done) {
+      addContext(this, 'Metadata must have a name and labels field in the component document envelope.')
+
       const metadata = componentDoc.get('metadata')
       expect(metadata.get('name'), "Metadata should have a 'name' field of type string").to.be.a('string')
       expect(metadata.get('labels'), "Metadata should have a 'labels' field of type object").to.be.a('object')
@@ -112,6 +122,8 @@ for (const index in components) {
     const versionsWithAccessibleSwagger = ['oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
     if (versionsWithAccessibleSwagger.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Swagger file of coreFunction exposedAPIs and dependentAPIs is accessible', async function () {
+        addContext(this, 'A swagger file must be available for each exposedAPI and dependentAPI')
+        
         const spec = componentDoc.get('spec')
         const coreFunction = spec.get('coreFunction')
         expect(coreFunction, 'Spec has a coreFunction field of type object').to.be.a('object')
@@ -141,6 +153,8 @@ for (const index in components) {
     const versionsWithdependentAPIsInManagementandSecurity = ['oda.tmforum.org/v1beta1']
     if (versionsWithdependentAPIsInManagementandSecurity.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Swagger file of management exposedAPIs and dependentAPIs is accessible (for openapis)', async function () {
+        addContext(this, 'A swagger file must be available for each exposedAPI and dependentAPI of the management apis')
+        
         const spec = componentDoc.get('spec')
         const management = spec.get('management')
         expect(management, 'Spec has a management field of type object').to.be.a('object')
@@ -170,6 +184,8 @@ for (const index in components) {
         }
       })
       it('Swagger file of security exposedAPIs and dependentAPIs is accessible (for openapis)', async function () {
+        addContext(this, 'A swagger file must be available for each exposedAPI and dependentAPI of the security apis')
+        
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
         expect(security, 'Spec has a security field of type object').to.be.a('object')
@@ -200,12 +216,16 @@ for (const index in components) {
       })
     } else {
       it('Spec has management', function (done) {
+        addContext(this, 'the spec must have a management field of type object')
+
         const spec = componentDoc.get('spec')
         const management = spec.get('management')
         done()
         expect(management, 'Spec has a management field of type object').to.be.a('object')
       })
       it('Spec has security', function (done) {
+        addContext(this, 'the spec must have a security field of type object')
+
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
         expect(security, 'Spec has a security field of type object').to.be.a('object')
@@ -216,6 +236,8 @@ for (const index in components) {
     const versionsWithRoleInObject = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4']
     if (versionsWithRoleInObject.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has partyrole', function (done) {
+        addContext(this, 'Party roles fields must be present in the security object')
+
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
         const partyrole = security.get('partyrole')
@@ -233,6 +255,8 @@ for (const index in components) {
     const versionsWithRoleInArray = ['oda.tmforum.org/v1beta1']
     if (versionsWithRoleInArray.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has partyrole', function (done) {
+        addContext(this, 'Party role security api must be present inside of the exposedAPIs array')
+
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
         let partyRoleFound = false
@@ -250,6 +274,8 @@ for (const index in components) {
     const versionsWithControllerRole = ['oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
     if (versionsWithControllerRole.indexOf(componentDoc.get('apiVersion')) > -1) {
       it('Security has controllerRole', function (done) {
+        addContext(this, 'Security object must have a controllerRole field of type string')
+
         const spec = componentDoc.get('spec')
         const security = spec.get('security')
         const controllerRole = security.get('controllerRole')
@@ -272,6 +298,8 @@ for (const index in components) {
 
   function testResource (i, inComponentName) {
     it('Resource ' + i + ' is labelled', function (done) {
+      addContext(this, 'Each kuberenetes resource must have a metadata field with a labels field containing a oda.tmforum.org/componentName label')
+
       const docResource = documentArray[i]
       const docMetadata = docResource.get('metadata')
       expect(docMetadata, 'Resource has a metadata field of type object').to.be.a('object')

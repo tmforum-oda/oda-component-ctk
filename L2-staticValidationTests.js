@@ -10,6 +10,9 @@ chai.use(chaiHttp)
 var chaiFiles = require('chai-files');
 chai.use(chaiFiles)
 
+const addContext = require('mochawesome/addContext');
+
+
 console.log('***************************************************************************')
 console.log('Open Digital Architecture - Component Test Kit CTK Level 2 Static Tests')
 console.log('***************************************************************************')
@@ -22,6 +25,8 @@ for (const index in components) {
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
   describe('Step 0: Basic file tests for component ' + componentEnvelopeName, function () {
     it('File naming convention', function (done) {
+      addContext(this, 'File name should end with .component.yaml')
+
       const nameArray = componentEnvelopeName.split('.')
       expect(nameArray[nameArray.length - 2], "Filename should end '.component.yaml'").to.equal('component')
       expect(nameArray[nameArray.length - 1], "Filename should end '.component.yaml'").to.equal('yaml')
@@ -29,6 +34,8 @@ for (const index in components) {
     })
 
     it('Valid YAML document(s)', function (done) { // check that the file contains 1 or more YAML documents and that documents parse with zero errors
+      addContext(this, 'At least one yaml document should be present in the file and must be loaded without errors.')
+      
       documentArray = YAML.parseAllDocuments(file)
       expect(documentArray, 'The file shold contain at least one YAML document.').to.be.a('array')
       expect(documentArray.length, 'The file shold contain at least one YAML document.').to.be.greaterThan(0)
@@ -47,6 +54,8 @@ for (const index in components) {
     const componentDoc = getComponentDocument(documentArray)
 
     it('Contains document of kind: component', function (done) {
+      addContext(this, 'At least one document with kind: component should be present in the file.')
+
       // eslint-disable-next-line no-unused-expressions
       expect(componentDoc, "The document should have a field of 'kind: component'.").to.not.be.null
       done()
@@ -54,6 +63,7 @@ for (const index in components) {
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
       const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+      addContext(this, 'Components must have an apiVersion field that is one of the supported versions: ' + supportedVersions.toString() + '.')
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -61,11 +71,13 @@ for (const index in components) {
     })
 
     it('Component has spec', function (done) {
+      addContext(this, 'Components must have a spec field that is an object.')
       expect(componentDoc.get('spec'), "Component should have a 'spec' field of type object").to.be.a('object')
       done()
     })
 
     it("type and version match one of the 'Golden Components'", function (done) {
+      addContext(this, 'Components must have a spec.type and spec.version that match one of the "Golden Components".')
       const spec = componentDoc.get('spec')
       const type = spec.get('type')
       const version = spec.get('version')
@@ -82,6 +94,7 @@ for (const index in components) {
     documentArray = YAML.parseAllDocuments(file)
     const componentDoc = getComponentDocument(documentArray)
     it("exposedAPIs in 'Golden Components' have corresponding exposedAPI in component", async function () {
+      addContext(this, 'Components must have a spec.coreFunction.exposedAPIs that match the "Golden Components" exposedAPIs.')
       const spec = componentDoc.get('spec')
       const exposedAPIArray = componentDoc.get('spec').get('coreFunction').get('exposedAPIs').items
       const type = spec.get('type')

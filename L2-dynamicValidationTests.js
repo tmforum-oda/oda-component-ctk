@@ -11,6 +11,8 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 const expect = chai.expect
 const COMPONENT = 'component'
+const addContext = require('mochawesome/addContext');
+
 
 const ctkPaths = {
   'Product Catalog Management':
@@ -44,6 +46,8 @@ for (const index in components) {
   const k8sCustomApi = kc.makeApiClient(k8s.CustomObjectsApi)
   describe('Step 0: Basic environment connectivity tests', function () {
     it('Kubectl configured correctly', function (done) {
+      addContext(this, 'The test expects the pods related to a component to be created in the namespace ' + NAMESPACE)
+
       k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
         expect(res, "Kubectl should return pods in 'components' namespace").to.be.a('object')
         done()
@@ -53,6 +57,8 @@ for (const index in components) {
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
     it('Component can be found', function (done) {
+      addContext(this, 'The metadata contained in the component envelope must be found in the component resources')
+
       k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
@@ -62,6 +68,8 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
+      addContext(this, 'The test expects the custom resources to have a status.summary/status.deployment_status of Complete')
+      
       k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
@@ -87,6 +95,8 @@ for (const index in components) {
       const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
 
       it("type and version match one of the 'Golden Components'", function (done) {
+        addContext(this, 'The test expects the component type and version to match one of the "Golden Components"')
+
         expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
         expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
         expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
@@ -112,6 +122,8 @@ for (const index in components) {
         for (const key in goldenExposedAPIArray) {
           const goldenAPIName = goldenExposedAPIArray[key].get('name')
           it('Executing OpenAPI CTK for ' + goldenAPIName + ': check /results folder for your results.', async function () {
+            addContext(this, 'The test expects the component type and version to match one of the "Golden Components"')
+            
             this.timeout(120000) // 2 minute timeout
             const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
             const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
