@@ -1,6 +1,7 @@
 {
     "reporter": "mochawesome",
     "reporterOptions": {
-        "reportDir": "results/baseline-ctk"
+        "reportDir": "results/baseline-ctk",
+        "code": false
     }
 }

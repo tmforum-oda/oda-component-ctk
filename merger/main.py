@@ -72,19 +72,84 @@ class ResultsProcessor:
             for report in (self.results_path / type).glob("*.*"):
                 shutil.copyfile(report, out_path / report.name)
 
+class MochaReportProcessor:
+    def __init__(self, report):
+        self.report_data = report
+
+    def get_total(self):
+        return self.report_data["stats"]["tests"]
+    
+    def get_passed(self):
+        return self.report_data["stats"]["passes"]
+
+    def get_failed(self):
+        return self.report_data["stats"]["failures"]
+    
+    def get_skipped(self):
+        return self.report_data["stats"]["skipped"]
+    
+    def get_pass_percent(self):
+        return self.report_data["stats"]["passPercent"]
+    
+    def get_error_count(self):
+        return 0
+
+
+class PostmanReportProcessor:
+    def __init__(self, report):
+        self.report_data = report
+
+    def get_total(self):
+        return 0
+    
+    def get_passed(self):
+        return 0
+
+    def get_failed(self):
+        return 0
+    
+    def get_skipped(self):
+        return 0
+    
+    def get_pass_percent(self):
+        return 0
+    
+    def get_error_count(self):
+        return 0
 
 class HighLevelSummaryReport:
-    def __init__(self, results_files):
-        self.results_files = results_files
+    def __init__(self):
+        self.results = {
+            "summary_table": []
+        }
+        
+        self.report_cache = {}
 
-    def generate(self):
-        pass
+        self.processors = {
+            "api-ctk": PostmanReportProcessor,
+            "component-ctk": MochaReportProcessor
+        }
 
-    def add_ctk_report(self, report):
-        pass
+    def generate(self, out_path: Path):
+        with out_path.joinpath("summary.json").open("w") as f:
+            json.dump(self.results, f, indent=4)
+        return self.results
 
-    def add_baseline_report(self, report):
-        pass
+    def add_report_data(self, data):
+        for report in data["reports"]:
+            with Path(report["json_path"]).open("r") as f:
+                report_data = json.load(f)
+            self.report_cache[report["name"]] = report_data
+            processor = self.processors[report["type"]](report_data)
+            self.results["summary_table"].append({
+                "name": report["name"],
+                "type": report["type"],
+                "passed": processor.get_passed(),
+                "failed": processor.get_failed(),
+                "skipped": processor.get_skipped(),
+                "total": processor.get_total(),
+                "errors": processor.get_error_count(),
+            })
 
 
 class reportRenderer:
@@ -97,12 +162,16 @@ class reportRenderer:
             self.template_path, 
             self.output_path, 
         )
+        self.sumamry_reporter = HighLevelSummaryReport()
 
 
     def render(self):
         self.result_data = self.results.load_result_files()
+        self.sumamry_reporter.add_report_data(self.result_data)
+        summary = self.sumamry_reporter.generate(self.output_path)
+        self.renderer.add_summary(summary)
         self.renderer.add_template_data(self.result_data)
-        self.renderer.render(self.result_data)
+        self.renderer.render()
         self.results.copy_results_to_output_directory(self.output_path)
 
 
@@ -111,10 +180,11 @@ class MustacheRenderer:
         self.template_path = template_path
         self.output_path = output_path.joinpath("index.html")
         self.data = {
-            "sections": []
+            "sections": [],
+            "summary": {}
         }
 
-    def render(self, data):
+    def render(self):
         with self.template_path.open("r") as f:
             template = f.read()
 
@@ -126,6 +196,9 @@ class MustacheRenderer:
         with self.output_path.open("w+") as f:
             f.write(chevron.render(**template_args))
 
+
+    def add_summary(self, summary):
+        self.data["summary"] = summary
 
     def add_template_data(self, data):
         for report in data["reports"]:

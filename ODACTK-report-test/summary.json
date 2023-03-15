@@ -1,0 +1,49 @@
+{
+    "summary_table": [
+        {
+            "name": "TMF620-Results",
+            "type": "api-ctk",
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "total": 0,
+            "errors": 0
+        },
+        {
+            "name": "Generic_static-report",
+            "type": "component-ctk",
+            "passed": 25,
+            "failed": 1,
+            "skipped": 0,
+            "total": 26,
+            "errors": 0
+        },
+        {
+            "name": "Generic_dynamic-report",
+            "type": "component-ctk",
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "total": 3,
+            "errors": 0
+        },
+        {
+            "name": "Specific_static-report",
+            "type": "component-ctk",
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "total": 7,
+            "errors": 0
+        },
+        {
+            "name": "Specific_dynamic-report",
+            "type": "component-ctk",
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "total": 3,
+            "errors": 0
+        }
+    ]
+}

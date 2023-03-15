@@ -6,6 +6,7 @@ const chaiHttp = require('chai-http')
 const YAML = require('yaml')
 const process = require('process')
 const k8s = require('@kubernetes/client-node')
+const addContext = require('mochawesome/addContext');
 
 chai.use(chaiHttp)
 const expect = chai.expect
@@ -39,11 +40,33 @@ for (const index in components) {
   const k8sCustomApi = kc.makeApiClient(k8s.CustomObjectsApi)
   console.log({ componentAPIVersion: componentAPIVersion })
   describe('Step 0: Basic environment connectivity tests', function () {
-    it('Kubectl configured correctly', function (done) {
-      k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
-        expect(res, "Kubectl should return pods in " + NAMESPACE + " namespace").to.be.a('object')
-        done()
-      }).catch(done)
+    beforeEach(function () {
+      addContext(this, 'some context Before describe');
+    });
+    describe('Check connectivity to Kubernetes cluster', function () {
+      beforeEach(function () {
+        addContext(this, 'some context before it');
+      });
+      it('Kubectl configured correctly', function (done) {
+        addContext(this, 'Kubectl configured correctly and description added')
+        addContext(this, 'Kubectl configured correctly and second description added')
+        addContext(this, 'Kubectl configured correctly and description added')
+        addContext(this, {
+          title: 'expected output added',
+          value: {
+            a: 1,
+            b: '2',
+            c: 'd',
+          },
+        });
+
+
+        k8sCoreApi.listNamespacedPod(NAMESPACE).then((res) => {
+          expect(res, "Kubectl should return pods in " + NAMESPACE + " namespace").to.be.a('object')
+          done()
+        }).catch(done)
+      })
+      
     })
   })
 

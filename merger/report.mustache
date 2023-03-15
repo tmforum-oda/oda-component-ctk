@@ -5,15 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
 </head>
 <body>
-    {{#sections}}
+    <div class="container">
+        <!-- Page Content goes here -->
+    {{#summary}}
     <section>
-        <h1>{{Section_title}}</h1>
-        <iframe src="{{html_path}}" style="width: 90%; height: 100vh;"></iframe>
+        <h1>summary</h1>
+        <table class="striped">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Passed</th>
+                <th>failed</th>
+                <th>total</th>
+                <th>skipped</th>
+                <th>errors</th>
+            </tr>
+            {{#summary_table}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{type}}</td>
+                <td>{{passed}}</td>
+                <td>{{failed}}</td>
+                <td>{{total}}</td>
+                <td>{{skipped}}</td>
+                <td>{{errors}}</td>
+            </tr>
+            {{/summary_table}}            
+        </table>    
     </section>
+    {{/summary}}
+    {{#sections}}
+    <ul class="collapsible popout">
+        <li>
+            <div class="collapsible-header">
+                <i class="Medium material-icons">note</i><span>{{Section_title}}</span>
+            </div>
+            <div class="collapsible-body">
+                <iframe src="{{html_path}}" style="width: 100%; height: 50vh;"></iframe
+            </div>
+        </li>
+    </ul>
+    
     {{/sections}}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems, {
+                accordion: false,
+                outDuration: 700,
+                inDuration: 700
+            });
+        });
+    </script>
 </body>
 </html>
