@@ -1,7 +1,14 @@
 import json
 import chevron
 import shutil
+import subprocess
+import yaml
+import platform as plt
+from yaml import Loader, Dumper
 from pathlib import Path
+from kubernetes import client as kubeClient
+from kubernetes import config as kubeConfig
+
 
 class ResultsLoader:
     def __init__(self, results_path):
@@ -92,30 +99,100 @@ class MochaReportProcessor:
         return self.report_data["stats"]["passPercent"]
     
     def get_error_count(self):
-        return 0
+        err_count = 0
+        for report in self.report_data["results"]:
+            for suit in report["suites"]:
+                for test in suit["tests"]:
+                    if test["err"]:
+                        err_count += 1
 
+        return err_count
+    
+    def get_version(self):
+        return [("mocha_version", self.report_data["meta"]["mocha"]["version"])]
 
 class PostmanReportProcessor:
     def __init__(self, report):
         self.report_data = report
 
     def get_total(self):
-        return 0
+        return self.report_data["run"]["stats"]["assertions"]["total"]
     
     def get_passed(self):
-        return 0
+        print(self.get_total(), self.get_failed())
+        return self.get_total() - self.get_failed()
 
     def get_failed(self):
-        return 0
+        return self.report_data["run"]["stats"]["assertions"]["failed"] + self.get_skipped()
     
     def get_skipped(self):
-        return 0
+        return self.report_data["run"]["stats"]["assertions"]["pending"]
     
     def get_pass_percent(self):
-        return 0
+        return (self.get_passed() / self.get_total()) * 100
     
     def get_error_count(self):
-        return 0
+        return len(self.report_data["run"]["failures"])
+    
+    def get_version(self):
+        return [("postman_version", self.report_data["environment"]["_"]["postman_exported_using"])]
+
+
+class Platform:
+    def __init__(self) -> None:
+        kubeConfig.load_kube_config()
+        self.commander = Commander()
+
+    def get_os_name(self):
+        return f"{plt.system()}"
+    
+    def get_platform_arch(self):
+        return f"{plt.machine()} {plt.system()}"
+    
+    def node_version(self):
+        return self.commander.get_node_version()
+
+    def get_canvas_platform(self):
+        return kubeClient.CoreV1Api().list_node().items[0].status.node_info.os_image
+    
+    def get_canvas_version(self):
+        for api in kubeClient.ApisApi().get_api_versions().groups:
+            if api.name == "oda.tmforum.org":
+                return api.preferred_version.version
+
+    def get_platform_kube_version(self):
+        core_v1 = kubeClient.CoreApi().get_api_versions()
+        return " / ".join(core_v1.versions)
+    
+    def is_canvas_certified(self):
+        return True
+
+
+class Component:
+    def __init__(self, component_path: Path) -> None:
+        self.component_path = component_path
+        self.component = {}
+        with self.component_path.open("r") as f:
+            for chart in  yaml.load_all(f, Loader=Loader):
+                if chart["kind"] == "component":
+                    self.component = chart
+                    break
+
+    def get_name(self):
+        if self.component:
+            return self.component["metadata"]["labels"]["oda.tmforum.org/componentName"]
+        else:
+            return "Unknown"
+
+    def get_version(self):
+        if self.component:
+            return self.component["spec"]["version"]
+        else:
+            return "Unknown"
+        
+    def get_conformance_level(self):
+        return "Unknown"
+
 
 class HighLevelSummaryReport:
     def __init__(self):
@@ -129,6 +206,9 @@ class HighLevelSummaryReport:
             "api-ctk": PostmanReportProcessor,
             "component-ctk": MochaReportProcessor
         }
+
+        self.platform = Platform()
+        self.component = Component(Path("../r1-productcatalog.component.yaml"))
 
     def generate(self, out_path: Path):
         with out_path.joinpath("summary.json").open("w") as f:
@@ -150,7 +230,37 @@ class HighLevelSummaryReport:
                 "total": processor.get_total(),
                 "errors": processor.get_error_count(),
             })
+            self.results.update(processor.get_version())
+        
+        self.results.update({
+            "os_name": self.platform.get_os_name(),
+            "platform_arch": self.platform.get_platform_arch(),
+            "node_version": self.platform.node_version(),
+            "canvas_version": self.platform.get_canvas_version(),
+            "platform_kube_version": self.platform.get_platform_kube_version(),
+            "is_canvas_certified": self.platform.is_canvas_certified(),
+            "component_name": self.component.get_name(),
+            "component_version": self.component.get_version(),
+            "canvas_platform": self.platform.get_canvas_platform(),
+            "conformance_level": self.component.get_conformance_level(),
+        })
 
+
+class Commander:
+    def __init__(self):
+        self.node_command = ["node", "-v"]
+    
+    def get_node_version(self):
+        output = subprocess.run(
+            self.node_command, 
+            capture_output=True,
+            text=True
+        )
+
+        if output.returncode == 0:
+            return output.stdout.strip()
+        else:
+            return "Unknown"
 
 class reportRenderer:
     def __init__(self, results):
