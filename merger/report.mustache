@@ -19,17 +19,16 @@
         body {
             background-color: #f5f5f5;
         }
-        table {
-            width: 100%;
-            font-size: 13px;
+       
+        .info {
+            font-weight: bold;
         }
-
         /* Table Fixed Column */
 
         table th,
         table td {
-        padding-right: 24px;
-        padding-left: 24px;
+        padding-right: 24px; 
+        padding-left: 24px; 
         white-space: nowrap;
         }
     </style>
@@ -38,147 +37,183 @@
     <div class="container">
     <div class="section">
         <h1 class="center-align">ODA Conformance Test Report</h1>
-        <div class="divider"></div>
+        <div class="divider row"></div>
     </div>
 
     {{#summary}}
     <div class="row">
-        <div class="col s4 card">
-            <div class="card-content row">
+        <div class="col s4">
+            <div class="card">
+                <div class="card-content">
                 <span class="card-title">Component</span>
-                <div class="col s6">
-                    <div class="row">
-                        <p>Version:</p>
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Version:</p>
                     </div>
-                    <div class="row">
-                        <p>Name:</p>
-                    </div>
-                    <div class="row">
-                        <p>Conformance level:</p> <!-- not implemented -->
-                    </div>
-                    <div class="row">
-                        <p>CTK passed:</p> <!-- not implemented -->
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="row">
+                    <div class="col s6">
                         <p>{{component_version}}</p>
                     </div>
-                     <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Name:</p>
+                    </div>
+                    <div class="col s6">
                         <p>{{component_name}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Conformance level:</p> <!-- not implemented -->
+                    </div>
+                    <div class="col s6">
                         <p>{{conformance_level}}</p> <!-- not implemented -->
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">CTK passed:</p> <!-- not implemented -->
+                    </div>
+                    <div class="col s6">
                         <p>{{ctk_passed}} False</p> <!-- not implemented -->
                     </div>
                 </div>
             </div>
+            </div>
+            
         </div>
-       <div class="col s4 card">
-            <div class="card-content row">
+       <div class="col s4">
+            <div class="card">
+            <div class="card-content">
                 <span class="card-title">Kubernetes Versions</span>
-                <div class="col s6">
-                    <div class="row">
-                        <p>Core apis:</p>
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Core apis:</p>
+
                     </div>
-                    <div class="row">
-                        <p>platform:</p> 
-                    </div>
-                    <div class="row">
-                        <p>Canvas:</p>
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="row">
+                    <div class="col s6">
                         <p>{{platform_kube_version}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">platform:</p> 
+                    </div>
+                    <div class="col s6">
                         <p>{{canvas_platform}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Canvas:</p>
+                    </div>
+                    <div class="col s6">
                         <p>{{canvas_version}}</p>
                     </div>
                 </div>
             </div>
+            </div>
+            
         </div>
-        <div class="col s4 card">
-            <div class="card-content row">
+        <div class="col s4">
+            <div class="card">
+            <div class="card-content">
                 <span class="card-title">Environment</span>
-                <div class="col s6">
-                    <div class="row">
-                        <p>Mocha version:</p>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Mocha version:</p>
                     </div>
-                    <div class="row">
-                        <p>Postman version:</p>
-                    </div>
-                    <div class="row">
-                        <p>Node version:</p> <!-- not implemented -->
-                    </div>
-                    <div class="row">
-                        <p>Platform arch:</p> <!-- not implemented -->
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="row">
+                    <div class="col s6">
                         <p>{{mocha_version}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                 <div class="row">
+                    <div class="col s6">
+                        <p class="info">Postman version:</p>
+                    </div>
+                    <div class="col s6">
                         <p>{{postman_version}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Node version:</p> <!-- not implemented -->
+                    </div>
+                    <div class="col s6">
                         <p>{{node_version}}</p>
                     </div>
-                    <div class="row">
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Platform arch:</p> <!-- not implemented -->
+                    </div>
+                    <div class="col s6">
                         <p>{{platform_arch}}</p>
                     </div>
                 </div>
             </div>
+            </div>
+            
         </div>
     </div>
     <div class="row">
-    <div class="card z-depth-2">
-        <table class="striped" style="padding-left: 1rem">
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Passed</th>
-                <th>failed</th>
-                <th>total</th>
-                <th>skipped</th>
-                <th>errors</th>
-            </tr>
-            {{#summary_table}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{type}}</td>
-                <td>{{passed}}</td>
-                <td>{{failed}}</td>
-                <td>{{total}}</td>
-                <td>{{skipped}}</td>
-                <td>{{errors}}</td>
-            </tr>
-            {{/summary_table}}            
-        </table>
-    </div>
+        <div class="col s12">
+            <div class="card z-depth-2">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Passed</th>
+                                <th>failed</th>
+                                <th>total</th>
+                                <th>skipped</th>
+                                <th>errors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#summary_table}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{type}}</td>
+                            <td>{{passed}}</td>
+                            <td>{{failed}}</td>
+                            <td>{{total}}</td>
+                            <td>{{skipped}}</td>
+                            <td>{{errors}}</td>
+                        </tr>
+                        {{/summary_table}}
+                        </tbody>
+                    </table>            
+                
+            </div>
+        </div>
     </div>
     {{/summary}}
     <div class="row">
-    {{#sections}}
-    <ul class="collapsible">
-        <li>
-            <div class="collapsible-header">
-                <i class="Medium material-icons">note</i><span>{{Section_title}}</span>
-            </div>
-            <div class="collapsible-body">
-                <iframe src="{{html_path}}" style="width: 100%; height: 50vh;"></iframe>
-            </div>
-        </li>
-    </ul>
-    
-    {{/sections}}
-    </div>
+        <div class="col s12">
+            {{#sections}}
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="Medium material-icons">note</i><span>{{Section_title}}</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <iframe src="{{html_path}}" style="width: 100%; height: 50vh;"></iframe>
+                    </div>
+                </li>
+            </ul>
+            {{/sections}}
+        </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

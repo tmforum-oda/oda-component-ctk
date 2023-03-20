@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 2,
-    "start": "2023-03-14T15:44:40.363Z",
-    "end": "2023-03-14T15:44:40.462Z",
-    "duration": 99,
+    "start": "2023-03-15T15:28:42.530Z",
+    "end": "2023-03-15T15:28:42.627Z",
+    "duration": 97,
     "testsRegistered": 3,
     "passPercent": 33.33333333333333,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "a7d7f932-b648-4a91-89b0-94a13fb6cab2",
+      "uuid": "004ee966-faf6-4d45-bb89-62495e21eb92",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "ebccc670-f50e-4fc1-a51f-9a18f6f26e9e",
+          "uuid": "4b748543-dd64-47bb-8a44-0162f5759c5d",
           "title": "Step 0: Basic environment connectivity tests",
           "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js",
           "file": "/L2-dynamicValidationTests.js",
@@ -38,35 +38,35 @@
               "title": "Kubectl configured correctly",
               "fullTitle": "Step 0: Basic environment connectivity tests Kubectl configured correctly",
               "timedOut": false,
-              "duration": 26,
+              "duration": 28,
               "state": "passed",
               "speed": "fast",
               "pass": true,
               "fail": false,
               "pending": false,
-              "context": null,
+              "context": "\"The test expects the pods related to a component to be created in the namespace components\"",
               "code": "",
               "err": {},
-              "uuid": "15fc551f-f307-45c1-ad63-e8149b7d0049",
-              "parentUUID": "ebccc670-f50e-4fc1-a51f-9a18f6f26e9e",
+              "uuid": "0881ebe6-a746-4a0c-a81e-4bf2f11a7495",
+              "parentUUID": "4b748543-dd64-47bb-8a44-0162f5759c5d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "15fc551f-f307-45c1-ad63-e8149b7d0049"
+            "0881ebe6-a746-4a0c-a81e-4bf2f11a7495"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 26,
+          "duration": 28,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
         },
         {
-          "uuid": "1d9ac8bd-ef36-4008-b82b-a370958f2ea5",
+          "uuid": "dc53898a-cbe4-42f3-a64b-58a4dacabd72",
           "title": "Step 1: Check metadata for component r1-productcatalog.component.yaml",
           "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js",
           "file": "/L2-dynamicValidationTests.js",
@@ -77,21 +77,21 @@
               "title": "Component can be found",
               "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component can be found",
               "timedOut": false,
-              "duration": 11,
+              "duration": 9,
               "state": "failed",
               "speed": null,
               "pass": false,
               "fail": true,
               "pending": false,
-              "context": null,
+              "context": "\"The metadata contained in the component envelope must be found in the component resources\"",
               "code": "",
               "err": {
                 "message": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1",
-                "estack": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:59:100\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "estack": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:65:100\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
                 "diff": "- 0\n+ 1\n"
               },
-              "uuid": "907a673f-3526-41b2-bf7c-52463ccc0dff",
-              "parentUUID": "1d9ac8bd-ef36-4008-b82b-a370958f2ea5",
+              "uuid": "51cd360e-b247-4919-9b29-5ddafbd7868a",
+              "parentUUID": "dc53898a-cbe4-42f3-a64b-58a4dacabd72",
               "isHook": false,
               "skipped": false
             },
@@ -99,21 +99,21 @@
               "title": "Component has deployed successfully (summary/status.deployment_status: Complete)",
               "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component has deployed successfully (summary/status.deployment_status: Complete)",
               "timedOut": false,
-              "duration": 8,
+              "duration": 10,
               "state": "failed",
               "speed": null,
               "pass": false,
               "fail": true,
               "pending": false,
-              "context": null,
+              "context": "\"The test expects the custom resources to have a status.summary/status.deployment_status of Complete\"",
               "code": "",
               "err": {
                 "message": "TypeError: Cannot read properties of undefined (reading 'status')",
-                "estack": "TypeError: Cannot read properties of undefined (reading 'status')\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:67:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "estack": "TypeError: Cannot read properties of undefined (reading 'status')\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L2-dynamicValidationTests.js:75:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
                 "diff": null
               },
-              "uuid": "84122472-3f2b-4d62-8ee0-aa0eb35e18a7",
-              "parentUUID": "1d9ac8bd-ef36-4008-b82b-a370958f2ea5",
+              "uuid": "c7fa25b0-d619-4c40-a678-66cc8959fb7d",
+              "parentUUID": "dc53898a-cbe4-42f3-a64b-58a4dacabd72",
               "isHook": false,
               "skipped": false
             }
@@ -121,8 +121,8 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "907a673f-3526-41b2-bf7c-52463ccc0dff",
-            "84122472-3f2b-4d62-8ee0-aa0eb35e18a7"
+            "51cd360e-b247-4919-9b29-5ddafbd7868a",
+            "c7fa25b0-d619-4c40-a678-66cc8959fb7d"
           ],
           "pending": [],
           "skipped": [],

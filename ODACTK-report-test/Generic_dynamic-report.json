@@ -1,13 +1,13 @@
 {
   "stats": {
-    "suites": 3,
+    "suites": 2,
     "tests": 3,
     "passes": 1,
     "pending": 0,
     "failures": 2,
-    "start": "2023-03-14T15:44:36.810Z",
-    "end": "2023-03-14T15:44:36.905Z",
-    "duration": 95,
+    "start": "2023-03-15T15:28:39.095Z",
+    "end": "2023-03-15T15:28:39.202Z",
+    "duration": 107,
     "testsRegistered": 3,
     "passPercent": 33.33333333333333,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "3fef746c-5714-4361-b9bd-d2c2c200c779",
+      "uuid": "e9f6dd19-6cca-4872-a566-0cd4827ad936",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,103 +27,46 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "bdf7b69d-17fd-4204-b1df-fc2fe2d1e1a8",
+          "uuid": "577ac72f-5e65-47eb-b674-bf20bf87970c",
           "title": "Step 0: Basic environment connectivity tests",
           "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js",
           "file": "/L1-dynamicValidationTests.js",
-          "beforeHooks": [
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
             {
-              "title": "\"before each\" hook in \"Step 0: Basic environment connectivity tests\"",
-              "fullTitle": "Step 0: Basic environment connectivity tests \"before each\" hook in \"Step 0: Basic environment connectivity tests\"",
+              "title": "Kubectl configured correctly",
+              "fullTitle": "Step 0: Basic environment connectivity tests Kubectl configured correctly",
               "timedOut": false,
-              "duration": 0,
-              "state": null,
-              "speed": null,
-              "pass": false,
+              "duration": 27,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
               "fail": false,
               "pending": false,
-              "context": null,
+              "context": "[\n  \"The pourpose of this test is to check if the kubectl is configured correctly\",\n  \"The configuration must be available and the context must be set to the correct cluster\"\n]",
               "code": "",
               "err": {},
-              "uuid": "eddd0d7c-88d2-4425-8e2b-adeb95fa00e3",
-              "parentUUID": "bdf7b69d-17fd-4204-b1df-fc2fe2d1e1a8",
-              "isHook": true,
+              "uuid": "3b96b996-d92d-429c-9ccf-f368898f8dcd",
+              "parentUUID": "577ac72f-5e65-47eb-b674-bf20bf87970c",
+              "isHook": false,
               "skipped": false
             }
           ],
-          "afterHooks": [],
-          "tests": [],
-          "suites": [
-            {
-              "uuid": "ef1a2c91-490a-48e7-99fb-4c8eb4cd7ced",
-              "title": "Check connectivity to Kubernetes cluster",
-              "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js",
-              "file": "/L1-dynamicValidationTests.js",
-              "beforeHooks": [
-                {
-                  "title": "\"before each\" hook in \"Check connectivity to Kubernetes cluster\"",
-                  "fullTitle": "Step 0: Basic environment connectivity tests Check connectivity to Kubernetes cluster \"before each\" hook in \"Check connectivity to Kubernetes cluster\"",
-                  "timedOut": false,
-                  "duration": 0,
-                  "state": null,
-                  "speed": null,
-                  "pass": false,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "",
-                  "err": {},
-                  "uuid": "72aefcd0-1d1c-4dd0-80aa-adef2782f6d7",
-                  "parentUUID": "ef1a2c91-490a-48e7-99fb-4c8eb4cd7ced",
-                  "isHook": true,
-                  "skipped": false
-                }
-              ],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "Kubectl configured correctly",
-                  "fullTitle": "Step 0: Basic environment connectivity tests Check connectivity to Kubernetes cluster Kubectl configured correctly",
-                  "timedOut": false,
-                  "duration": 22,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": "[\n  \"some context Before describe\",\n  \"some context before it\",\n  \"Kubectl configured correctly and description added\",\n  \"Kubectl configured correctly and second description added\",\n  \"Kubectl configured correctly and description added\",\n  {\n    \"title\": \"expected output added\",\n    \"value\": {\n      \"a\": 1,\n      \"b\": \"2\",\n      \"c\": \"d\"\n    }\n  }\n]",
-                  "code": "",
-                  "err": {},
-                  "uuid": "bb0be5b2-cd43-420c-ad8f-b3c3a7290ee6",
-                  "parentUUID": "ef1a2c91-490a-48e7-99fb-4c8eb4cd7ced",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "bb0be5b2-cd43-420c-ad8f-b3c3a7290ee6"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 22,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 2000
-            }
+          "suites": [],
+          "passes": [
+            "3b96b996-d92d-429c-9ccf-f368898f8dcd"
           ],
-          "passes": [],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 0,
+          "duration": 27,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
         },
         {
-          "uuid": "a588c5cf-eb2c-4580-900e-9369fff7af25",
+          "uuid": "f5a7e5ef-3a89-410a-a90d-04360b25161f",
           "title": "Step 1: Check metadata for component r1-productcatalog.component.yaml",
           "fullFile": "/home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js",
           "file": "/L1-dynamicValidationTests.js",
@@ -134,21 +77,21 @@
               "title": "Component r1-productcatalog can be found in namespace components",
               "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component r1-productcatalog can be found in namespace components",
               "timedOut": false,
-              "duration": 9,
+              "duration": 14,
               "state": "failed",
               "speed": null,
               "pass": false,
               "fail": true,
               "pending": false,
-              "context": null,
+              "context": "\"The pourpose of this test is to check if the component can be found in the selected namespace\"",
               "code": "",
               "err": {
                 "message": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1",
-                "estack": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js:78:100\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "estack": "AssertionError: Should find 1 component with name r1-productcatalog: expected 0 to equal 1\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js:64:100\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
                 "diff": "- 0\n+ 1\n"
               },
-              "uuid": "a2b71ea4-8614-4262-99a0-d11e1849fa27",
-              "parentUUID": "a588c5cf-eb2c-4580-900e-9369fff7af25",
+              "uuid": "e475eceb-cc57-431a-b219-21626b75475b",
+              "parentUUID": "f5a7e5ef-3a89-410a-a90d-04360b25161f",
               "isHook": false,
               "skipped": false
             },
@@ -156,21 +99,21 @@
               "title": "Component has deployed successfully (summary/status.deployment_status: Complete)",
               "fullTitle": "Step 1: Check metadata for component r1-productcatalog.component.yaml Component has deployed successfully (summary/status.deployment_status: Complete)",
               "timedOut": false,
-              "duration": 8,
+              "duration": 12,
               "state": "failed",
               "speed": null,
               "pass": false,
               "fail": true,
               "pending": false,
-              "context": null,
+              "context": "\"This test expects the value of summary/status.deployment_status of the component resource to be Complete\"",
               "code": "",
               "err": {
                 "message": "TypeError: Cannot read properties of undefined (reading 'status')",
-                "estack": "TypeError: Cannot read properties of undefined (reading 'status')\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js:86:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "estack": "TypeError: Cannot read properties of undefined (reading 'status')\n    at /home/labosis/Projects/TMF/ODA/Conformance/oda-component-ctk/L1-dynamicValidationTests.js:74:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
                 "diff": null
               },
-              "uuid": "7de3a274-91fa-4512-8e73-12813158e663",
-              "parentUUID": "a588c5cf-eb2c-4580-900e-9369fff7af25",
+              "uuid": "4f43f539-310a-4946-85cc-acd4ac84d2d5",
+              "parentUUID": "f5a7e5ef-3a89-410a-a90d-04360b25161f",
               "isHook": false,
               "skipped": false
             }
@@ -178,12 +121,12 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "a2b71ea4-8614-4262-99a0-d11e1849fa27",
-            "7de3a274-91fa-4512-8e73-12813158e663"
+            "e475eceb-cc57-431a-b219-21626b75475b",
+            "4f43f539-310a-4946-85cc-acd4ac84d2d5"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 17,
+          "duration": 26,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

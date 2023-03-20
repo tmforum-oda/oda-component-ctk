@@ -4,10 +4,10 @@
             "name": "TMF620-Results",
             "type": "api-ctk",
             "passed": 0,
-            "failed": 0,
+            "failed": 28,
             "skipped": 0,
-            "total": 0,
-            "errors": 0
+            "total": 28,
+            "errors": 99
         },
         {
             "name": "Generic_static-report",
@@ -16,7 +16,7 @@
             "failed": 1,
             "skipped": 0,
             "total": 26,
-            "errors": 0
+            "errors": 1
         },
         {
             "name": "Generic_dynamic-report",
@@ -25,7 +25,7 @@
             "failed": 2,
             "skipped": 0,
             "total": 3,
-            "errors": 0
+            "errors": 2
         },
         {
             "name": "Specific_static-report",
@@ -43,7 +43,19 @@
             "failed": 2,
             "skipped": 0,
             "total": 3,
-            "errors": 0
+            "errors": 2
         }
-    ]
+    ],
+    "postman_version": "Postman/7.27.1",
+    "mocha_version": "8.4.0",
+    "os_name": "Linux",
+    "platform_arch": "x86_64 Linux",
+    "node_version": "v18.14.2",
+    "canvas_version": "v1beta1",
+    "platform_kube_version": "v1",
+    "is_canvas_certified": true,
+    "component_name": "r1-productcatalog",
+    "component_version": "0.0.1",
+    "canvas_platform": "Fedora Linux 37 (Workstation Edition)",
+    "conformance_level": "Unknown"
 }
