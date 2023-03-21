@@ -50,7 +50,7 @@
     "mocha_version": "8.4.0",
     "os_name": "Linux",
     "platform_arch": "x86_64 Linux",
-    "node_version": "v18.14.2",
+    "node_version": "v19.8.1",
     "canvas_version": "v1beta1",
     "platform_kube_version": "v1",
     "is_canvas_certified": true,
