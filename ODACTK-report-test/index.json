@@ -1,0 +1,115 @@
+{
+    "sections": [
+        {
+            "name": "Generic_static-report",
+            "type": "component-ctk",
+            "html_path": "../results/baseline-ctk/Generic_static-report.html",
+            "json_path": "../results/baseline-ctk/Generic_static-report.json",
+            "Section_title": "Generic static report",
+            "layer": "Level 1",
+            "passed": false,
+            "failed": true
+        },
+        {
+            "name": "Generic_dynamic-report",
+            "type": "component-ctk",
+            "html_path": "../results/baseline-ctk/Generic_dynamic-report.html",
+            "json_path": "../results/baseline-ctk/Generic_dynamic-report.json",
+            "Section_title": "Generic dynamic report",
+            "layer": "Level 1",
+            "passed": false,
+            "failed": true
+        },
+        {
+            "name": "Specific_static-report",
+            "type": "component-ctk",
+            "html_path": "../results/baseline-ctk/Specific_static-report.html",
+            "json_path": "../results/baseline-ctk/Specific_static-report.json",
+            "Section_title": "Specific static report",
+            "layer": "Level 2",
+            "passed": true,
+            "failed": false
+        },
+        {
+            "name": "Specific_dynamic-report",
+            "type": "component-ctk",
+            "html_path": "../results/baseline-ctk/Specific_dynamic-report.html",
+            "json_path": "../results/baseline-ctk/Specific_dynamic-report.json",
+            "Section_title": "Specific dynamic report",
+            "layer": "Level 2",
+            "passed": false,
+            "failed": true
+        },
+        {
+            "name": "TMF620-Results",
+            "type": "api-ctk",
+            "html_path": "../results/api-ctk/TMF620-Results.html",
+            "json_path": "../results/api-ctk/TMF620-Results.json",
+            "Section_title": "TMF620 Results",
+            "layer": "Level 2",
+            "passed": false,
+            "failed": true
+        }
+    ],
+    "summary": {
+        "summary_table": [
+            {
+                "name": "Generic static report",
+                "type": "component ctk",
+                "passed": 25,
+                "failed": 1,
+                "skipped": 0,
+                "total": 26,
+                "errors": 1
+            },
+            {
+                "name": "Generic dynamic report",
+                "type": "component ctk",
+                "passed": 1,
+                "failed": 2,
+                "skipped": 0,
+                "total": 3,
+                "errors": 2
+            },
+            {
+                "name": "Specific static report",
+                "type": "component ctk",
+                "passed": 7,
+                "failed": 0,
+                "skipped": 0,
+                "total": 7,
+                "errors": 0
+            },
+            {
+                "name": "Specific dynamic report",
+                "type": "component ctk",
+                "passed": 1,
+                "failed": 2,
+                "skipped": 0,
+                "total": 3,
+                "errors": 2
+            },
+            {
+                "name": "TMF620 Results",
+                "type": "api ctk",
+                "passed": 0,
+                "failed": 28,
+                "skipped": 0,
+                "total": 28,
+                "errors": 99
+            }
+        ],
+        "mocha_version": "8.4.0",
+        "postman_version": "Postman/7.27.1",
+        "os_name": "Linux",
+        "platform_arch": "x86_64 Linux",
+        "node_version": "v19.8.1",
+        "canvas_version": "v1beta1",
+        "platform_kube_version": "v1",
+        "is_canvas_certified": true,
+        "component_name": "r1-productcatalog",
+        "component_version": "0.0.1",
+        "canvas_platform": "Fedora Linux 37 (Workstation Edition)",
+        "conformance_level": "Level 2"
+    }
+}

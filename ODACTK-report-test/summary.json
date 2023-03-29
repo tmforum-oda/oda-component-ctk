@@ -1,17 +1,8 @@
 {
     "summary_table": [
         {
-            "name": "TMF620-Results",
-            "type": "api-ctk",
-            "passed": 0,
-            "failed": 28,
-            "skipped": 0,
-            "total": 28,
-            "errors": 99
-        },
-        {
-            "name": "Generic_static-report",
-            "type": "component-ctk",
+            "name": "Generic static report",
+            "type": "component ctk",
             "passed": 25,
             "failed": 1,
             "skipped": 0,
@@ -19,8 +10,8 @@
             "errors": 1
         },
         {
-            "name": "Generic_dynamic-report",
-            "type": "component-ctk",
+            "name": "Generic dynamic report",
+            "type": "component ctk",
             "passed": 1,
             "failed": 2,
             "skipped": 0,
@@ -28,8 +19,8 @@
             "errors": 2
         },
         {
-            "name": "Specific_static-report",
-            "type": "component-ctk",
+            "name": "Specific static report",
+            "type": "component ctk",
             "passed": 7,
             "failed": 0,
             "skipped": 0,
@@ -37,17 +28,26 @@
             "errors": 0
         },
         {
-            "name": "Specific_dynamic-report",
-            "type": "component-ctk",
+            "name": "Specific dynamic report",
+            "type": "component ctk",
             "passed": 1,
             "failed": 2,
             "skipped": 0,
             "total": 3,
             "errors": 2
+        },
+        {
+            "name": "TMF620 Results",
+            "type": "api ctk",
+            "passed": 0,
+            "failed": 28,
+            "skipped": 0,
+            "total": 28,
+            "errors": 99
         }
     ],
-    "postman_version": "Postman/7.27.1",
     "mocha_version": "8.4.0",
+    "postman_version": "Postman/7.27.1",
     "os_name": "Linux",
     "platform_arch": "x86_64 Linux",
     "node_version": "v19.8.1",
@@ -57,5 +57,5 @@
     "component_name": "r1-productcatalog",
     "component_version": "0.0.1",
     "canvas_platform": "Fedora Linux 37 (Workstation Edition)",
-    "conformance_level": "Unknown"
+    "conformance_level": "Level 2"
 }

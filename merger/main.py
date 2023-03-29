@@ -20,33 +20,54 @@ class ResultsLoader:
             "Specific_dynamic-report",
         ]
         self.report_types = [
-            "api-ctk",
             "baseline-ctk"
+            "api-ctk",
         ]
+        self.test_level_map = {
+            "Generic_static-report": "Level 1",
+            "Generic_dynamic-report": "Level 1",
+            "Specific_static-report": "Level 2",
+            "Specific_dynamic-report": "Level 2",
+            "TMF620-Results": "Level 2"
+        }
 
     def glob_apictk_reports(self):
         for htmlreport in (self.results_path / "api-ctk").glob("*.html"):
-            jsonreport = htmlreport.with_suffix(".json")
-            if jsonreport.exists():
+            json_report = htmlreport.with_suffix(".json")
+            with open(json_report, "r") as f:
+                report_data = json.load(f)
+                processor = PostmanReportProcessor(report_data)
+
+            if json_report.exists():
                 yield {
                     "name": htmlreport.stem,
                     "html_path": str(htmlreport),
-                    "json_path": str(jsonreport),
-                    "type": "api-ctk"
+                    "json_path": str(json_report),
+                    "type": "api-ctk",
+                    "layer": self.test_level_map[htmlreport.stem],
+                    "passed": processor.get_pass_percent() == 100,
+                    "failed": processor.get_pass_percent() != 100
                 }
             else:
-                print("Warning: json report not found: ", jsonreport)
+                print("Warning: json report not found: ", json_report)
 
     def load_baseline_ctk_reports(self):
         for report_name in self.baseline_report_names:
             html_report = (self.results_path / "baseline-ctk" / f"{report_name}.html")
             json_report = html_report.with_suffix(".json")
+            with open(json_report, "r") as f:
+                report_data = json.load(f)
+                processor = MochaReportProcessor(report_data)
+
             if html_report.exists() and json_report.exists():
                 yield {
                     "name": report_name,
                     "html_path": str(html_report),
                     "json_path": str(json_report),
-                    "type": "component-ctk"
+                    "type": "component-ctk",
+                    "layer": self.test_level_map[report_name],
+                    "passed": processor.get_pass_percent() == 100,
+                    "failed": processor.get_pass_percent() != 100
                 }
             else: 
                 print("Warning: baseline report not found: ", html_report)
@@ -57,18 +78,21 @@ class ResultsProcessor:
     def __init__(self):
         self.results_path = Path("../results")
         self.results = ResultsLoader(self.results_path)
-        pass
+        self.result_conformance = {}
 
     def load_result_files(self):
         results = {
             "reports": [
-                *list(self.results.glob_apictk_reports()),
                 *list(self.results.load_baseline_ctk_reports()),
+                *list(self.results.glob_apictk_reports())
             ]
         }
+
         #print(json.dumps(results, indent=4))
         return results
-    
+
+
+
     def copy_results_to_output_directory(self, out_path: Path):
         shutil.copytree(
             self.results_path / "baseline-ctk" / "assets", 
@@ -191,7 +215,7 @@ class Component:
             return "Unknown"
         
     def get_conformance_level(self):
-        return "Unknown"
+        return "Level 2"
 
 
 class HighLevelSummaryReport:
@@ -222,8 +246,8 @@ class HighLevelSummaryReport:
             self.report_cache[report["name"]] = report_data
             processor = self.processors[report["type"]](report_data)
             self.results["summary_table"].append({
-                "name": report["name"],
-                "type": report["type"],
+                "name": report["name"].replace('-', ' ').replace('_', ' '),
+                "type": report["type"].replace('-', ' ').replace('_', ' '),
                 "passed": processor.get_passed(),
                 "failed": processor.get_failed(),
                 "skipped": processor.get_skipped(),
@@ -288,7 +312,7 @@ class reportRenderer:
 class MustacheRenderer:
     def __init__(self, template_path, output_path):
         self.template_path = template_path
-        self.output_path = output_path.joinpath("index.html")
+        self.output_path = output_path
         self.data = {
             "sections": [],
             "summary": {}
@@ -303,7 +327,11 @@ class MustacheRenderer:
             "data": self.data,
         }
 
-        with self.output_path.open("w+") as f:
+
+        with self.output_path.joinpath("index.json").open("w+") as f:
+            json.dump(self.data, f, indent=4)
+
+        with self.output_path.joinpath("index.html").open("w+") as f:
             f.write(chevron.render(**template_args))
 
 
@@ -317,7 +345,10 @@ class MustacheRenderer:
                 "type": report["type"],
                 "html_path": Path(report["html_path"]).name,
                 "json_path": Path(report["json_path"]).name,
-                "Section_title": f"{report['type']}: {report['name']}"
+                "Section_title": f"{report['name'].replace('-', ' ').replace('_', ' ')}",
+                **report
+
+
             })
             
 

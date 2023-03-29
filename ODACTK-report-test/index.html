@@ -42,7 +42,7 @@
 
     <div class="row">
         <div class="col m4 s12">
-            <div class="card small">
+            <div class="card small z-depth-2">
                 <div class="card-content">
                 <span class="card-title">Component</span>
                 <div class="row">
@@ -65,10 +65,10 @@
 
                 <div class="row">
                     <div class="col s6">
-                        <p class="info">Conformance level:</p> <!-- not implemented -->
+                        <p class="info">Conformance target:</p> <!-- not implemented -->
                     </div>
                     <div class="col s6">
-                        <p>Unknown</p> <!-- not implemented -->
+                        <p>Level 2</p> <!-- not implemented -->
                     </div>
                 </div>
 
@@ -80,16 +80,25 @@
                         <p> False</p> <!-- not implemented -->
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p class="info">Certification status:</p> <!-- not implemented -->
+                    </div>
+                    <div class="col s6">
+                        <p> Uncertified</p> <!-- not implemented -->
+                    </div>
+                </div>
             </div>
             </div>
             
         </div>
        <div class="col m4 s12">
-            <div class="card small">
+            <div class="card small z-depth-2">
             <div class="card-content">
                 <span class="card-title">Kubernetes Versions</span>
                 <div class="row ">
-                    <div class="col s6 valign-wrapper">
+                    <div class="col s6">
                         <p class="info">Core apis:</p>
 
                     </div>
@@ -120,7 +129,7 @@
             
         </div>
         <div class="col m4 s12">
-            <div class="card small">
+            <div class="card small z-depth-2">
             <div class="card-content">
                 <span class="card-title">Environment</span>
 
@@ -181,17 +190,8 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>TMF620-Results</td>
-                            <td>api-ctk</td>
-                            <td>0</td>
-                            <td>28</td>
-                            <td>28</td>
-                            <td>0</td>
-                            <td>99</td>
-                        </tr>
-                        <tr>
-                            <td>Generic_static-report</td>
-                            <td>component-ctk</td>
+                            <td>Generic static report</td>
+                            <td>component ctk</td>
                             <td>25</td>
                             <td>1</td>
                             <td>26</td>
@@ -199,8 +199,8 @@
                             <td>1</td>
                         </tr>
                         <tr>
-                            <td>Generic_dynamic-report</td>
-                            <td>component-ctk</td>
+                            <td>Generic dynamic report</td>
+                            <td>component ctk</td>
                             <td>1</td>
                             <td>2</td>
                             <td>3</td>
@@ -208,8 +208,8 @@
                             <td>2</td>
                         </tr>
                         <tr>
-                            <td>Specific_static-report</td>
-                            <td>component-ctk</td>
+                            <td>Specific static report</td>
+                            <td>component ctk</td>
                             <td>7</td>
                             <td>0</td>
                             <td>7</td>
@@ -217,13 +217,22 @@
                             <td>0</td>
                         </tr>
                         <tr>
-                            <td>Specific_dynamic-report</td>
-                            <td>component-ctk</td>
+                            <td>Specific dynamic report</td>
+                            <td>component ctk</td>
                             <td>1</td>
                             <td>2</td>
                             <td>3</td>
                             <td>0</td>
                             <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>TMF620 Results</td>
+                            <td>api ctk</td>
+                            <td>0</td>
+                            <td>28</td>
+                            <td>28</td>
+                            <td>0</td>
+                            <td>99</td>
                         </tr>
                         </tbody>
                     </table>            
@@ -233,53 +242,63 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <ul class="collapsible">
+            <ul class="collapsible z-depth-2">
                 <li>
                     <div class="collapsible-header">
-                        <i class="Medium material-icons">note</i><span>api-ctk: TMF620-Results</span>
+                        <i class="Medium material-icons">note</i>
+                        <span>Generic static report Level 1</span>
+                            <span class="new badge red" data-badge-caption="failed"></span>
                     </div>
                     <div class="collapsible-body">
-                        <iframe src="TMF620-Results.html" style="width: 100%; height: 50vh;"></iframe>
+                        <iframe src="../results/baseline-ctk/Generic_static-report.html" style="width: 100%; height: 50vh;"></iframe>
                     </div>
                 </li>
             </ul>
-            <ul class="collapsible">
+            <ul class="collapsible z-depth-2">
                 <li>
                     <div class="collapsible-header">
-                        <i class="Medium material-icons">note</i><span>component-ctk: Generic_static-report</span>
+                        <i class="Medium material-icons">note</i>
+                        <span>Generic dynamic report Level 1</span>
+                            <span class="new badge red" data-badge-caption="failed"></span>
                     </div>
                     <div class="collapsible-body">
-                        <iframe src="Generic_static-report.html" style="width: 100%; height: 50vh;"></iframe>
+                        <iframe src="../results/baseline-ctk/Generic_dynamic-report.html" style="width: 100%; height: 50vh;"></iframe>
                     </div>
                 </li>
             </ul>
-            <ul class="collapsible">
+            <ul class="collapsible z-depth-2">
                 <li>
                     <div class="collapsible-header">
-                        <i class="Medium material-icons">note</i><span>component-ctk: Generic_dynamic-report</span>
+                        <i class="Medium material-icons">note</i>
+                        <span>Specific static report Level 2</span>
+                        <span class="new badge green" data-badge-caption="passed"></span>
                     </div>
                     <div class="collapsible-body">
-                        <iframe src="Generic_dynamic-report.html" style="width: 100%; height: 50vh;"></iframe>
+                        <iframe src="../results/baseline-ctk/Specific_static-report.html" style="width: 100%; height: 50vh;"></iframe>
                     </div>
                 </li>
             </ul>
-            <ul class="collapsible">
+            <ul class="collapsible z-depth-2">
                 <li>
                     <div class="collapsible-header">
-                        <i class="Medium material-icons">note</i><span>component-ctk: Specific_static-report</span>
+                        <i class="Medium material-icons">note</i>
+                        <span>Specific dynamic report Level 2</span>
+                            <span class="new badge red" data-badge-caption="failed"></span>
                     </div>
                     <div class="collapsible-body">
-                        <iframe src="Specific_static-report.html" style="width: 100%; height: 50vh;"></iframe>
+                        <iframe src="../results/baseline-ctk/Specific_dynamic-report.html" style="width: 100%; height: 50vh;"></iframe>
                     </div>
                 </li>
             </ul>
-            <ul class="collapsible">
+            <ul class="collapsible z-depth-2">
                 <li>
                     <div class="collapsible-header">
-                        <i class="Medium material-icons">note</i><span>component-ctk: Specific_dynamic-report</span>
+                        <i class="Medium material-icons">note</i>
+                        <span>TMF620 Results Level 2</span>
+                            <span class="new badge red" data-badge-caption="failed"></span>
                     </div>
                     <div class="collapsible-body">
-                        <iframe src="Specific_dynamic-report.html" style="width: 100%; height: 50vh;"></iframe>
+                        <iframe src="../results/api-ctk/TMF620-Results.html" style="width: 100%; height: 50vh;"></iframe>
                     </div>
                 </li>
             </ul>
