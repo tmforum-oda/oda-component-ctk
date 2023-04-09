@@ -31,6 +31,10 @@
         padding-left: 24px; 
         white-space: nowrap;
         }
+
+        #results {
+            margin: 0 auto 0 0;
+        }
     </style>
 </head>
 <body>
@@ -64,13 +68,32 @@
                     </div>
                 </div>
 
+                <div class="row ">
+                        <div class="col s6">
+                            <p class="info">API CTK version:</p>
+
+                        </div>
+                        <div class="col s6">
+                            <p>v4.0.0</p>
+                        </div>
+                    </div>
+
+                <div class="row ">
+                    <div class="col s6">
+                        <p class="info">Component url:</p>
+
+                    </div>
+                    <div class="col s6">
+                        <p><a href="https://oda-directory.labs.tmforum.org/component-map/Core%20Commerce%20Management/TMFC001">link</a></p>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col s6">
                         <p class="info">CTK passed:</p> <!-- not implemented -->
                     </div>
                     <div class="col s6">
-                        <p>{{ctk_passed}} False</p> <!-- not implemented -->
+                       <span id="results" class="new badge red left" data-badge-caption="failed"></span>
                     </div>
                 </div>
 
@@ -80,62 +103,94 @@
         </div>
        <div class="col m4 s12">
             <div class="card small z-depth-2">
-            <div class="card-content">
-                <span class="card-title">Canvas Environment</span>
-                <div class="row ">
-                    <div class="col s6">
-                        <p class="info">Core apis:</p>
+                <div class="card-content">
+                    <span class="card-title">Product</span>
+                    
 
-                    </div>
-                    <div class="col s6">
-                        <p>{{platform_kube_version}}</p>
-                    </div>
-                </div>
+                    <div class="row ">
+                        <div class="col s6">
+                            <p class="info">Company:</p>
 
-                <div class="row">
-                    <div class="col s6">
-                        <p class="info">Canvas:</p>
+                        </div>
+                        <div class="col s6">
+                            <p>TMForum</p>
+                        </div>
                     </div>
-                    <div class="col s6">
-                        <p>{{canvas_version}}</p>
+
+                    <div class="row ">
+                        <div class="col s6">
+                            <p class="info">Product Name:</p>
+
+                        </div>
+                        <div class="col s6">
+                            <p>Product catalog</p>
+                        </div>
+                    </div>
+
+
+                    <div class="row ">
+                        <div class="col s6">
+                            <p class="info">Product url:</p>
+
+                        </div>
+                        <div class="col s6">
+                            <p><a href="">link</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
-            
         </div>
         <div class="col m4 s12">
             <div class="card small z-depth-2">
-            <div class="card-content">
-                <span class="card-title">Environment</span>
+                <div class="card-content">
+                    <span class="card-title">Environment</span>
 
-                <div class="row">
-                    <div class="col s6">
-                        <p class="info">Mocha version:</p>
+                    <div class="row">
+                        <div class="col s6">
+                            <p class="info">Mocha version:</p>
+                        </div>
+                        <div class="col s6">
+                            <p>{{mocha_version}}</p>
+                        </div>
                     </div>
-                    <div class="col s6">
-                        <p>{{mocha_version}}</p>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <p class="info">Postman version:</p>
+                        </div>
+                        <div class="col s6">
+                            <p>{{postman_version}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <p class="info">Node version:</p> <!-- not implemented -->
+                        </div>
+                        <div class="col s6">
+                            <p>{{node_version}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col s6">
+                            <p class="info">Kubernetes core apis:</p>
+
+                        </div>
+                        <div class="col s6">
+                            <p>{{platform_kube_version}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <p class="info">Canvas version:</p>
+                        </div>
+                        <div class="col s6">
+                            <p>{{canvas_version}}</p>
+                        </div>
                     </div>
                 </div>
-
-                 <div class="row">
-                    <div class="col s6">
-                        <p class="info">Postman version:</p>
-                    </div>
-                    <div class="col s6">
-                        <p>{{postman_version}}</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s6">
-                        <p class="info">Node version:</p> <!-- not implemented -->
-                    </div>
-                    <div class="col s6">
-                        <p>{{node_version}}</p>
-                    </div>
-                </div>
-            </div>
             </div>
             
         </div>

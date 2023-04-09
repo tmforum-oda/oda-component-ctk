@@ -204,7 +204,8 @@ class Component:
 
     def get_name(self):
         if self.component:
-            return self.component["metadata"]["labels"]["oda.tmforum.org/componentName"]
+            #return self.component["spec"]["type"]
+            return "TMFC001 Product Catalog Management"
         else:
             return "Unknown"
 

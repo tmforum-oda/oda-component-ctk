@@ -54,7 +54,7 @@
     "canvas_version": "v1beta1",
     "platform_kube_version": "v1",
     "is_canvas_certified": true,
-    "component_name": "r1-productcatalog",
+    "component_name": "TMFC001 Product Catalog Management",
     "component_version": "0.0.1",
     "canvas_platform": "Fedora Linux 37 (Workstation Edition)",
     "conformance_level": "Level 2"
