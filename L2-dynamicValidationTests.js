@@ -17,8 +17,8 @@ const ctkPaths = {
       { '4.0.0': 'TMF620_Product_catalog_V4-0-0' },
   'Party Role Management':
       { '4.0.0': 'TMF669-PartyRole-security-min' },
-  'Product Inventory Management':
-      { '4.0.0': 'TMF620_Product_inventory_V4-0-0' }
+  'Product Inventory':
+      { '4.0.0': 'TMF637-ProductInventory_V4-0-0' }
 }
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
@@ -135,13 +135,15 @@ for (const index in components) {
             expect(foundAPI, "Found '" + goldenAPIobject.info.title + "' API with version '" + goldenAPIobject.info.version + "'").to.equal(true)
             // Look up the OpenAPI CTK name for this API/Version
             const ctkName = ctkPaths[targetCTKTitle][targetCTKVersion]
-
             // configure and set-up the CTK
             CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
             // update the API URL in config from Component
-            for (const statusAPIKey in status.exposedAPIs) {
-              if (status.exposedAPIs[statusAPIKey].name === targetAPIName) {
-                CTKConfig.url = status.exposedAPIs[statusAPIKey].url + '/'
+            const coreAPIsArray = status.coreAPIs
+            for (const statusAPIKey in coreAPIsArray) {
+              if('name' in coreAPIsArray[statusAPIKey]){
+                if (coreAPIsArray[statusAPIKey].name === targetAPIName) {
+                  CTKConfig.url = coreAPIsArray[statusAPIKey].url + '/'
+                }
               }
             }
 
@@ -157,6 +159,7 @@ for (const index in components) {
             // execute the CTK
             const { execSync } = require('child_process')
             execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+            this.timeout(120000) 
 
             // move the CTK results to the /results folder
             let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
@@ -196,11 +199,9 @@ for (const index in components) {
           CTKConfig.headers[headerName] = headerValue
         }
         fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
-
         // execute the CTK
         const { execSync } = require('child_process')
         execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
-
         // move the CTK results to the /results folder
         let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
         let newPath = './results/' + ctkName + '.html'
