@@ -138,12 +138,9 @@ for (const index in components) {
             // configure and set-up the CTK
             CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
             // update the API URL in config from Component
-            const coreAPIsArray = status.coreAPIs
-            for (const statusAPIKey in coreAPIsArray) {
-              if('name' in coreAPIsArray[statusAPIKey]){
-                if (coreAPIsArray[statusAPIKey].name === targetAPIName) {
-                  CTKConfig.url = coreAPIsArray[statusAPIKey].url + '/'
-                }
+            for (const statusAPIKey of status.coreAPIs) {
+              if (statusAPIKey.name === targetAPIName) {
+                CTKConfig.url = statusAPIKey.url + '/'
               }
             }
 
