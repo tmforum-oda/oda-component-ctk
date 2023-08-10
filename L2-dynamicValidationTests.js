@@ -155,17 +155,20 @@ for (const index in components) {
 
             // execute the CTK
             const { execSync } = require('child_process')
-            execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+            execSync('npm install && npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
             this.timeout(120000) 
 
             // move the CTK results to the /results folder
             let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
             let newPath = './results/' + ctkName + '.html'
+            fs.mkdirSync('./results', { recursive: true })
             fs.renameSync(oldPath, newPath, function (err) {
               if (err) throw err
             })
+
             oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
             newPath = './results/' + ctkName + '.json'
+            fs.mkdirSync('./results', { recursive: true })
             fs.renameSync(oldPath, newPath, function (err) {
               if (err) throw err
             })
@@ -198,15 +201,18 @@ for (const index in components) {
         fs.writeFileSync('./api-ctk/' + ctkName + '/config.json', JSON.stringify(CTKConfig))
         // execute the CTK
         const { execSync } = require('child_process')
-        execSync('npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
+        execSync('npm install && npm start', { cwd: './api-ctk/' + ctkName + '/ctk' })
         // move the CTK results to the /results folder
         let oldPath = './api-ctk/' + ctkName + '/htmlResults.html'
         let newPath = './results/' + ctkName + '.html'
+        fs.mkdirSync('./results', { recursive: true })
+
         fs.renameSync(oldPath, newPath, function (err) {
           if (err) throw err
         })
         oldPath = './api-ctk/' + ctkName + '/jsonResults.json'
         newPath = './results/' + ctkName + '.json'
+
         fs.renameSync(oldPath, newPath, function (err) {
           if (err) throw err
         })

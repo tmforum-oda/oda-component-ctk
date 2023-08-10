@@ -1,1 +1,1 @@
-{"url":"http://localhost:8081/r1-productcatalog/tmf-api/partyRoleManagement/v4/","headers":{"Accept":"application/json","Content-Type":"application/json","Auth":"LKLKJSDHLKJH"},"payloads":{"PartyRole":{"POST":{"payload":{"name":"qqymucymyd","roleType":{}}}}}}
+{"url":"http://34.34.167.149/r1-productcatalog/tmf-api/partyRoleManagement/v4/","headers":{"Accept":"application/json","Content-Type":"application/json","Auth":"LKLKJSDHLKJH"},"payloads":{"PartyRole":{"POST":{"payload":{"name":"qqymucymyd","roleType":{}}}}}}
