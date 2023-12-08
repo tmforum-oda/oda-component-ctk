@@ -1,4 +1,4 @@
-Feature: IG1228-UC002-Browse B2C Catalogue
+Feature: IG1228-T002-Browse B2C Catalogue
 
     Scenario: Load the product categories
         Given An empty product catalog
