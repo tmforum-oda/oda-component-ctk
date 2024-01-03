@@ -15,7 +15,7 @@ const COMPONENTS = 'components'
 const NAMESPACE = process.env.NAMESPACE
 const HEADER = process.env.HEADER
 const TMFORUM_ODA_API_GROUP = 'oda.tmforum.org'
-const TMFORUM_ODA_API_VERSION = 'v1beta1'
+const TMFORUM_ODA_API_VERSION = 'v1beta2'
 
 const kc = new k8s.KubeConfig()
 kc.loadFromDefault()
