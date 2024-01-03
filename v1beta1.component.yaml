@@ -5,7 +5,7 @@ apiVersion: v1
 metadata:
   name: r1-mongodb-pv-claim
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   accessModes:
   - ReadWriteOnce
@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: r1-mongodb
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
     app: r1-productcatalog
 spec:
   ports:
@@ -37,7 +37,7 @@ metadata:
   name: r1-partyroleapi
   labels:
     app: r1-productcatalog
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   ports:
   - port: 8080
@@ -54,7 +54,7 @@ metadata:
   name: r1-prodcatapi
   labels:
     app: r1-productcatalog
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   ports:
   - port: 8080
@@ -72,7 +72,7 @@ metadata:
   labels:
     name: r1-productcatalog-sm
     app: r1-productcatalog
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   ports:
   - port: 4000
@@ -87,7 +87,7 @@ kind: Deployment
 metadata:
   name: r1-metricsapi
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   replicas: 1
   selector:
@@ -119,7 +119,7 @@ kind: Deployment
 metadata:
   name: r1-mongodb
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   replicas: 1
   selector:
@@ -152,7 +152,7 @@ kind: Deployment
 metadata:
   name: r1-partyroleapi
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   replicas: 1
   selector:
@@ -191,7 +191,7 @@ kind: Deployment
 metadata:
   name: r1-prodcatapi
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   replicas: 1
   selector:
@@ -200,28 +200,42 @@ spec:
   template:
     metadata:
       labels:
-        app: r1-productcatalog
+        app: r1-productcatalogmanagement
         impl: r1-prodcatapi
-        version: lesterthomas-productcatalogapi-latest
+        version: csotiriou-productcatalogapi-0-10
     spec:
       containers:
       - name: r1-prodcatapi
-        image: lesterthomas/productcatalogapi:latest
+        image: csotiriou/productcatalogapi:0.10
         env:
         - name: RELEASE_NAME
-          value: r1           
+          value: r1
         - name: COMPONENT_NAME
-          value: r1-productcatalog           
+          value: r1-productcatalogmanagement
+        - name: OTL_EXPORTER_CONSOLE_ENABLED
+          value: "false"
+        - name: OTL_EXPORTER_TRACE_PROTO_ENABLED
+          value: "true"
+        - name: OTL_EXPORTER_TRACE_PROTO_COLLECTOR_URL
+          value: http://datadog-agent.default.svc.cluster.local:4318/v1/traces
+        - name: MONGODB_HOST
+          value: r1-mongodb
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_DATABASE
+          value: tmf
+        - name: NODE_ENV
+          value: production
         imagePullPolicy: Always
         ports:
         - name: r1-pcapi
           containerPort: 8080
         startupProbe:
           httpGet:
-            path: /r1-productcatalog/tmf-api/productCatalogManagement/v4/catalog 
+            path: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4/catalog
             port: 8080
           initialDelaySeconds: 10
-          periodSeconds: 5          
+          periodSeconds: 5
           failureThreshold: 30
 ---
 # Source: productcatalog/templates/cronjob-productcataloginitialization.yaml
@@ -230,7 +244,7 @@ kind: Job
 metadata:
   name: r1-productcataloginitialization
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   template:
     metadata:
@@ -255,7 +269,7 @@ kind: Job
 metadata:
   name: r1-roleinitialization
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   template:
     metadata:
@@ -278,9 +292,9 @@ spec:
 apiVersion: oda.tmforum.org/v1beta1
 kind: component
 metadata:
-  name: r1-productcatalog
+  name: r1-productcatalogmanagement
   labels:
-    oda.tmforum.org/componentName: r1-productcatalog
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
   type: TMFC001-productcatalogmanagement
   version: 0.0.1
@@ -297,8 +311,8 @@ spec:
       specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
       implementation: r1-prodcatapi
       apitype: openapi
-      path: /r1-productcatalog/tmf-api/productCatalogManagement/v4
-      developerUI: /r1-productcatalog/tmf-api/productCatalogManagement/v4/docs
+      path: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4
+      developerUI: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4/docs
       port: 8080
     dependentAPIs: 
     - name: party 

@@ -210,7 +210,7 @@ spec:
       labels:
         app: r1-productcatalogmanagement
         impl: r1-prodcatapi
-        version: lesterthomas-productcatalogapi-0.4
+        version: csotiriou-productcatalogapi-0-10
     spec:
       containers:
       - name: r1-prodcatapi

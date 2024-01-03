@@ -71,14 +71,29 @@ for (const index in components) {
   k8sCustomApi.listNamespacedCustomObject(TMFORUM_ODA_API_GROUP, TMFORUM_ODA_API_VERSION, NAMESPACE, COMPONENTS, undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     const status = res.body.items[0].status
     const spec = res.body.items[0].spec
-    const exposedAPIList = status.exposedAPIs
-    for (const apiKey in exposedAPIList) {
-      describe('Step 2(' + apiKey + '): Run-time test of exposed API: ' + exposedAPIList[apiKey].name, function () {
+
+    // get all APIs in a single array
+    allAPIs = []
+    if (status.exposedAPIs) { // up to v1beta1, exposedAPIs was an array with only coreAPIs
+      allAPIs = allAPIs.concat(status.exposedAPIs)
+    }
+    if (status.coreAPIs) { // since v1beta2, status has coreAPIs, managamentAPIs and securityAPIs 
+      allAPIs = allAPIs.concat(status.coreAPIs)
+    }
+    if (status.managementAPIs) { // since v1beta2, status has coreAPIs, managamentAPIs and securityAPIs
+      allAPIs = allAPIs.concat(status.managementAPIs)
+    }
+    if (status.securityAPIs) { // since v1beta2, status has coreAPIs, managamentAPIs and securityAPIs
+      allAPIs = allAPIs.concat(status.securityAPIs)
+    }
+
+    for (const apiKey in allAPIs) {
+      describe('Step 2(' + apiKey + '): Run-time test of exposed API: ' + allAPIs[apiKey].name, function () {
         it('exposedAPI endpoints give HTTP 200 response', function (done) {
-          expect(exposedAPIList[apiKey].url, 'status.exposedAPI[' + apiKey + '].url should be a string').to.be.a('string')
-          const httpScheme = exposedAPIList[apiKey].url.split('://')[0] + '://'
-          const server = exposedAPIList[apiKey].url.split('://')[1].split('/')[0]
-          const apiPath = '/' + exposedAPIList[apiKey].url.split('://')[1].split(/\/(.+)/)[1]
+          expect(allAPIs[apiKey].url, 'status.exposedAPI[' + apiKey + '].url should be a string').to.be.a('string')
+          const httpScheme = allAPIs[apiKey].url.split('://')[0] + '://'
+          const server = allAPIs[apiKey].url.split('://')[1].split('/')[0]
+          const apiPath = '/' + allAPIs[apiKey].url.split('://')[1].split(/\/(.+)/)[1]
 
           let requestChain = chai.request(httpScheme + server)
 
@@ -97,7 +112,7 @@ for (const index in components) {
         })
       })
     }
-    const versionsWithRoleOnly = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3']
+    const versionsWithRoleOnly = ['oda.tmforum.org/v1alpha3']
     if (versionsWithRoleOnly.indexOf(componentAPIVersion) > -1) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
@@ -128,15 +143,24 @@ for (const index in components) {
       })
     }
 
-    const versionsWithRoleandBootstrap = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+    const versionsWithRoleandBootstrap = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1', 'oda.tmforum.org/v1beta2']
     if (versionsWithRoleandBootstrap.indexOf(componentAPIVersion) > -1) {
       const securityAPIs = status.securityAPIs
       describe('Step 3: Run-time test of security API: partyrole', function () {
+
+        // iterate through all securityAPIs looking for one with the name '<component-instance--name>-partyrole'
+        let partyroleAPI = null
+        for (const securityAPIKey in securityAPIs) {
+          if (securityAPIs[securityAPIKey].name === componentName + '-partyrole') {
+            partyroleAPI = securityAPIs[securityAPIKey]
+          }
+        }
+
         it('securityAPI partyrole to return at least 1 partyrole', function (done) {
-          expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
-          const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
-          const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
-          const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
+          expect(partyroleAPI, 'securityAPIs should have a partyrole API with name ' + componentName + '-partyrole').to.not.be.null
+          const httpScheme = partyroleAPI.url.split('://')[0] + '://'
+          const server = partyroleAPI.url.split('://')[1].split('/')[0]
+          const apiPath = '/' + partyroleAPI.url.split('://')[1].split(/\/(.+)/)[1]
           let requestChain = chai.request(httpScheme + server)
 
           requestChain = requestChain.get(apiPath + '/partyRole')
@@ -156,11 +180,11 @@ for (const index in components) {
           })
         })
         it('One partyrole should match controllerRole', function (done) {
-          expect(securityAPIs.partyrole.url, 'status.securityAPIs.partyrole.url should be a string').to.be.a('string')
-          const httpScheme = securityAPIs.partyrole.url.split('://')[0] + '://'
-          const server = securityAPIs.partyrole.url.split('://')[1].split('/')[0]
-          const apiPath = '/' + securityAPIs.partyrole.url.split('://')[1].split(/\/(.+)/)[1]
-          const controllerRole = spec.security.controllerRole
+          expect(partyroleAPI.url, 'partyroleAPI.url should be a string').to.be.a('string')
+          const httpScheme = partyroleAPI.url.split('://')[0] + '://'
+          const server = partyroleAPI.url.split('://')[1].split('/')[0]
+          const apiPath = '/' + partyroleAPI.url.split('://')[1].split(/\/(.+)/)[1]
+          const controllerRole = spec.securityFunction.controllerRole
           let requestChain = chai.request(httpScheme + server)
 
           requestChain = requestChain.get(apiPath + '/partyRole')

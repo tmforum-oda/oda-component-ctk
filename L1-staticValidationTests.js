@@ -43,7 +43,6 @@ for (const index in components) {
     documentArray = YAML.parseAllDocuments(file)
 
     const componentDoc = getComponentDocument(documentArray)
-    console.log('componentDoc', componentDoc) 
     it('Contains document of kind: component', function (done) {
       // eslint-disable-next-line no-unused-expressions
       expect(componentDoc, "The document should have a field of 'kind: component'.").to.not.be.null
@@ -317,9 +316,6 @@ for (const index in components) {
 function getComponentDocument (inDocumentArray) {
   // go through each document checking for a kind: component
   for (const docKey in inDocumentArray) {
-    console.log('docKey', docKey)
-    console.log('inDocumentArray[docKey]', inDocumentArray[docKey])
-    console.log('inDocumentArray[docKey].get(kind)', inDocumentArray[docKey].get('kind'))
     if (inDocumentArray[docKey].get('kind') === COMPONENT) {
       return inDocumentArray[docKey]
     }
