@@ -1,0 +1,48 @@
+apiVersion: oda.tmforum.org/v1beta2
+kind: component
+metadata:
+  name: r1-productcatalogmanagement
+  labels:
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
+spec:
+  id: TMFC001
+  name: productcatalogmanagement
+  functionalBlock: CoreCommerce
+  publicationDate: 2023-08-18T00:00:00.000Z
+  status: specified
+  version: 0.0.2
+  description: "Simple Product Catalog ODA-Component from Open-API reference implementation."
+
+  maintainers:
+  - name: Lester Thomas
+    email: lester.thomas@vodafone.com
+  owners:
+    - name: Lester Thomas
+      email: lester.thomas@vodafone.com     
+  coreFunction:
+    exposedAPIs: 
+    - name: productcatalogmanagement
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
+      implementation: r1-prodcatapi
+      apitype: openapi
+      path: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4
+      developerUI: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4/docs
+      port: 8080
+    dependentAPIs:  []
+  eventNotification:
+    publishedEvents: []
+    subscribedEvents: []
+  managementFunction: 
+    exposedAPIs: []
+    dependentAPIs: [] 
+  securityFunction:
+    controllerRole: Admin
+    exposedAPIs: 
+    - name: partyrole
+      specification: https://raw.githubusercontent.com/tmforum-apis/TMF669_PartyRole/master/TMF669-PartyRole-v4.0.0.swagger.json
+      implementation: r1-partyroleapi
+      apitype: openapi
+      path: /r1-productcatalogmanagement/tmf-api/partyRoleManagement/v4
+      developerUI: /r1-productcatalogmanagement/tmf-api/partyRoleManagement/v4/docs
+      port: 8080
+    dependentAPIs: []

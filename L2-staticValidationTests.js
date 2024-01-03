@@ -53,7 +53,7 @@ for (const index in components) {
     })
 
     it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+      const supportedVersions = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1', 'oda.tmforum.org/v1beta2']
 
       expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
@@ -65,13 +65,28 @@ for (const index in components) {
       done()
     })
 
-    it("type and version match one of the 'Golden Components'", function (done) {
-      const spec = componentDoc.get('spec')
-      const type = spec.get('type')
-      const version = spec.get('version')
-      const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
-      expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
+    const typeConventionVersions = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+    let type = ''
+    const spec = componentDoc.get('spec')
+    const version = spec.get('version')
+    if (typeConventionVersions.indexOf(componentDoc.get('apiVersion')) > -1) {
+      type = spec.get('type')
+    } else {
+      id = spec.get('id')
+      componentName = spec.get('name')
+      type = id + '-' + componentName
+    }
+
+    it(type + "-" + version + " match one of the 'Golden Components'", function (done) {
       expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
+      if (typeConventionVersions.indexOf(componentDoc.get('apiVersion')) > -1) {
+        expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
+      } else {
+        expect(type, "Spec should have a 'id' field of type string").to.be.a('string')
+        expect(componentName, "Spec should have a 'name' field of type string").to.be.a('string')
+      }
+      goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
+
       expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
       done()
     })
@@ -81,10 +96,21 @@ for (const index in components) {
     this.timeout(15000)
     documentArray = YAML.parseAllDocuments(file)
     const componentDoc = getComponentDocument(documentArray)
+  
     it("exposedAPIs in 'Golden Components' have corresponding exposedAPI in component", async function () {
       const spec = componentDoc.get('spec')
       const exposedAPIArray = componentDoc.get('spec').get('coreFunction').get('exposedAPIs').items
-      const type = spec.get('type')
+
+      const typeConventionVersions = ['oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
+      let type = ''
+      if (typeConventionVersions.indexOf(componentDoc.get('apiVersion')) > -1) {
+        type = spec.get('type')
+      } else {
+        id = spec.get('id')
+        componentName = spec.get('name')
+        type = id + '-' + componentName
+      }
+
       const version = spec.get('version')
       const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
       const file = fs.readFileSync('./golden-components/' + goldenComponentFilename, 'utf8')
@@ -111,22 +137,6 @@ for (const index in components) {
       expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
     })
   })
-
-  function testResource (i, inComponentName) {
-    it('Resource ' + i + ' is labelled', function (done) {
-      const docResource = documentArray[i]
-      const docMetadata = docResource.get('metadata')
-      expect(docMetadata, 'Resource has a metadata field of type object').to.be.a('object')
-      const docName = docMetadata.get('name')
-      const docLabels = docMetadata.get('labels')
-      expect(docLabels, docName + ' resource has a metadata field with labels of type object').to.be.a('object')
-      const componentNameLabel = docLabels.get('oda.tmforum.org/componentName')
-      expect(componentNameLabel, docName + ' resource has a oda.tmforum.org/componentName label of type string').to.be.a('string')
-      expect(componentNameLabel, docName + " resource has a oda.tmforum.org/componentName label matching the component name '" + inComponentName + "'").to.equal(inComponentName)
-
-      done()
-    })
-  }
 }
 
 function getComponentDocument (inDocumentArray) {

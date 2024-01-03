@@ -309,7 +309,7 @@ spec:
   functionalBlock: CoreCommerce
   publicationDate: 2023-08-18T00:00:00.000Z
   status: specified
-  version: 0.0.1
+  version: 0.0.2
   description: "Simple Product Catalog ODA-Component from Open-API reference implementation."
 
   maintainers:
