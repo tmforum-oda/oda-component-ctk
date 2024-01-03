@@ -37,7 +37,6 @@ for (const index in components) {
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
   documentArray = YAML.parseAllDocuments(file)
   const componentDoc = getComponentDocument(documentArray)
-  const componentAPIVersion = componentDoc.get('apiVersion')
   const metadata = componentDoc.get('metadata')
   const componentName = metadata.get('name')
   const k8sCoreApi = kc.makeApiClient(k8s.CoreV1Api)
@@ -53,7 +52,7 @@ for (const index in components) {
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
     it('Component can be found', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta2', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
           expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)
@@ -62,33 +61,28 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta2', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
           expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')
           done()
         }).catch(done)
     })
-
-
-
   })
 
   // get Component resource
-  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
+  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta2', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     describe('Step 2 run CTK on each mandatory API from Golden Component ', function () {
       // get the component details
       const status = res.body.items[0].status
       const spec = res.body.items[0].spec
-      const type = spec.type
+      const type = spec.id + '-' + spec.name
       const version = spec.version
 
       // find the corresponding 'Golden Component'
       const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
 
       it("type and version match one of the 'Golden Components'", function (done) {
-        expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
-        expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
         expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
         done()
       })
@@ -191,7 +185,13 @@ for (const index in components) {
         const ctkName = ctkPaths['Party Role Management']['4.0.0']
         // configure and set-up the CTK
         CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
-        CTKConfig.url = status.securityAPIs.partyrole.url + '/'
+
+        // get the url from the component status for the partyrole API
+        for (const statusAPIKey of status.securityAPIs) {
+          if (statusAPIKey.name === 'partyrole') {
+            CTKConfig.url = statusAPIKey.url + '/'
+          }
+        }
         if (HEADER !== '') {
           // add authToken headder
           headerName = HEADER.split(':')[0]
