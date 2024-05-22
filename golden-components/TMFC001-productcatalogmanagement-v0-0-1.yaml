@@ -1,59 +1,54 @@
-apiVersion: oda.tmforum.org/v1beta1
-kind: component
+apiVersion: oda.tmforum.org/v1beta3
+kind: Component
 metadata:
+  name: r1-productcatalogmanagement
   labels:
-    oda.tmforum.org/componentName: ProductCatalogManagement
-    oda.tmforum.org/funtionalBlockName: Core Commerce Management
-    name: Tag_Release_Name - ProductCatalogCanagement
+    oda.tmforum.org/componentName: r1-productcatalogmanagement
 spec:
-  componentKinds:
-  - group: core
-    kind: Service
-  - group: core
-    kind: PersistentVolumeClaim
-  - group: apps
-    kind: Deployment
+  id: TMFC001
+  name: productcatalogmanagement
+  functionalBlock: CoreCommerce
+  publicationDate: 2023-08-18T00:00:00.000Z
+  status: specified
+  version: 0.0.1
+  description: "Simple Product Catalog ODA-Component from Open-API reference implementation."
+
+  maintainers:
+  - name: Lester Thomas
+    email: lester.thomas@vodafone.com
+  owners:
+    - name: Lester Thomas
+      email: lester.thomas@vodafone.com     
   coreFunction:
-    exposedAPIs:
+    exposedAPIs: 
     - name: productcatalogmanagement
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json
-      implementation: {{.Release.Name}}-prodcatapi
+      specification: ["https://raw.githubusercontent.com/tmforum-apis/TMF620_ProductCatalog/master/TMF620-ProductCatalog-v4.0.0.swagger.json"]
+      implementation: r1-prodcatapi
       apitype: openapi
-      path: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4
-      developerUI: /{{.Release.Name}}-{{.Values.component.type}}/tmf-api/productCatalogManagement/v4/docs
+      path: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4
+      developerUI: /r1-productcatalogmanagement/tmf-api/productCatalogManagement/v4/docs
       port: 8080
-    dependantAPIs:
+    dependentAPIs: 
     - name: party 
       apitype: openapi     
-      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json 
+      specification: https://open-api.tmforum.org/TMF632-Party-v4.0.0.swagger.json  
   eventNotification:
     publishedEvents: []
     subscribedEvents: []
-  management: 
-    exposedAPIs:
+  managementFunction: 
+    exposedAPIs: 
     - name: metrics
       apitype: prometheus
-      implementation: {{.Release.Name}}-{{.Values.component.name}}-sm
-      path: /{{.Release.Name}}-{{.Values.component.name}}/metrics
-      port: 4000
-  security:
-    controllerRole: {{ .Values.security.controllerRole }}
+      implementation: r1-productcatalogmanagement-sm
+      path: /r1-productcatalogmanagement/metrics
+      port: 4000    
+  securityFunction:
+    controllerRole: Admin
     exposedAPIs: 
     - name: partyrole
-      specification: https://raw.githubusercontent.com/tmforum-apis/TMF669_PartyRole/master/TMF669-PartyRole-v4.0.0.swagger.json
-      implementation: {{.Release.Name}}-partyroleapi
+      specification: ["https://raw.githubusercontent.com/tmforum-apis/TMF669_PartyRole/master/TMF669-PartyRole-v4.0.0.swagger.json"]
+      implementation: r1-partyroleapi
       apitype: openapi
-      path: /{{.Release.Name}}-{{.Values.component.name}}/tmf-api/partyRoleManagement/v4
-      developerUI: /{{.Release.Name}}-{{.Values.component.name}}/tmf-api/partyRoleManagement/v4/docs
-      port: 8080      
-  maintainers:
-  - email: alfonso.orlando@accenture.com
-    name: Alfonso Orlando
-  owners:
-  - email: gaetano.biancardi@accenture.com
-    name: Gaetano Biancardi
-  selector:
-    matchLabels:
-      oda.tmforum.org/componentName: ProductCatalogManagement
-  type: TMFC-001-productcatalogmanagement
-  version: 0.0.1
+      path: /r1-productcatalogmanagement/tmf-api/partyRoleManagement/v4
+      developerUI: /r1-productcatalogmanagement/tmf-api/partyRoleManagement/v4/docs
+      port: 8080

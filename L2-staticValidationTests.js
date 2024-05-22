@@ -64,15 +64,20 @@ for (const index in components) {
     })
 
     it("type and version match one of the 'Golden Components'", function (done) {
+      // from v1beta3 we use id, name and version
       const spec = componentDoc.get('spec')
-      const type = spec.get('type')
+      const id = spec.get('id')
+      const name = spec.get('name')
       const version = spec.get('version')
-      const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
-      expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
+      // find the corresponding 'Golden Component'
+      const goldenComponentFilename = id + '-' + name + '-v' + version.split('.').join('-') + '.yaml'
+      expect(id, "Spec should have a 'id' field of type string").to.be.a('string')
+      expect(name, "Spec should have a 'name' field of type string").to.be.a('string')
       expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
       expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
       done()
     })
+
   })
 
   describe("Step 2: Check any APIs in 'Golden Component' are specified in component " + componentEnvelopeName, function () {
@@ -82,9 +87,11 @@ for (const index in components) {
     it("exposedAPIs in 'Golden Components' have corresponding exposedAPI in component", async function () {
       const spec = componentDoc.get('spec')
       const exposedAPIArray = componentDoc.get('spec').get('coreFunction').get('exposedAPIs').items
-      const type = spec.get('type')
+      const id = spec.get('id')
+      const name = spec.get('name')
       const version = spec.get('version')
-      const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
+      // find the corresponding 'Golden Component'
+      const goldenComponentFilename = id + '-' + name + '-v' + version.split('.').join('-') + '.yaml'
       const file = fs.readFileSync('./golden-components/' + goldenComponentFilename, 'utf8')
       documentArray = YAML.parseAllDocuments(file)
       const goldenComponent = documentArray[0]
@@ -92,13 +99,17 @@ for (const index in components) {
       const goldenExposedAPI = goldenComponent.get('spec').get('coreFunction').get('exposedAPIs')
       const goldenExposedAPIArray = goldenExposedAPI.items
       for (const key in goldenExposedAPIArray) {
-        const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
-        const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
+        const goldenAPISpec = goldenExposedAPIArray[key].get('specification') // at the moment, just check the first spec
+        // get the first value from the goldenAPISpec array
+        firstGoldenAPISpec = goldenAPISpec.items[0]
+
+        const goldenAPIobject = await getSchemaFromURL(firstGoldenAPISpec.toString())
         // look in the current component spec for an API with the same title and version
         let foundAPI = false
         for (const exposedAPIArrayKey in exposedAPIArray) {
-          const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get('specification')
-          const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
+          const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].get('specification') 
+          const firstExposedAPISpec = exposedAPISpec.items[0] // at the moment, just check the first spec
+          const exposedAPIobject = await getSchemaFromURL(firstExposedAPISpec.toString())
           if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
             foundAPI = true
           }

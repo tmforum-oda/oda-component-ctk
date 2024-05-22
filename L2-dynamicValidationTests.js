@@ -78,16 +78,18 @@ for (const index in components) {
   k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     describe('Step 2 run CTK on each mandatory API from Golden Component ', function () {
       // get the component details
-      const status = res.body.items[0].status
+      // from v1beta3 we use id, name and version
+      const id = res.body.items[0].id
       const spec = res.body.items[0].spec
-      const type = spec.type
+      const name = spec.name
       const version = spec.version
 
       // find the corresponding 'Golden Component'
-      const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
-
+      const goldenComponentFilename = id + '-' + name + '-v' + version.split('.').join('-') + '.yaml'
+      console.log('Golden Component Filename: ' + goldenComponentFilename)
       it("type and version match one of the 'Golden Components'", function (done) {
-        expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
+        expect(id, "Spec should have a 'id' field of type string").to.be.a('string')
+        expect(name, "Spec should have a 'name' field of type string").to.be.a('string')
         expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
         expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
         done()
