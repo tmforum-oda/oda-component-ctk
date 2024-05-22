@@ -163,26 +163,34 @@ spec:
       labels:
         app: r1-productcatalog
         impl: r1-partyroleapi
-        version: lesterthomas-partyroleapi-latest
+        version: partyroleapi-1.0
     spec:
       containers:
       - name: r1-partyroleapi
-        image: lesterthomas/partyroleapi:latest
+        image: lesterthomas/partyroleapi:1.0
         env:
         - name: RELEASE_NAME
-          value: r1           
+          value: r1
         - name: COMPONENT_NAME
-          value: r1-productcatalog           
+          value: r1-productcatalog
+        - name: MONGODB_HOST
+          value: r1-mongodb
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_DATABASE
+          value: tmf
+        - name: NODE_ENV
+          value: production
         imagePullPolicy: Always
         ports:
         - name: r1-prapi
           containerPort: 8080
         startupProbe:
           httpGet:
-            path: /r1-productcatalog/tmf-api/partyRoleManagement/v4/partyRole 
+            path: /r1-productcatalog/tmf-api/partyRoleManagement/v4/partyRole
             port: 8080
           initialDelaySeconds: 10
-          periodSeconds: 5          
+          periodSeconds: 5
           failureThreshold: 30
 ---
 # Source: productcatalog/templates/deployment-productcatalogapi.yaml
@@ -206,7 +214,7 @@ spec:
     spec:
       containers:
       - name: r1-prodcatapi
-        image: lesterthomas/productcatalogapi:latest
+        image: lesterthomas/productcatalogapi:0.4
         env:
         - name: RELEASE_NAME
           value: r1           
@@ -276,7 +284,7 @@ spec:
 ---
 # Source: productcatalog/templates/component-productcatalog.yaml
 apiVersion: oda.tmforum.org/v1beta1
-kind: component
+kind: Component
 metadata:
   name: r1-productcatalog
   labels:

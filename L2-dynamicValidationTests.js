@@ -10,7 +10,7 @@ chai.use(chaiFiles)
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 const expect = chai.expect
-const COMPONENT = 'component'
+const COMPONENT = 'Component'
 
 const ctkPaths = {
   'Product Catalog Management':
@@ -53,7 +53,7 @@ for (const index in components) {
 
   describe('Step 1: Check metadata for component ' + componentEnvelopeName, function () {
     it('Component can be found', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const numberOfComponentsFound = res.body.items.length
           expect(numberOfComponentsFound, 'Should find 1 component with name ' + componentName).to.equal(1)
@@ -62,7 +62,7 @@ for (const index in components) {
     })
 
     it('Component has deployed successfully (summary/status.deployment_status: Complete)', function (done) {
-      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
+      k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName)
         .then(function (res) {
           const status = res.body.items[0].status
           expect(status['summary/status'].deployment_status, 'status.summary/status.deployment_status is Complete').to.equal('Complete')
@@ -75,19 +75,22 @@ for (const index in components) {
   })
 
   // get Component resource
-  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1alpha4', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
+  k8sCustomApi.listNamespacedCustomObject('oda.tmforum.org', 'v1beta3', NAMESPACE, 'components', undefined, undefined, 'metadata.name=' + componentName).then(function (res) {
     describe('Step 2 run CTK on each mandatory API from Golden Component ', function () {
       // get the component details
-      const status = res.body.items[0].status
+      // from v1beta3 we use id, name and version
       const spec = res.body.items[0].spec
-      const type = spec.type
+      const status = res.body.items[0].status
+      const name = spec.name
+      const id = spec.id
       const version = spec.version
 
       // find the corresponding 'Golden Component'
-      const goldenComponentFilename = type + '-v' + version.split('.').join('-') + '.yaml'
-
+      const goldenComponentFilename = id + '-' + name + '-v' + version.split('.').join('-') + '.yaml'
+      console.log('Golden Component Filename: ' + goldenComponentFilename)
       it("type and version match one of the 'Golden Components'", function (done) {
-        expect(type, "Spec should have a 'type' field of type string").to.be.a('string')
+        expect(id, "Spec should have a 'id' field of type string").to.be.a('string')
+        expect(name, "Spec should have a 'name' field of type string").to.be.a('string')
         expect(version, "Spec should have a 'version' field of type string").to.be.a('string')
         expect(chaiFiles.file('./golden-components/' + goldenComponentFilename)).to.exist
         done()
@@ -110,12 +113,14 @@ for (const index in components) {
 
         // run the CTK Corresponding to each API in the Golden Components coreFunction/exposedAPIs
         for (const key in goldenExposedAPIArray) {
-          const goldenAPIName = goldenExposedAPIArray[key].get('name')
+          const goldenAPI = goldenExposedAPIArray[key]
+
+          const goldenAPIName = goldenAPI.get('name')
           it('Executing OpenAPI CTK for ' + goldenAPIName + ': check /results folder for your results.', async function () {
             this.timeout(120000) // 2 minute timeout
             const goldenAPISpec = goldenExposedAPIArray[key].get('specification')
-            const goldenAPIobject = await getSchemaFromURL(goldenAPISpec)
-
+            const firstGoldenAPISpec = goldenAPISpec.items[0]
+            const goldenAPIobject = await getSchemaFromURL(firstGoldenAPISpec.toString())
             // look in the current component spec for an API with the same title and version
             let foundAPI = false
             let targetCTKTitle, targetCTKVersion, targetAPIName
@@ -123,7 +128,8 @@ for (const index in components) {
             for (const exposedAPIArrayKey in exposedAPIArray) {
               if ('specification' in exposedAPIArray[exposedAPIArrayKey]) {
                 const exposedAPISpec = exposedAPIArray[exposedAPIArrayKey].specification
-                const exposedAPIobject = await getSchemaFromURL(exposedAPISpec)
+                const firstExposedAPISpec = exposedAPISpec[0]
+                const exposedAPIobject = await getSchemaFromURL(firstExposedAPISpec)
                 if ((exposedAPIobject.info.title === goldenAPIobject.info.title) && (exposedAPIobject.info.version === goldenAPIobject.info.version)) {
                   foundAPI = true
                   targetCTKTitle = goldenAPIobject.info.title
@@ -140,6 +146,8 @@ for (const index in components) {
             // update the API URL in config from Component
             for (const statusAPIKey of status.coreAPIs) {
               if (statusAPIKey.name === targetAPIName) {
+                // replace 'localhost' with '127.0.0.1' in the URL
+                statusAPIKey.url = statusAPIKey.url.replace('localhost', '127.0.0.1')
                 CTKConfig.url = statusAPIKey.url + '/'
               }
             }
@@ -191,7 +199,13 @@ for (const index in components) {
         const ctkName = ctkPaths['Party Role Management']['4.0.0']
         // configure and set-up the CTK
         CTKConfig = JSON.parse(fs.readFileSync('./api-ctk/' + ctkName + '/config.json'))
-        CTKConfig.url = status.securityAPIs.partyrole.url + '/'
+        for (const statusAPIKey of status.securityAPIs) {
+          if (statusAPIKey.name === componentName + '-' + 'partyrole') {
+            // replace 'localhost' with '127.0.0.1' in the URL
+            statusAPIKey.url = statusAPIKey.url.replace('localhost', '127.0.0.1')
+            CTKConfig.url = statusAPIKey.url + '/'
+          }
+        }
         if (HEADER !== '') {
           // add authToken headder
           headerName = HEADER.split(':')[0]
@@ -239,6 +253,7 @@ function getComponentDocument (inDocumentArray) {
 async function getSchemaFromURL(inURL) {
   const httpScheme = inURL.split('://')[0] + '://'
   const server = inURL.split('://')[1].split('/')[0]
+  
   const apiPath = '/' + inURL.split('://')[1].split(/\/(.+)/)[1]
   const APIresponse = await chai.request(httpScheme + server).get(apiPath).send()
   const APIobject = JSON.parse(APIresponse.res.text)

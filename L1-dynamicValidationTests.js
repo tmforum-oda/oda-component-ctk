@@ -10,7 +10,7 @@ const k8s = require('@kubernetes/client-node')
 chai.use(chaiHttp)
 const expect = chai.expect
 
-const COMPONENT = 'component'
+const COMPONENT = 'Component'
 const COMPONENTS = 'components'
 const NAMESPACE = process.env.NAMESPACE
 const HEADER = process.env.HEADER
@@ -32,6 +32,10 @@ for (const index in components) {
   const file = fs.readFileSync(componentEnvelopeName, 'utf8')
   documentArray = YAML.parseAllDocuments(file)
   const componentDoc = getComponentDocument(documentArray)
+  if (!componentDoc) {
+    console.log('No Component document found. Check that document file is readible (checks Windows - Linux UTF-8 conversion) ' + componentEnvelopeName);
+    return;
+  }
   const componentAPIVersion = componentDoc.get('apiVersion')
   const metadata = componentDoc.get('metadata')
   const componentName = metadata.get('name')
