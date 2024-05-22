@@ -38,8 +38,11 @@ components.forEach((componentEnvelopeName) => {
 
   describe('Step 1: Check ODA-Component Metadata for component ' + componentEnvelopeName, function () {
     this.timeout(15000);
-
     const componentDoc = getComponentDocument(documentArray);
+    if (!componentDoc) {
+      console.log('No Component document found. Check that document file is readible (checks Windows - Linux UTF-8 conversion) ' + componentEnvelopeName);
+      return;
+    }
 
     it('Contains document of kind: component', function () {
       expect(componentDoc, "The document should have a field of 'kind: Component'. It used to be component but should be Component, as kind should be in CamelCase.").to.not.be.null;

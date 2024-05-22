@@ -4,7 +4,7 @@ const chai = require('chai')
 const expect = chai.expect
 const YAML = require('yaml')
 const process = require('process')
-const COMPONENT = 'component'
+const COMPONENT = 'Component'
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 var chaiFiles = require('chai-files');
@@ -52,13 +52,11 @@ for (const index in components) {
       done()
     })
 
-    it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function (done) {
-      const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1']
-
-      expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string')
+    it('Component apiVersion "' + componentDoc.get('apiVersion') + '" is within supported versions', function () {
+      const supportedVersions = ['oda.tmforum.org/v1alpha2', 'oda.tmforum.org/v1alpha3', 'oda.tmforum.org/v1alpha4', 'oda.tmforum.org/v1beta1', 'oda.tmforum.org/v1beta2', 'oda.tmforum.org/v1beta3'];
+      expect(componentDoc.get('apiVersion'), "Component should have an 'apiVersion' field of type string").to.be.a('string');
       expect(componentDoc.get('apiVersion')).to.be.oneOf(supportedVersions, "'apiVersion' should be within supported versions " + supportedVersions);
-      done()
-    })
+    });
 
     it('Component has spec', function (done) {
       expect(componentDoc.get('spec'), "Component should have a 'spec' field of type object").to.be.a('object')

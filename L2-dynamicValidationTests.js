@@ -10,7 +10,7 @@ chai.use(chaiFiles)
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 const expect = chai.expect
-const COMPONENT = 'component'
+const COMPONENT = 'Component'
 
 const ctkPaths = {
   'Product Catalog Management':

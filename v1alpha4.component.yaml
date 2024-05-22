@@ -276,7 +276,7 @@ spec:
 ---
 # Source: productcatalog/templates/component-productcatalog.yaml
 apiVersion: oda.tmforum.org/v1alpha4
-kind: component
+kind: Component
 metadata:
   name: r1-productcatalog
   labels:
