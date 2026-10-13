@@ -1,5 +1,11 @@
 # ODA Component - CTK
 
+> [!IMPORTANT]
+> **This CTK is out of date: it has not been updated since August 2023.** It only supports component specifications up to `oda.tmforum.org/v1beta1` and cannot assess components built to the current `v1` specification (see [#45](https://github.com/tmforum-oda/oda-component-ctk/issues/45)).
+>
+> To test a component, use the per-component conformance test kits in [tmforum-rand/TMForum-ODA-Ready-for-publication](https://github.com/tmforum-rand/TMForum-ODA-Ready-for-publication), under `<TMFCnnn-Name>/CTK/componentCTK`. They check the component against the published TMFC specification and run the TM Forum Open API CTKs against its APIs.
+
+
 This folder contains the  Compliance Test Kit (CTK) for an ODA Component. There is a video demonstration of the CTKs at https://www.youtube.com/watch?v=6f82SHgwz28
 
  [![CTK](https://img.youtube.com/vi/6f82SHgwz28/0.jpg)](https://www.youtube.com/watch?v=6f82SHgwz28)
